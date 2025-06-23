@@ -290,9 +290,20 @@
         }
 
         .logo {
-            font-weight: 600;
-            font-size: 1.125rem;
-            color: var(--foreground);
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .logo img {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
         }
 
         .nav-links {
@@ -343,6 +354,77 @@
             background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
             border-radius: 3px;
             transition: width 0.3s ease;
+        }
+
+        /* Skill Items with Hover Animation */
+        .skill-item {
+            margin-bottom: 24px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .skill-content-wrapper {
+            position: relative;
+            height: 100px;
+            overflow: hidden;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .skill-item:hover .skill-content-wrapper,
+        .skill-item.active .skill-content-wrapper {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .skill-default-content,
+        .skill-description-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .skill-default-content {
+            transform: translateY(0);
+        }
+
+        .skill-description-content {
+            transform: translateY(100%);
+        }
+
+        .skill-item:hover .skill-default-content,
+        .skill-item.active .skill-default-content {
+            transform: translateY(-100%);
+        }
+
+        .skill-item:hover .skill-description-content,
+        .skill-item.active .skill-description-content {
+            transform: translateY(0);
+        }
+
+        .skill-description-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .skill-description-text {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+            margin: 0;
         }
 
         /* Refined Timeline */
@@ -514,6 +596,53 @@
             background: rgba(255, 255, 255, 0.05);
             color: var(--foreground);
             border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Tooltip Styles */
+        .tooltip {
+            position: relative;
+            cursor: default;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000;
+            margin-bottom: 3px;
+        }
+
+        .tooltip:hover::after,
+        .tooltip:hover::before {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* Sections */
@@ -799,10 +928,13 @@
     </style>
 </head>
 <body>
+    <div id="top"></div>
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-content">
-            <div class="logo">Danny Yanko</div>
+            <a href="#top" class="logo">
+                <img src="assets/logo.png" alt="Danny Yanko Logo" />
+            </a>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#projects">Projects</a></li>
@@ -822,11 +954,11 @@
         
         <div class="hero-content">
             <h1 class="text-heading-72 hero-title animate-fade-in-up">
-                <strong>Tactical Brilliance</strong><br>Meets <strong>Creative Code.</strong>
+                <strong>From Chaos to Clarity</strong><br><span class="text-heading-48">Optimize. Automate. Accelerate.</span>
             </h1>
             <p class="hero-subtitle animate-fade-in-up stagger-1">
-                AI Consultant. Full-Stack Developer. Digital Strategist.<br>
-                I build systems that scale, strategies that stick, and solutions that feel inevitable.
+                AI Consultant. Full-Stack Architect. Digital Strategist.<br>
+                I build systems that scale, strategies that stick, and solutions that transform mess into momentum.
             </p>
             <div class="cta-buttons animate-fade-in-up stagger-2">
                 <a href="#projects" class="btn btn-primary">Explore My Work</a>
@@ -845,10 +977,96 @@
                         Hi, I'm <strong>Danny Yanko</strong>—a multi-disciplinary force operating at the intersection of strategy, technology, and execution. I help businesses, teams, and founders move faster, work smarter, and scale sustainably.
                     </p>
                     <p class="text-copy-16" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 32px;">
-                        From deploying AI-first automation pipelines to building conversion-optimized web experiences, I specialize in creating future-proof systems that don't just function—they <em>flow</em>. I've worn every hat: marketing director, developer, strategist, project rescuer, system architect. And I'm done playing small.
+                        From deploying AI-first automation pipelines to building conversion-optimized web experiences, I specialize in creating future-proof systems that don't just function—they <em>flow</em>. I've worn every hat: marketing manager, developer, strategist, project rescuer, system architect. And I'm done playing small.
                     </p>
                     
-                    <div class="code-block">
+                    <h3 class="text-heading-20" style="margin-bottom: 32px;">What Sets Me Apart</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                        <div class="skill-item">
+                            <div class="skill-content-wrapper">
+                                <div class="skill-default-content">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span class="text-label-14">AI Systems & Automation</span>
+                                        <span class="badge">
+                                            <div class="status-dot"></div>
+                                            Expert
+                                        </span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 95%;"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-description-content">
+                                    <p class="skill-description-text">I design automation pipelines that combine AI tools, APIs, and scripting to replace repetitive tasks, reduce error, and move faster with less manual input.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skill-item">
+                            <div class="skill-content-wrapper">
+                                <div class="skill-default-content">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span class="text-label-14">Systems Architecture</span>
+                                        <span class="badge">
+                                            <div class="status-dot"></div>
+                                            Advanced
+                                        </span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 90%;"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-description-content">
+                                    <p class="skill-description-text">I map out how tools, data, and workflows connect — then build systems that are modular, scalable, and easy to maintain, whether it's for websites, dashboards, or internal tools.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skill-item">
+                            <div class="skill-content-wrapper">
+                                <div class="skill-default-content">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span class="text-label-14">Strategic Design</span>
+                                        <span class="badge">
+                                            <div class="status-dot"></div>
+                                            Advanced
+                                        </span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 90%;"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-description-content">
+                                    <p class="skill-description-text">I bring structure to chaos — aligning business goals with system flows, making sure the way we work supports what we're building and who we're building it for.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skill-item">
+                            <div class="skill-content-wrapper">
+                                <div class="skill-default-content">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span class="text-label-14">Creative Development</span>
+                                        <span class="badge">
+                                            <div class="status-dot"></div>
+                                            Specialist
+                                        </span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 85%;"></div>
+                                    </div>
+                                </div>
+                                <div class="skill-description-content">
+                                    <p class="skill-description-text">I blend design, storytelling, and front-end development to create user-facing experiences that are sharp, on-brand, and interactive without being overbuilt.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-cell span-4 fade-in-on-scroll">
+                    <div class="code-block" style="margin-bottom: 48px;">
                         <div class="code-header">
                             <span class="code-title">Current Status</span>
                             <div class="code-dots">
@@ -862,69 +1080,27 @@
                             &nbsp;&nbsp;status: <span style="color: rgba(255, 255, 255, 0.6);">"available"</span>,<br>
                             &nbsp;&nbsp;location: <span style="color: rgba(255, 255, 255, 0.6);">"Calgary, AB"</span>,<br>
                             &nbsp;&nbsp;focus: <span style="color: rgba(255, 255, 255, 0.6);">"AI automation + full-stack"</span>,<br>
-                            &nbsp;&nbsp;coffee: <span style="color: rgba(255, 255, 255, 0.9);">true</span><br>
                             };
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="grid-cell span-4 fade-in-on-scroll">
-                    <h3 class="text-heading-20" style="margin-bottom: 24px;">What Sets Me Apart</h3>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span class="text-label-14">AI & Automation</span>
-                            <span class="badge">
-                                <div class="status-dot"></div>
-                                Expert
-                            </span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar" style="width: 95%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="margin-bottom: 24px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span class="text-label-14">Full-Stack Development</span>
-                            <span class="badge">
-                                <div class="status-dot"></div>
-                                Advanced
-                            </span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar" style="width: 90%;"></div>
-                        </div>
-                    </div>
-
-                    <div style="margin-bottom: 24px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span class="text-label-14">Strategic Consulting</span>
-                            <span class="badge">
-                                <div class="status-dot"></div>
-                                Specialist
-                            </span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar" style="width: 85%;"></div>
                         </div>
                     </div>
 
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-date">2025</div>
-                            <div class="timeline-title">AI-First Consultant</div>
-                            <div class="timeline-content">Building intelligent automation systems</div>
+                            <div class="timeline-date">2022–Now</div>
+                            <div class="timeline-title">Systems Architect & Creative Technologist</div>
+                            <div class="timeline-content">Automation, AI, and ops — wrapped around design, dev, and execution.</div>
                         </div>
+                        
                         <div class="timeline-item">
-                            <div class="timeline-date">2020-2024</div>
-                            <div class="timeline-title">Marketing Director</div>
-                            <div class="timeline-content">Leading high-output creative teams</div>
+                            <div class="timeline-date">2018–2022</div>
+                            <div class="timeline-title">Digital Marketing & Web Dev</div>
+                            <div class="timeline-content">Strategy, content, and code — leading and building across campaigns and platforms.</div>
                         </div>
+                        
                         <div class="timeline-item">
-                            <div class="timeline-date">2015-2020</div>
-                            <div class="timeline-title">Full-Stack Developer</div>
-                            <div class="timeline-content">Building scalable web applications</div>
+                            <div class="timeline-date">2015–2018</div>
+                            <div class="timeline-title">Creative Generalist</div>
+                            <div class="timeline-content">Design, video, branding, and web — shipping full-stack for early brands and agencies.</div>
                         </div>
                     </div>
                 </div>
@@ -950,7 +1126,7 @@
                         <span class="badge">Asana API</span>
                         <span class="badge">Node.js</span>
                     </div>
-                    <a href="#" class="btn btn-subtle">View Details</a>
+                    <span class="btn btn-subtle tooltip" data-tooltip="Coming Soon">View Details</span>
                 </div>
                 
                 <div class="grid-cell span-6 fade-in-on-scroll">
@@ -966,7 +1142,7 @@
                         <span class="badge">SCORM</span>
                         <span class="badge">AWS S3</span>
                     </div>
-                    <a href="#" class="btn btn-subtle">View Details</a>
+                    <span class="btn btn-subtle tooltip" data-tooltip="Coming Soon">View Details</span>
                 </div>
 
                 <div class="grid-cell span-6 fade-in-on-scroll">
@@ -982,7 +1158,7 @@
                         <span class="badge">Git Hooks</span>
                         <span class="badge">Templates</span>
                     </div>
-                    <a href="#" class="btn btn-subtle">View Details</a>
+                    <span class="btn btn-subtle tooltip" data-tooltip="Coming Soon">View Details</span>
                 </div>
 
                 <div class="grid-cell span-6 fade-in-on-scroll">
@@ -998,7 +1174,7 @@
                         <span class="badge">AWS</span>
                         <span class="badge">Analytics</span>
                     </div>
-                    <a href="#" class="btn btn-subtle">View Details</a>
+                    <span class="btn btn-subtle tooltip" data-tooltip="Coming Soon">View Details</span>
                 </div>
             </div>
         </div>
@@ -1077,8 +1253,8 @@
                     I partner with founders, teams, and organizations who want to work smarter, automate faster, and deliver better outcomes. If you're ready to turn complexity into clarity and build what others only brainstorm—I'm your next call.
                 </p>
                 <div class="cta-buttons">
-                    <a href="mailto:hello@dannyyanko.com" class="btn btn-primary">Start a Project</a>
-                    <a href="https://linkedin.com/in/dannyyanko" class="btn btn-secondary">Connect on LinkedIn</a>
+                    <a href="mailto:danny@dyanko89.ca" class="btn btn-primary">Start a Project</a>
+                    <a href="https://www.linkedin.com/in/danny-yanko-10300124/" class="btn btn-secondary">Connect on LinkedIn</a>
                 </div>
             </div>
         </div>
@@ -1106,8 +1282,8 @@
                 </div>
             </div>
             <p class="text-copy-14">
+                <em>From Chaos to Clarity</em><br>
                 © 2025 Danny Yanko<br>
-                <em>Built with purpose. Powered by clarity. Made for momentum.</em>
             </p>
         </div>
     </footer>
@@ -1144,6 +1320,32 @@
         // Observe all elements with fade-in-on-scroll class
         document.querySelectorAll('.fade-in-on-scroll').forEach(el => {
             observer.observe(el);
+        });
+
+        // Skill item tap/click functionality for mobile
+        document.querySelectorAll('.skill-item').forEach(skillItem => {
+            let isActive = false;
+            
+            skillItem.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Toggle active state
+                isActive = !isActive;
+                
+                if (isActive) {
+                    this.classList.add('active');
+                } else {
+                    this.classList.remove('active');
+                }
+            });
+            
+            // Close on outside click (mobile)
+            document.addEventListener('click', function(e) {
+                if (!skillItem.contains(e.target) && isActive) {
+                    isActive = false;
+                    skillItem.classList.remove('active');
+                }
+            });
         });
     </script>
 </body>
