@@ -1,14 +1,15 @@
-import { allProjects } from 'contentlayer/generated';
-import { notFound } from 'next/navigation';
-import { useMDXComponent } from 'next-contentlayer/hooks';
-import { Metadata } from 'next';
+import { getProject, getAllProjects } from "@/lib/mdx/content";
+import { renderMDX } from "@/lib/mdx/mdx";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 export async function generateStaticParams() {
-  return allProjects.map((project) => ({ slug: project.slug }));
+  const projects = await getAllProjects();
+  return projects.map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const project = allProjects.find((p) => p.slug === params.slug);
+  const project = await getProject(params.slug);
   if (!project) return {};
   return {
     title: `${project.title} – Danny Yanko`,
@@ -16,33 +17,27 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function ProjectDetailPage({ params }: { params: { slug: string } }) {
-  const project = allProjects.find((p) => p.slug === params.slug);
+export default async function ProjectPage({ params }: { params: { slug: string } }) {
+  const project = await getProject(params.slug);
   if (!project) notFound();
 
-  const MDXContent = useMDXComponent(project.body.code);
+  const content = await renderMDX(project.content);
 
   return (
     <div className="section">
       <div className="grid-container">
         <div className="grid-cell span-8" style={{ gridColumnStart: 3 }}>
-          <h1 className="text-heading-48" style={{ marginBottom: '16px' }}>{project.title}</h1>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
-            <p className="text-copy-16" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
-              Published on {new Date(project.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
-            <span className="badge">
-              <span className="status-dot"></span>
-              {project.status}
-            </span>
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '32px' }}>
+          <h1 className="text-heading-48" style={{ marginBottom: "16px" }}>{project.title}</h1>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "16px" }}>
             {project.tags?.map((tag) => (
               <span key={tag} className="badge">{tag}</span>
             ))}
           </div>
+          <p className="text-copy-16" style={{ color: "rgba(255, 255, 255, 0.5)", marginBottom: "32px" }}>
+            Published on {new Date(project.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          </p>
           <div className="prose">
-            <MDXContent />
+            {content}
           </div>
         </div>
       </div>

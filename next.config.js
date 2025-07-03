@@ -1,6 +1,6 @@
-const { withContentlayer } = require('next-contentlayer');
-
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  // Add any necessary configuration here
+}
 
-module.exports = withContentlayer(nextConfig);
+module.exports = nextConfig;
