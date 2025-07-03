@@ -1,0 +1,33 @@
+{
+  "name": "dyanko89-ca",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
+    "contentlayer": "^0.3.4",
+    "next": "14.0.4",
+    "next-contentlayer": "^0.3.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.58.1",
+    "react-hot-toast": "^2.5.2",
+    "rehype-pretty-code": "^0.14.1",
+    "resend": "^4.6.0",
+    "shiki": "^3.7.0",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "typescript": "^5"
+  }
+}
