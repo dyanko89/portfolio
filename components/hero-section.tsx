@@ -1,24 +1,26 @@
-import Link from "next/link";
-
+// components/hero-section.tsx
 export default function HeroSection() {
   return (
-    <div className="section hero">
-      <div className="grid-container">
-        <div className="grid">
-          <div className="grid-cell span-8">
-            <h1 className="text-heading-64">
-              Hi, I&apos;m Danny Yanko
-            </h1>
-            <p className="text-copy-20" style={{ marginTop: "24px", marginBottom: "32px" }}>
-              A full-stack developer specializing in building exceptional digital experiences. Currently focused on building accessible, human-centered products.
-            </p>
-            <div style={{ display: "flex", gap: "16px" }}>
-              <Link href="/projects" className="button">View Projects</Link>
-              <Link href="/contact" className="button button-outline">Get in Touch</Link>
-            </div>
-          </div>
+    <section className="hero">
+      <div className="hero-grid"></div>
+      <div className="hero-geometric">
+        <div className="hero-triangle"></div>
+      </div>
+      
+      <div className="hero-content">
+        <h1 className="text-heading-72 hero-title animate-fade-in-up">
+          <strong>From Chaos to Clarity</strong><br />
+          <span className="text-heading-48">Optimize. Automate. Accelerate.</span>
+        </h1>
+        <p className="hero-subtitle animate-fade-in-up stagger-1">
+          AI Consultant. Full-Stack Architect. Digital Strategist.<br />
+          I build systems that scale, strategies that stick, and solutions that transform mess into momentum.
+        </p>
+        <div className="cta-buttons animate-fade-in-up stagger-2">
+          <a href="#projects" className="btn btn-primary">Explore My Work</a>
+          <a href="#contact" className="btn btn-secondary">Let&apos;s Build Something</a>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

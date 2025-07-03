@@ -1,49 +1,22 @@
-import Image from "next/image";
-
+// components/contact-section.tsx
 export default function ContactSection() {
   return (
-    <div className="section">
+    <section id="contact" className="section">
       <div className="grid-container">
-        <div className="grid">
-          <div className="grid-cell span-6">
-            <h2 className="text-heading-48">Let&apos;s Connect</h2>
-            <p className="text-copy-16" style={{ color: "rgba(255, 255, 255, 0.7)", marginTop: "24px", marginBottom: "32px" }}>
-              Whether you&apos;re looking to build something amazing, need technical expertise, or just want to chat about technology and innovation, I&apos;d love to hear from you.
-            </p>
-            <div className="contact-methods">
-              <div className="contact-method">
-                <Image src="/assets/globe.png" alt="Location" width={24} height={24} />
-                <span>Washington, D.C.</span>
-              </div>
-              <div className="contact-method">
-                <Image src="/assets/phone.png" alt="Phone" width={24} height={24} />
-                <span>Available for remote work</span>
-              </div>
-              <div className="contact-method">
-                <Image src="/assets/send.png" alt="Email" width={24} height={24} />
-                <span>dyanko89@gmail.com</span>
-              </div>
-            </div>
-          </div>
-          <div className="grid-cell span-6">
-            <form className="contact-form">
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input type="text" id="name" name="name" required />
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input type="email" id="email" name="email" required />
-              </div>
-              <div className="form-group">
-                <label htmlFor="message">Message</label>
-                <textarea id="message" name="message" rows={4} required></textarea>
-              </div>
-              <button type="submit" className="button">Send Message</button>
-            </form>
+        <div className="contact-section fade-in-on-scroll">
+          <h2 className="text-heading-32" style={{ marginBottom: '24px' }}>Let&apos;s Work Together</h2>
+          <p className="text-copy-18" style={{ maxWidth: '600px', margin: '0 auto 16px', color: 'var(--foreground)' }}>
+            <strong>Got a bottleneck? A big idea? Need someone who can handle the technical, strategic, and creative all at once?</strong>
+          </p>
+          <p className="text-copy-16" style={{ maxWidth: '500px', margin: '0 auto 48px', color: 'rgba(255, 255, 255, 0.6)' }}>
+            I partner with founders, teams, and organizations who want to work smarter, automate faster, and deliver better outcomes. If you&apos;re ready to turn complexity into clarity and build what others only brainstorm—I&apos;m your next call.
+          </p>
+          <div className="cta-buttons">
+            <a href="mailto:danny@dyanko89.ca" className="btn btn-primary">Start a Project</a>
+            <a href="https://www.linkedin.com/in/danny-yanko-10300124/" className="btn btn-secondary">Connect on LinkedIn</a>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
