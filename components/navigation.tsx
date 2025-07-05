@@ -12,8 +12,8 @@ export default function Navigation() {
       <div className="nav-content">
         <Link href="/" className="logo">
           <Image 
-            src="/assets/logo.png" 
-            alt="Danny Yanko Logo" 
+            src="/assets/djy89.svg"
+            alt="Dyanko89 Logo"
             width={50}
             height={50}
             priority
