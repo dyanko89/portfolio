@@ -12,6 +12,7 @@
     "@hookform/resolvers": "^5.1.1",
     "@types/mdx": "^2.0.13",
     "gray-matter": "^4.0.3",
+    "lucide-react": "^0.263.1",
     "next": "14.0.4",
     "next-mdx-remote": "^5.0.0",
     "react": "^18",
