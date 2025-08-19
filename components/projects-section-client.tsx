@@ -1,15 +1,16 @@
-// app/projects/projects-client.tsx
+// components/projects-section-client.tsx
 'use client';
 
 import { useEffect } from 'react';
+import Link from 'next/link';
 import type { Project } from '@/lib/mdx/types';
 import { ProjectCard } from '@/components/project-card';
 
-interface ProjectsClientProps {
+interface ProjectsSectionClientProps {
   projects: Project[];
 }
 
-export function ProjectsClient({ projects }: ProjectsClientProps) {
+export function ProjectsSectionClient({ projects }: ProjectsSectionClientProps) {
   useEffect(() => {
     // Scroll animation observer
     const observerOptions = {
@@ -39,11 +40,10 @@ export function ProjectsClient({ projects }: ProjectsClientProps) {
   }, []);
 
   return (
-    <div className="section projects-page-container">
+    <section id="projects" className="section">
       <div className="grid-container">
-        {/* Page header */}
-        <header className="fade-in-on-scroll" style={{ textAlign: 'center', marginBottom: '80px' }}>
-          <h1 
+        <div className="fade-in-on-scroll" style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <h2 
             className="text-heading-48" 
             style={{ 
               marginBottom: '16px',
@@ -54,7 +54,7 @@ export function ProjectsClient({ projects }: ProjectsClientProps) {
             }}
           >
             Featured Projects
-          </h1>
+          </h2>
           <p style={{ 
             color: 'rgba(255, 255, 255, 0.6)', 
             fontSize: '1.125rem', 
@@ -63,15 +63,36 @@ export function ProjectsClient({ projects }: ProjectsClientProps) {
           }}>
             A collection of systems, tools, and solutions that transform complexity into clarity.
           </p>
-        </header>
+        </div>
 
         {/* Enhanced Projects Grid */}
-        <div className="projects-page-grid">
+        <div className="projects-page-grid" style={{ marginBottom: '48px' }}>
           {projects.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} />
           ))}
         </div>
+
+        {/* View All Projects Link */}
+        <div style={{ textAlign: 'center' }}>
+          <Link 
+            href="/projects" 
+            className="btn btn-primary"
+            style={{
+              padding: '12px 32px',
+              fontSize: '1rem',
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: 'var(--foreground)',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              display: 'inline-block',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            View All Projects →
+          </Link>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
