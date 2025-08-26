@@ -164,7 +164,7 @@ export function ProjectDetailClient({ project, content }: ProjectDetailClientPro
                 Interested in similar solutions?
               </h3>
               <p className="cta-description text-copy-16">
-                Let's discuss how I can help automate and optimize your workflows with custom AI solutions.
+                Let&apos;s discuss how I can help automate and optimize your workflows with custom AI solutions.
               </p>
             </div>
             <div className="cta-actions">
