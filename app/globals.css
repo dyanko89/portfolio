@@ -86,11 +86,7 @@
         font-weight: 400; 
         line-height: 1.6; 
       }
-      .text-copy-14 { 
-        font-size: 0.875rem; 
-        font-weight: 400; 
-        line-height: 1.5; 
-      }
+
       .text-label-14 { 
         font-size: 0.875rem; 
         font-weight: 500; 
@@ -1056,6 +1052,7 @@
   margin-bottom: 24px;
   flex: 1;
   line-height: 1.5;
+  font-size: 0.875rem; /* Consolidate font-size here instead of separate class */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -1096,6 +1093,7 @@
   opacity: 0;
   transition: all 0.3s ease;
   transform: translateY(10px);
+  z-index: 10; /* Higher z-index so it's not covered by blog-author-section */
 }
 
 .project-view-link::after {
@@ -2215,3 +2213,188 @@
 /* Additional utility classes */
 .text-green-500 { color: #10b981; }
 .opacity-60 { opacity: 0.6; }
+
+/* ==============================================================================
+   BLOG PAGE STYLES - Minimal overrides only
+   ============================================================================== */
+
+/* Blog page container - reuse projects spacing */
+.blog-page-container {
+  padding-top: 100px;
+}
+
+/* Blog header styling */
+.blog-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.blog-subtitle {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 12px;
+}
+
+/* Blog-specific components brought back */
+
+/* Featured Image Banner - True edge to edge */
+.blog-image-placeholder {
+  position: relative;
+  height: 80px;
+  width: calc(100% + 48px); /* Break out of card padding (24px * 2) */
+  margin: -24px -24px 24px -24px; /* Negative margins to extend to card edges */
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 12px 12px 0 0;
+}
+
+.blog-category-badge {
+  position: absolute;
+  top: 12px;
+  right: 36px; /* Move inward from card edge to be contained */
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Blog card content wrapper */
+.blog-card-content {
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1; /* Lower z-index so it doesn't interfere with hover detection */
+}
+
+/* Reading Time & Tags Meta Section */
+.blog-meta-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.blog-reading-time {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3px 11px;
+  border-radius: 6px;
+}
+
+.blog-tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+}
+
+/* Override project tag styling for blog tags - no borders/backgrounds */
+.blog-tech-tags .tech-tag-small {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  display: inline !important;
+}
+
+.tech-tag-separator {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0 4px;
+}
+
+/* Author & Date Section */
+.blog-author-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.blog-author-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.blog-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.blog-author-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.blog-author-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+.blog-date {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Mobile Responsive - blog specific overrides */
+@media (max-width: 768px) {
+  .blog-subtitle {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-page-container {
+    padding-top: 80px;
+  }
+  
+  .blog-header {
+    margin-bottom: 32px;
+  }
+  
+  .blog-page-grid {
+    gap: 16px;
+  }
+  
+  .blog-card-content {
+    padding: 14px;
+  }
+  
+  .blog-title-with-version {
+    font-size: 16px;
+    height: 42px;
+  }
+  
+  .blog-description-limited {
+    font-size: 12px;
+    max-height: 67px;
+  }
+}
