@@ -146,46 +146,52 @@ export function BlogClient({ posts }: BlogClientProps) {
                 href={post.url}
                 className={`enhanced-project-card fade-in-on-scroll stagger-${(index % 4) + 1}`}
               >
-                {/* Featured Image Banner - brought back */}
-                <div className="blog-image-placeholder">
-                  <div className="blog-category-badge">{category}</div>
+                {/* Header Section - Match Project Card Structure */}
+                <div className="project-card-header">
+                  <div className="project-image-placeholder">
+                    <div className="project-icon-corner">
+                      {getBlogIcon(category)}
+                    </div>
+                    <span className="image-placeholder-text">IMAGE</span>
+                  </div>
+                  <div className="project-status-badge">
+                    <span className="status-dot"></span>
+                    {category}
+                  </div>
                 </div>
 
-                {/* Content Section with proper padding */}
-                <div className="blog-card-content">
-                  {/* Title */}
-                  <div className="project-title-section">
-                    <h3 className="project-title-with-version">{post.title}</h3>
+                {/* Title Section */}
+                <div className="project-title-section">
+                  <h3 className="project-title-with-version">{post.title}</h3>
+                </div>
+
+                {/* Reading Time & Tags Meta Section */}
+                <div className="blog-meta-section">
+                  <div className="blog-reading-time">{readingTime}</div>
+                  <div className="blog-tech-tags">
+                    {techTags.map((tag, tagIndex) => (
+                      <span key={tag}>
+                        <span className="tech-tag-small">#{tag}</span>
+                        {tagIndex < techTags.length - 1 && (
+                          <span className="tech-tag-separator"> {'//'} </span>
+                        )}
+                      </span>
+                    ))}
                   </div>
+                </div>
 
-                  {/* Reading Time & Tags - brought back exactly as before */}
-                  <div className="blog-meta-section">
-                    <div className="blog-reading-time">{readingTime}</div>
-                    <div className="blog-tech-tags">
-                      {techTags.map((tag, tagIndex) => (
-                        <span key={tag}>
-                          <span className="tech-tag-small">#{tag}</span>
-                          {tagIndex < techTags.length - 1 && (
-                            <span className="tech-tag-separator"> {'//'} </span>
-                          )}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                {/* Description */}
+                <p className="project-description-limited">
+                  {truncateExcerpt(post.summary, 210)}
+                </p>
 
-                  {/* Description */}
-                  <p className="project-description-limited">
-                    {truncateExcerpt(post.summary, 210)}
-                  </p>
-
-                  {/* Author & Date */}
-                  <div className="blog-author-section">
-                    <div className="blog-author-info">
-                      <div className="blog-avatar">D</div>
-                      <div className="blog-author-details">
-                        <span className="blog-author-name">Danny Yanko</span>
-                        <span className="blog-date">{formatDate(post.publishedAt)}</span>
-                      </div>
+                {/* Author & Date */}
+                <div className="blog-author-section">
+                  <div className="blog-author-info">
+                    <div className="blog-avatar">D</div>
+                    <div className="blog-author-details">
+                      <span className="blog-author-name">Danny Yanko</span>
+                      <span className="blog-date">{formatDate(post.publishedAt)}</span>
                     </div>
                   </div>
                 </div>
