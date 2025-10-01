@@ -166,7 +166,7 @@ export function BlogClient({ posts }: BlogClientProps) {
                         <span key={tag}>
                           <span className="tech-tag-small">#{tag}</span>
                           {tagIndex < techTags.length - 1 && (
-                            <span className="tech-tag-separator"> // </span>
+                            <span className="tech-tag-separator"> {'//'} </span>
                           )}
                         </span>
                       ))}
