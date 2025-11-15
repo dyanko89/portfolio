@@ -1094,14 +1094,13 @@
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
-  height: 360px;
+  min-height: 360px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(20px);
   text-decoration: none;
   color: inherit;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .enhanced-project-card:hover {
@@ -1266,7 +1265,9 @@
   gap: 6px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   opacity: 0;
   transition: all 0.3s ease;
   transform: translateY(10px);
@@ -1300,7 +1301,7 @@
   }
 
   .enhanced-project-card {
-    height: 320px;
+    min-height: 320px;
     padding: 20px;
   }
   
