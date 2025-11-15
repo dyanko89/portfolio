@@ -1227,13 +1227,14 @@
   margin-bottom: 24px;
   flex: 1;
   line-height: 1.5;
-  font-size: 0.875rem; /* Consolidate font-size here instead of separate class */
+  font-size: 0.875rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: calc(1.5em * 3);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .project-tech-tags {
@@ -1262,20 +1263,14 @@
   right: 24px;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.875rem;
   font-weight: 500;
   opacity: 0;
   transition: all 0.3s ease;
   transform: translateY(10px);
-  z-index: 10; /* Higher z-index so it's not covered by blog-author-section */
-}
-
-.project-view-link::after {
-  content: '↗';
-  margin-left: 8px;
-  transition: transform 0.2s ease;
-  font-size: 1rem;
+  z-index: 10;
 }
 
 .enhanced-project-card:hover .project-view-link {
@@ -1287,8 +1282,9 @@
   color: var(--foreground);
 }
 
-.enhanced-project-card:hover .project-view-link:hover::after {
+.enhanced-project-card:hover .project-view-link:hover svg {
   transform: translateX(4px);
+  transition: transform 0.2s ease;
 }
 
 /* Projects page specific spacing to avoid nav overlap */

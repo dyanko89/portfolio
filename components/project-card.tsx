@@ -4,6 +4,7 @@
 import Link from "next/link";
 import type { Project } from '@/lib/mdx/types';
 import { getProjectBackgroundImage, hasProjectImage } from '@/lib/project-utils';
+import { ArrowUpRight } from 'lucide-react';
 
 interface ProjectCardProps {
   project: Project;
@@ -99,7 +100,10 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         ))}
       </div>
       
-      <span className="project-view-link">View Project</span>
+      <span className="project-view-link">
+        View Project
+        <ArrowUpRight className="w-4 h-4" />
+      </span>
     </Link>
   );
 }
