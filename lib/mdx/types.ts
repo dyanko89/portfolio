@@ -16,6 +16,7 @@ export interface Project {
   tags?: string[];
   status: string;
   image?: string;
+  icon?: string;
   content: string;
   url: string;
 }
@@ -25,6 +26,7 @@ export interface FrontMatter {
   publishedAt: string;
   summary: string;
   image?: string;
+  icon?: string;
   tags?: string[];
   status?: string;
 }

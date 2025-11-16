@@ -1190,6 +1190,12 @@
   fill: #000000;
 }
 
+.project-icon-img {
+  width: 10px;
+  height: 10px;
+  object-fit: contain;
+}
+
 .project-status-badge {
   display: inline-flex;
   align-items: center;
@@ -1207,18 +1213,9 @@
   margin-bottom: 16px;
 }
 
-.project-title-with-version {
+.project-title {
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 4px;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.project-version-info {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.4);
-  font-weight: 400;
 }
 
 .project-description-limited {
@@ -1240,7 +1237,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: auto;
+  margin-bottom: 16px;
 }
 
 .tech-tag-small {
