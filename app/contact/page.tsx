@@ -1,189 +1,331 @@
-'use client';
+"use client"
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import { useState } from "react"
+import Link from "next/link"
+import { Navigation } from "@/components/navigation"
+import { Footer } from "@/components/footer"
+import { ArrowRight, Mail, MapPin, Clock, ArrowUpRight, Loader2 } from "lucide-react"
 
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-});
+const contactInfo = [
+  {
+    icon: Mail,
+    label: "Email",
+    value: "dyanko89@gmail.com",
+    href: "mailto:dyanko89@gmail.com",
+  },
+  {
+    icon: MapPin,
+    label: "Location",
+    value: "Calgary, AB",
+    href: null,
+  },
+  {
+    icon: Clock,
+    label: "Availability",
+    value: "Open to new projects",
+    href: null,
+  },
+]
 
-type ContactFormData = z.infer<typeof contactSchema>;
+const socials = [
+  { name: "LinkedIn", href: "https://linkedin.com/in/dyanko89" },
+  { name: "GitHub", href: "https://github.com/dyanko89" },
+]
 
 export default function ContactPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
-  });
+  const [formState, setFormState] = useState<"idle" | "submitting" | "success" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    budget: "",
+    message: "",
+  })
 
-  const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
-    
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setFormState("submitting")
+    setErrorMessage("")
+
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
-      });
+        body: JSON.stringify(formData),
+      })
 
       if (response.ok) {
-        toast.success('Message sent successfully! I&apos;ll get back to you soon.');
-        reset();
+        setFormState("success")
+        setFormData({ name: "", email: "", company: "", budget: "", message: "" })
       } else {
-        const errorData = await response.json();
-        toast.error(errorData.error || 'Failed to send message. Please try again.');
+        const errorData = await response.json()
+        setErrorMessage(errorData.error || "Failed to send message. Please try again.")
+        setFormState("error")
       }
-    } catch (error) {
-      toast.error('Network error. Please check your connection and try again.');
-    } finally {
-      setIsSubmitting(false);
+    } catch {
+      setErrorMessage("Network error. Please check your connection and try again.")
+      setFormState("error")
     }
-  };
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }))
+  }
 
   return (
-    <div className="section">
-      <Toaster position="top-center" />
-      <div className="grid-container">
-        <div className="grid">
-          {/* Left Column */}
-          <div className="grid-cell span-5" style={{ background: 'transparent', border: 'none', padding: '16px' }}>
-            <h2 className="text-heading-32" style={{ marginBottom: '32px' }}>Let&apos;s Build.</h2>
-            <p className="text-copy-16" style={{ color: 'rgba(255, 255, 255, 0.7)', marginBottom: '32px' }}>
-              Have a project in mind, a complex problem, or a bottleneck that needs a system-driven solution? I&apos;m available for new opportunities.
+    <>
+      <Navigation />
+      <main>
+        {/* Header */}
+        <section className="pt-32 md:pt-48 pb-20 md:pb-32">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <span className="label-uppercase text-accent mb-6 block tracking-widest">
+              Contact
+            </span>
+            <h1 className="text-h1 text-foreground max-w-4xl mb-8">
+              Let&apos;s Build Together
+            </h1>
+            <p className="text-xl text-foreground-secondary max-w-2xl leading-relaxed">
+              Have a project in mind, a complex problem, or a bottleneck that needs
+              a system-driven solution? I&apos;d love to hear about it.
             </p>
-            <div className="code-block">
-              <div className="code-header">
-                <span className="code-title">Current Status</span>
-                <div className="code-dots"><div className="code-dot"></div><div className="code-dot"></div><div className="code-dot"></div></div>
+          </div>
+        </section>
+
+        {/* Contact Content */}
+        <section className="pb-20 md:pb-32">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+              {/* Left Column - Info */}
+              <div className="lg:col-span-4">
+                <div className="lg:sticky lg:top-32 space-y-12">
+                  {/* Contact Info */}
+                  <div className="space-y-6">
+                    {contactInfo.map((item) => (
+                      <div key={item.label} className="flex items-start gap-4">
+                        <item.icon className="w-5 h-5 text-accent mt-1" />
+                        <div>
+                          <span className="label-uppercase text-muted-foreground block mb-1 tracking-widest">
+                            {item.label}
+                          </span>
+                          {item.href ? (
+                            <a
+                              href={item.href}
+                              className="text-foreground hover:text-accent transition-colors"
+                            >
+                              {item.value}
+                            </a>
+                          ) : (
+                            <span className="text-foreground">{item.value}</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Divider */}
+                  <div className="border-t border-border" />
+
+                  {/* Social Links */}
+                  <div>
+                    <span className="label-uppercase text-muted-foreground block mb-6 tracking-widest">
+                      Social
+                    </span>
+                    <div className="space-y-4">
+                      {socials.map((social) => (
+                        <a
+                          key={social.name}
+                          href={social.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between group py-3 border-b border-border hover:border-border-hover transition-colors"
+                        >
+                          <span className="text-foreground-secondary group-hover:text-foreground transition-colors">
+                            {social.name}
+                          </span>
+                          <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                const danny = &#123;<br />
-                &nbsp;&nbsp;status: <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>&quot;available&quot;</span>,<br />
-                &nbsp;&nbsp;focus: <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>&quot;AI &amp; Automation&quot;</span>,<br />
-                &nbsp;&nbsp;location: <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>&quot;Calgary, AB&quot;</span>,<br />
-                &#125;;
+
+              {/* Right Column - Form */}
+              <div className="lg:col-span-7 lg:col-start-6">
+                {formState === "success" ? (
+                  <div className="bg-surface border border-border p-12 text-center">
+                    <div className="w-16 h-16 rounded-full bg-accent/20 text-accent flex items-center justify-center mx-auto mb-6">
+                      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <h2 className="text-h3 text-foreground mb-4">
+                      Message Sent
+                    </h2>
+                    <p className="text-foreground-secondary mb-8">
+                      Thanks for reaching out! I&apos;ll get back to you within 24-48 hours.
+                    </p>
+                    <button
+                      onClick={() => setFormState("idle")}
+                      className="text-accent hover:text-accent-hover transition-colors"
+                    >
+                      Send another message
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-8">
+                    {/* Error Message */}
+                    {formState === "error" && errorMessage && (
+                      <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400">
+                        {errorMessage}
+                      </div>
+                    )}
+
+                    {/* Name & Email */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="name" className="label-uppercase text-muted-foreground block mb-3 tracking-widest">
+                          Name *
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-0 py-4 bg-transparent border-0 border-b border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors text-lg"
+                          placeholder="Your name"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="email" className="label-uppercase text-muted-foreground block mb-3 tracking-widest">
+                          Email *
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-0 py-4 bg-transparent border-0 border-b border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors text-lg"
+                          placeholder="your@email.com"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Company & Budget */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="company" className="label-uppercase text-muted-foreground block mb-3 tracking-widest">
+                          Company (Optional)
+                        </label>
+                        <input
+                          type="text"
+                          id="company"
+                          name="company"
+                          value={formData.company}
+                          onChange={handleChange}
+                          className="w-full px-0 py-4 bg-transparent border-0 border-b border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors text-lg"
+                          placeholder="Your company"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="budget" className="label-uppercase text-muted-foreground block mb-3 tracking-widest">
+                          Budget Range
+                        </label>
+                        <select
+                          id="budget"
+                          name="budget"
+                          value={formData.budget}
+                          onChange={handleChange}
+                          className="w-full px-0 py-4 bg-transparent border-0 border-b border-border text-foreground focus:outline-none focus:border-accent transition-colors text-lg appearance-none cursor-pointer"
+                        >
+                          <option value="" className="bg-background">Select a range</option>
+                          <option value="$1,000 - $5,000" className="bg-background">$1,000 - $5,000</option>
+                          <option value="$5,000 - $10,000" className="bg-background">$5,000 - $10,000</option>
+                          <option value="$10,000 - $25,000" className="bg-background">$10,000 - $25,000</option>
+                          <option value="$25,000+" className="bg-background">$25,000+</option>
+                          <option value="Retainer" className="bg-background">Ongoing Retainer</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Message */}
+                    <div>
+                      <label htmlFor="message" className="label-uppercase text-muted-foreground block mb-3 tracking-widest">
+                        Message *
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        required
+                        rows={6}
+                        className="w-full px-0 py-4 bg-transparent border-0 border-b border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors text-lg resize-none"
+                        placeholder="Tell me about your project, timeline, and any specific requirements..."
+                      />
+                    </div>
+
+                    {/* Submit */}
+                    <div className="pt-4">
+                      <button
+                        type="submit"
+                        disabled={formState === "submitting"}
+                        className="group inline-flex items-center justify-between gap-6 px-8 py-5 bg-accent text-accent-foreground text-sm font-medium tracking-wide hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150 min-h-[56px]"
+                      >
+                        {formState === "submitting" ? (
+                          <>
+                            <span>SENDING...</span>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          </>
+                        ) : (
+                          <>
+                            <span>SEND MESSAGE</span>
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
             </div>
           </div>
+        </section>
 
-          {/* Right Column */}
-          <div className="grid-cell span-7">
-            <h1 className="text-heading-32" style={{ marginBottom: '24px' }}>Get In Touch</h1>
-            <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: '500px', margin: '0 auto' }}>
-            <div style={{ marginBottom: '24px' }}>
-              <label htmlFor="name" className="text-label-14" style={{ display: 'block', marginBottom: '8px', color: 'rgba(255, 255, 255, 0.9)' }}>
-                Name *
-              </label>
-              <input
-                {...register('name')}
-                type="text"
-                id="name"
-                className="form-input"
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: 'white',
-                  fontSize: '1rem',
-                  transition: 'all 0.2s ease',
-                }}
-                placeholder="Your name"
-              />
-              {errors.name && (
-                <p style={{ color: '#ff6b6b', fontSize: '0.875rem', marginTop: '4px' }}>
-                  {errors.name.message}
+        {/* FAQ Teaser */}
+        <section className="py-20 md:py-32 border-t border-border">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+              <div>
+                <h2 className="text-h2 text-foreground mb-4">
+                  Common Questions
+                </h2>
+                <p className="text-foreground-secondary text-lg">
+                  Find answers to frequently asked questions about working together.
                 </p>
-              )}
+              </div>
+              <Link
+                href="/services#faq"
+                className="inline-flex items-center justify-center px-8 py-4 border border-border text-foreground text-sm font-medium tracking-wide hover:border-border-hover hover:bg-surface/50 transition-all duration-150"
+              >
+                VIEW FAQ
+              </Link>
             </div>
-
-            <div style={{ marginBottom: '24px' }}>
-              <label htmlFor="email" className="text-label-14" style={{ display: 'block', marginBottom: '8px', color: 'rgba(255, 255, 255, 0.9)' }}>
-                Email *
-              </label>
-              <input
-                {...register('email')}
-                type="email"
-                id="email"
-                className="form-input"
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: 'white',
-                  fontSize: '1rem',
-                  transition: 'all 0.2s ease',
-                }}
-                placeholder="your.email@example.com"
-              />
-              {errors.email && (
-                <p style={{ color: '#ff6b6b', fontSize: '0.875rem', marginTop: '4px' }}>
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
-
-            <div style={{ marginBottom: '32px' }}>
-              <label htmlFor="message" className="text-label-14" style={{ display: 'block', marginBottom: '8px', color: 'rgba(255, 255, 255, 0.9)' }}>
-                Message *
-              </label>
-              <textarea
-                {...register('message')}
-                id="message"
-                rows={6}
-                className="form-input"
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: 'white',
-                  fontSize: '1rem',
-                  transition: 'all 0.2s ease',
-                  resize: 'vertical',
-                  minHeight: '120px',
-                }}
-                placeholder="Tell me about your project, timeline, and any specific requirements..."
-              />
-              {errors.message && (
-                <p style={{ color: '#ff6b6b', fontSize: '0.875rem', marginTop: '4px' }}>
-                  {errors.message.message}
-                </p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn btn-primary"
-              style={{
-                width: '100%',
-                opacity: isSubmitting ? 0.7 : 1,
-                cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              }}
-            >
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </button>
-            </form>
           </div>
-        </div>
-      </div>
-    </div>
-  );
+        </section>
+      </main>
+      <Footer />
+    </>
+  )
 }

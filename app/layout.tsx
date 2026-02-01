@@ -1,32 +1,38 @@
-import type { Metadata } from 'next'
+import React from "react"
+import type { Metadata, Viewport } from 'next'
 import { Ubuntu } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-import Navigation from '@/components/navigation'
-import Footer from '@/components/footer'
 
-const ubuntu = Ubuntu({ 
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '700']
+const ubuntu = Ubuntu({
+  subsets: ["latin"],
+  variable: '--font-ubuntu-sans',
+  weight: ['300', '400', '500', '700'],
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Dyanko89 - Portfolio',
-  description: 'Personal portfolio website',
+  title: 'Dyanko89 | From Chaos to Clarity',
+  description: 'Systems Architect & AI Consultant crafting digital experiences that transform complexity into elegant solutions.',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: '#0a0f12',
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
-    <html lang="en">
-      <body className={ubuntu.className}>
-        <Navigation />
-        <main>
-          {children}
-        </main>
-        <Footer />
+    <html lang="en" className="bg-background">
+      <body className={`${ubuntu.className} ${ubuntu.variable} antialiased`}>
+        {children}
+        <Analytics />
       </body>
     </html>
   )
