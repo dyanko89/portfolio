@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     }
 
     const resend = new Resend(resendApiKey);
-    const { name, email, message } = await request.json();
+    const { name, email, company, budget, message } = await request.json();
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -23,15 +23,21 @@ export async function POST(request: Request) {
       );
     }
 
+    // Build email body with optional fields
+    let emailBody = `Name: ${name}\nEmail: ${email}\n`;
+    if (company) {
+      emailBody += `Company: ${company}\n`;
+    }
+    if (budget) {
+      emailBody += `Budget: ${budget}\n`;
+    }
+    emailBody += `\nMessage:\n${message}`;
+
     const { data, error } = await resend.emails.send({
       from: "Contact Form <onboarding@resend.dev>",
       to: "dyanko89@gmail.com",
-      subject: `New Contact Form Submission from ${name}`,
-      text: `
-Name: ${name}
-Email: ${email}
-Message: ${message}
-      `,
+      subject: `New Contact Form Submission from ${name}${company ? ` (${company})` : ""}`,
+      text: emailBody,
     });
 
     if (error) {

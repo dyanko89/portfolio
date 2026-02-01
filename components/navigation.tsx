@@ -1,131 +1,144 @@
-// components/navigation.tsx
-'use client';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+"use client"
 
-export default function Navigation() {
-  const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import Image from "next/image"
+import { Menu, X } from "lucide-react"
+import { cn } from "@/lib/utils"
 
-  // Close mobile menu when clicking outside or on a link
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
-  
-  // Close mobile menu when route changes
+const navLinks = [
+  { href: "/about", label: "ABOUT" },
+  { href: "/projects", label: "WORK" },
+  { href: "/services", label: "SERVICES" },
+  { href: "/blog", label: "BLOG" },
+  { href: "/contact", label: "CONTACT" },
+]
+
+export function Navigation() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
   useEffect(() => {
-    closeMobileMenu();
-  }, [pathname]);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = ""
     }
-    
-    // Cleanup on unmount
     return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isMobileMenuOpen]);
-  
+      document.body.style.overflow = ""
+    }
+  }, [isOpen])
+
   return (
     <>
-      <nav className="nav">
-        <div className="nav-content">
-          <Link href="/" className="logo" onClick={closeMobileMenu}>
-            <Image 
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-250",
+          isScrolled
+            ? "bg-background/80 backdrop-blur-md border-b border-border"
+            : "bg-transparent"
+        )}
+      >
+        <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-12 lg:px-16">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="hover:opacity-80 transition-opacity duration-150"
+          >
+            <Image
               src="/assets/djy89.svg"
-              alt="Dyanko89 Logo"
-              width={50}
-              height={50}
-              priority
+              alt="DJY89"
+              width={64}
+              height={64}
+              className="h-16 w-auto"
             />
           </Link>
-          
+
           {/* Desktop Navigation */}
-          <ul className="nav-links desktop-nav">
-            <li><Link href="/#about">About</Link></li>
-            <li><Link href="/projects">Projects</Link></li>
-            <li><Link href="/services">Services</Link></li>
-            <li><Link href="/blog">Blog</Link></li>
-            <li><Link href="/contact">Contact</Link></li>
-            <li><Link href="/cv">CV</Link></li>
-          </ul>
-          
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm text-white hover:text-accent transition-colors duration-150 tracking-widest font-[300]"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link
+              href="/contact"
+              className="ml-4 px-5 py-2.5 bg-accent text-accent-foreground text-sm font-medium tracking-wide hover:bg-accent-hover transition-colors duration-150"
+            >
+              GET IN TOUCH
+            </Link>
+          </div>
+
           {/* Mobile Menu Button */}
-          <button 
-            className="mobile-menu-btn"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isMobileMenuOpen}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 text-foreground hover:text-accent transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
           >
-            <span className={`hamburger ${isMobileMenuOpen ? 'open' : ''}`}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
-        </div>
-      </nav>
+        </nav>
+      </header>
 
-      {/* Mobile Menu Overlay - Clickable area to close menu */}
-      <div 
-        className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}
-        onClick={closeMobileMenu}
-        style={{ display: isMobileMenuOpen ? 'block' : 'none' }}
-      />
-
-      {/* Mobile Navigation Menu */}
-      <div 
-        className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}
+      {/* Mobile Menu Overlay */}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-background transition-all duration-300 md:hidden",
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+        )}
       >
-        {/* Close button inside the menu */}
-        <div className="mobile-menu-header">
-          <button 
-            className="mobile-menu-close"
-            onClick={closeMobileMenu}
-            aria-label="Close menu"
-          >
-            <span className="close-icon">×</span>
-          </button>
+        <div className="flex flex-col h-full pt-24 px-6">
+          {/* Navigation Links */}
+          <div className="flex-1">
+            {navLinks.map((link, index) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "block py-4 border-b border-border text-h2 text-white font-[300] tracking-widest hover:text-accent transition-colors duration-150",
+                  isOpen && "animate-fade-in-up",
+                )}
+                style={{ animationDelay: `${index * 75}ms` }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="py-8 border-t border-border">
+            <Link
+              href="/contact"
+              onClick={() => setIsOpen(false)}
+              className={cn(
+                "block w-full py-5 bg-accent text-accent-foreground text-center font-medium tracking-wide hover:bg-accent-hover transition-colors duration-150",
+                isOpen && "animate-fade-in-up"
+              )}
+              style={{ animationDelay: "300ms" }}
+            >
+              GET IN TOUCH
+            </Link>
+
+            <p className="text-center text-sm text-muted-foreground mt-6">
+              Available for new projects
+            </p>
+          </div>
         </div>
-        
-        <ul className="mobile-nav-links">
-          <li>
-            <Link href="/#about" onClick={closeMobileMenu}>
-              About
-            </Link>
-          </li>
-          <li>
-            <Link href="/projects" onClick={closeMobileMenu}>
-              Projects
-            </Link>
-          </li>
-          <li>
-            <Link href="/services" onClick={closeMobileMenu}>
-              Services
-            </Link>
-          </li>
-          <li>
-            <Link href="/blog" onClick={closeMobileMenu}>
-              Blog
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" onClick={closeMobileMenu}>
-              Contact
-            </Link>
-          </li>
-          <li>
-            <Link href="/cv" onClick={closeMobileMenu}>
-              CV
-            </Link>
-          </li>
-        </ul>
       </div>
     </>
-  );
+  )
 }
