@@ -174,3 +174,13 @@ Required for contact form functionality:
 - MDX rendering occurs server-side via `renderMDX()`
 - Interactive elements isolated in `-client.tsx` components
 - Content passed as props across boundary
+
+## Future Enhancements
+
+### Card-Based Contact Page (Saved for Later)
+v0 chat `https://v0.app/chat/q04zcB2OhHh` contains alternative contact page designs:
+- **Card-Based Layout**: Multiple action cards (Schedule Call, Send Email, Quick Question)
+- **Focused Form Layout**: Centered minimal design
+- **ContactModal Component**: Reusable popup modal for CTAs
+
+These can be implemented later if the current split-screen contact page needs redesign.

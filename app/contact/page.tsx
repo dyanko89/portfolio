@@ -32,6 +32,63 @@ const socials = [
   { name: "GitHub", href: "https://github.com/dyanko89" },
 ]
 
+// Reusable Contact Info Component
+function ContactInfoBlock() {
+  return (
+    <>
+      {/* Contact Info */}
+      <div className="space-y-6">
+        {contactInfo.map((item) => (
+          <div key={item.label} className="flex items-start gap-4">
+            <item.icon className="w-5 h-5 text-accent mt-1" />
+            <div>
+              <span className="label-uppercase text-muted-foreground block mb-1 tracking-widest">
+                {item.label}
+              </span>
+              {item.href ? (
+                <a
+                  href={item.href}
+                  className="text-foreground hover:text-accent transition-colors"
+                >
+                  {item.value}
+                </a>
+              ) : (
+                <span className="text-foreground">{item.value}</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Divider */}
+      <div className="border-t border-border" />
+
+      {/* Social Links */}
+      <div>
+        <span className="label-uppercase text-muted-foreground block mb-6 tracking-widest">
+          Social
+        </span>
+        <div className="space-y-4">
+          {socials.map((social) => (
+            <a
+              key={social.name}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between group py-3 border-b border-border hover:border-border-hover transition-colors"
+            >
+              <span className="text-foreground-secondary group-hover:text-foreground transition-colors">
+                {social.name}
+              </span>
+              <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </>
+  )
+}
+
 export default function ContactPage() {
   const [formState, setFormState] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState("")
@@ -82,83 +139,35 @@ export default function ContactPage() {
     <>
       <Navigation />
       <main>
-        {/* Header */}
-        <section className="pt-32 md:pt-48 pb-20 md:pb-32">
+        {/* Main Contact Section - Single merged section */}
+        <section className="pt-28 md:pt-36 lg:pt-40 pb-16 md:pb-24">
           <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-            <span className="label-uppercase text-accent mb-6 block tracking-widest">
-              Contact
-            </span>
-            <h1 className="text-h1 text-foreground max-w-4xl mb-8">
-              Let&apos;s Build Together
-            </h1>
-            <p className="text-xl text-foreground-secondary max-w-2xl leading-relaxed">
-              Have a project in mind, a complex problem, or a bottleneck that needs
-              a system-driven solution? I&apos;d love to hear about it.
-            </p>
-          </div>
-        </section>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
 
-        {/* Contact Content */}
-        <section className="pb-20 md:pb-32">
-          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
-              {/* Left Column - Info */}
-              <div className="lg:col-span-4">
-                <div className="lg:sticky lg:top-32 space-y-12">
-                  {/* Contact Info */}
-                  <div className="space-y-6">
-                    {contactInfo.map((item) => (
-                      <div key={item.label} className="flex items-start gap-4">
-                        <item.icon className="w-5 h-5 text-accent mt-1" />
-                        <div>
-                          <span className="label-uppercase text-muted-foreground block mb-1 tracking-widest">
-                            {item.label}
-                          </span>
-                          {item.href ? (
-                            <a
-                              href={item.href}
-                              className="text-foreground hover:text-accent transition-colors"
-                            >
-                              {item.value}
-                            </a>
-                          ) : (
-                            <span className="text-foreground">{item.value}</span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+              {/* Left Column - Header + Info (Desktop) */}
+              <div className="lg:col-span-5 order-1 lg:order-none">
+                {/* Header Copy */}
+                <div className="mb-8 lg:mb-12">
+                  <span className="label-uppercase text-accent mb-6 block tracking-widest">
+                    Contact
+                  </span>
+                  <h1 className="text-h2 text-foreground max-w-4xl mb-6">
+                    Let&apos;s Chat
+                  </h1>
+                  <p className="text-xl text-foreground-secondary leading-relaxed">
+                    Have a project in mind, a complex problem, or a bottleneck that needs
+                    a system-driven solution? I&apos;d love to hear about it.
+                  </p>
+                </div>
 
-                  {/* Divider */}
-                  <div className="border-t border-border" />
-
-                  {/* Social Links */}
-                  <div>
-                    <span className="label-uppercase text-muted-foreground block mb-6 tracking-widest">
-                      Social
-                    </span>
-                    <div className="space-y-4">
-                      {socials.map((social) => (
-                        <a
-                          key={social.name}
-                          href={social.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-between group py-3 border-b border-border hover:border-border-hover transition-colors"
-                        >
-                          <span className="text-foreground-secondary group-hover:text-foreground transition-colors">
-                            {social.name}
-                          </span>
-                          <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
-                        </a>
-                      ))}
-                    </div>
-                  </div>
+                {/* Contact Info - Desktop Only */}
+                <div className="hidden lg:flex flex-col space-y-8">
+                  <ContactInfoBlock />
                 </div>
               </div>
 
               {/* Right Column - Form */}
-              <div className="lg:col-span-7 lg:col-start-6">
+              <div className="lg:col-span-7 order-2 lg:order-none">
                 {formState === "success" ? (
                   <div className="bg-surface border border-border p-12 text-center">
                     <div className="w-16 h-16 rounded-full bg-accent/20 text-accent flex items-center justify-center mx-auto mb-6">
@@ -299,6 +308,12 @@ export default function ContactPage() {
                   </form>
                 )}
               </div>
+
+              {/* Mobile Contact Info - After Form */}
+              <div className="lg:hidden order-3 space-y-8 pt-8 mt-4 border-t border-border">
+                <ContactInfoBlock />
+              </div>
+
             </div>
           </div>
         </section>
