@@ -24,7 +24,7 @@ export function CodeBlockMinimal({ code, language, children }: CodeBlockMinimalP
   }
 
   return (
-    <div className="group relative w-full rounded-[2px] bg-[#1a2329] border border-[#2a3942]/50 hover:border-[#3d4f5c] transition-all duration-300 overflow-hidden code-block-minimal">
+    <div className="not-prose group relative w-full rounded-[2px] bg-[#1a2329] border border-[#2a3942]/50 hover:border-[#3d4f5c] transition-all duration-300 overflow-hidden code-block-minimal">
       {/* Minimal Header */}
       <div className="flex items-center justify-between gap-2 px-2 py-2 border-b border-[#2a3942]/50 bg-[#1a2329]">
         {/* Language Badge */}
