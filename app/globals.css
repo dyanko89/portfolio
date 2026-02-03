@@ -297,7 +297,7 @@
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 400 !important;
-  line-height: 1.4;
+  line-height: 1.625; /* leading-relaxed - matches v0 */
   background: transparent !important;
 }
 
@@ -309,7 +309,9 @@
 /* Each line of code - rehype-pretty-code wraps lines in data-line spans */
 .code-block-content [data-line] {
   display: block;
+  line-height: 1.625; /* leading-relaxed - matches v0 */
   padding: 0;
+  margin: 0;
   border: none !important;
   background: transparent !important;
 }
