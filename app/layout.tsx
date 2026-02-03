@@ -1,6 +1,6 @@
 import React from "react"
 import type { Metadata, Viewport } from 'next'
-import { Ubuntu } from 'next/font/google'
+import { Ubuntu, Ubuntu_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
@@ -8,6 +8,13 @@ const ubuntu = Ubuntu({
   subsets: ["latin"],
   variable: '--font-ubuntu-sans',
   weight: ['300', '400', '500', '700'],
+  display: 'swap',
+})
+
+const ubuntuMono = Ubuntu_Mono({
+  subsets: ["latin"],
+  variable: '--font-ubuntu-sans-mono',
+  weight: ['400', '700'],
   display: 'swap',
 })
 
@@ -30,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background">
-      <body className={`${ubuntu.className} ${ubuntu.variable} antialiased`}>
+      <body className={`${ubuntu.className} ${ubuntu.variable} ${ubuntuMono.variable} antialiased`}>
         {children}
         <Analytics />
       </body>
