@@ -289,7 +289,7 @@
   padding: 0 !important;
   background: transparent !important;
   overflow-x: auto;
-  white-space: pre !important;
+  /* Removed white-space: pre - it caused double line breaks with block [data-line] spans */
 }
 
 .code-block-content pre code {
@@ -309,6 +309,7 @@
 /* Each line of code - rehype-pretty-code wraps lines in data-line spans */
 .code-block-content [data-line] {
   display: block;
+  white-space: pre; /* Preserve indentation within each line */
   line-height: 1.625; /* leading-relaxed - matches v0 */
   padding: 0;
   margin: 0;
