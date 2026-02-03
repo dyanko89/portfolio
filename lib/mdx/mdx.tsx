@@ -5,8 +5,8 @@ import { mdxComponents } from "@/components/mdx-components";
 // rehype-pretty-code configuration
 const prettyCodeOptions = {
   theme: "github-dark",
-  // Keep background from theme
-  keepBackground: true,
+  // Don't keep background from theme - let our CSS handle it
+  keepBackground: false,
   // Add line numbers via data attribute
   onVisitLine(node: { properties: Record<string, unknown>; children: unknown[] }) {
     // Prevent lines from collapsing in `display: grid` mode
