@@ -276,17 +276,17 @@
 }
 
 /* ==============================================
-   Code Block Styling - rehype-pretty-code
+   Code Block Styling - Minimal (rehype-pretty-code)
    ============================================== */
 
 /* Code block content wrapper */
 .code-block-content {
-  counter-reset: line;
+  /* No line counter for minimal design */
 }
 
 .code-block-content pre {
   margin: 0 !important;
-  padding: 1rem !important;
+  padding: 0 !important;
   background: transparent !important;
   overflow-x: auto;
   white-space: pre !important;
@@ -295,42 +295,26 @@
 .code-block-content pre code {
   display: block !important;
   font-family: var(--font-mono);
-  font-size: 0.875rem;
-  line-height: 1.7;
+  font-size: 0.8125rem;
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
   background: transparent !important;
 }
 
 /* Each line of code - rehype-pretty-code wraps lines in data-line spans */
 .code-block-content [data-line] {
   display: block;
-  padding: 0 1rem 0 0;
+  padding: 0;
   border: none !important;
   background: transparent !important;
-  min-height: 1.7em;
 }
 
-/* Line numbers via CSS counter */
-.code-block-content [data-line]::before {
-  counter-increment: line;
-  content: counter(line, decimal-leading-zero);
-  display: inline-block;
-  width: 2rem;
-  margin-right: 1.5rem;
-  text-align: right;
-  color: var(--accent);
-  opacity: 0.4;
-  font-size: 0.75rem;
-  font-weight: 600;
-  user-select: none;
-  vertical-align: top;
-}
+/* No line numbers for minimal design */
 
 /* Highlighted line styling */
 .code-block-content [data-line].highlighted {
-  background: rgba(255, 87, 34, 0.1) !important;
-  border-left: 2px solid var(--accent);
-  margin-left: -1rem;
-  padding-left: calc(1rem - 2px);
+  background: rgba(255, 87, 34, 0.08) !important;
 }
 
 /* Override any rehype-pretty-code default backgrounds */
