@@ -10,7 +10,7 @@ export const mdxComponents = {
     // Extract language from data-language attribute (set by rehype-pretty-code)
     // or from className as fallback
     const dataLanguage = props["data-language"]
-    const childElement = children as React.ReactElement
+    const childElement = children as React.ReactElement<{ className?: string }>
     const className = childElement?.props?.className || ""
     const match = className.match(/language-(\w+)/)
     const language = dataLanguage || (match ? match[1] : undefined)
