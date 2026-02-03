@@ -296,9 +296,14 @@
   display: block !important;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  font-weight: 400;
+  font-weight: 400 !important;
   line-height: 1.625;
   background: transparent !important;
+}
+
+/* Force font-weight on all code spans (syntax highlighting adds bold) */
+.code-block-content pre code span {
+  font-weight: 400 !important;
 }
 
 /* Each line of code - rehype-pretty-code wraps lines in data-line spans */

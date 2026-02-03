@@ -55,7 +55,7 @@ export function CodeBlockMinimal({ code, language, children }: CodeBlockMinimalP
       </div>
 
       {/* Code Content - Maximum Focus */}
-      <div className="code-block-content overflow-x-auto px-3 py-3 text-xs font-mono text-[#e8edef] leading-relaxed scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#2a3942] hover:scrollbar-thumb-[#ff5722] transition-colors bg-[#0f1519]">
+      <div className="code-block-content overflow-x-auto p-4 text-xs font-mono font-normal text-[#e8edef] leading-relaxed scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#2a3942] hover:scrollbar-thumb-[#ff5722] transition-colors bg-[#0f1519]">
         {children}
       </div>
     </div>
