@@ -289,7 +289,7 @@
   padding: 0 !important;
   background: transparent !important;
   overflow-x: auto;
-  /* Removed white-space: pre - it caused double line breaks with block [data-line] spans */
+  white-space: normal !important; /* Override browser default - prevents double line breaks with block [data-line] spans */
 }
 
 .code-block-content pre code {
