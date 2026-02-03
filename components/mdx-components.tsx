@@ -1,5 +1,5 @@
 import React from "react"
-import { CodeBlockBlueprint, BlueprintCode, BlueprintInlineCode } from "@/components/code-block-blueprint"
+import { CodeBlockMinimal, MinimalCode, MinimalInlineCode } from "@/components/code-block-minimal"
 
 // MDX components override for use with MDX content
 // Usage: import { mdxComponents } from '@/components/mdx-components'
@@ -16,9 +16,9 @@ export const mdxComponents = {
     const language = dataLanguage || (match ? match[1] : undefined)
 
     return (
-      <CodeBlockBlueprint language={language}>
+      <CodeBlockMinimal language={language}>
         {children}
-      </CodeBlockBlueprint>
+      </CodeBlockMinimal>
     )
   },
   code: ({ children, className, ...props }: React.ComponentPropsWithoutRef<"code">) => {
@@ -26,10 +26,10 @@ export const mdxComponents = {
     const isInline = !className?.includes("language-")
 
     if (isInline) {
-      return <BlueprintInlineCode className={className}>{children}</BlueprintInlineCode>
+      return <MinimalInlineCode className={className}>{children}</MinimalInlineCode>
     }
 
     // Block code (handled by pre wrapper)
-    return <BlueprintCode className={className}>{children}</BlueprintCode>
+    return <MinimalCode className={className}>{children}</MinimalCode>
   },
 }
