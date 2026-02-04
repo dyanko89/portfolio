@@ -1,0 +1,170 @@
+---
+title: LLS Product Pipeline
+publishedAt: 2024-12-01
+summary: Automated weekly sync of 100+ products from WordPress to Google Sheets with AI-generated marketing descriptions and branded stakeholder notifications.
+tags: ["Python", "Claude AI", "Google Sheets API", "WordPress API", "AWS SES"]
+status: Live
+image: /images/projects/lls-pipeline.png
+results:
+  - value: "100+"
+    label: "Products Synced"
+    description: "Weekly automation"
+  - value: "80%"
+    label: "API Cost Reduction"
+    description: "Description caching"
+  - value: "~$3"
+    label: "Monthly AI Cost"
+    description: "Haiku optimized"
+  - value: "Zero"
+    label: "Manual Effort"
+    description: "Fully automated"
+techStack:
+  - category: "AI"
+    items: ["Claude AI", "Prompt Engineering"]
+  - category: "Backend"
+    items: ["Python"]
+  - category: "Integration"
+    items: ["WordPress API", "Google Sheets API", "AWS SES"]
+  - category: "Infrastructure"
+    items: ["systemd", "cron"]
+relatedProjects: ["email-triage", "canada-beef"]
+---
+
+# LLS Product Pipeline
+
+*Automated Product Sync System*
+
+## Overview
+
+The LLS Product Pipeline automates the weekly synchronization of product data from WordPress to Google Sheets, enhanced with AI-generated marketing descriptions. Running every Monday at 5 AM on personal infrastructure, it keeps the sales team equipped with current, professionally written product information.
+
+## The Problem
+
+The sales team needed current product data for client outreach:
+
+- **Manual exports** were time-consuming and error-prone
+- **Product descriptions** varied in quality and tone
+- **Updates were inconsistent** - sometimes weeks behind
+- **No notification system** when new products were added
+
+## Solution Architecture
+
+```
+WordPress Product Database
+         |
+    [Monday 5 AM]
+         |
+    Python Sync Service
+         |
+   ┌─────┴─────┐
+   |           |
+Product     Claude AI
+ Data       Descriptions
+   |           |
+   └─────┬─────┘
+         |
+   Google Sheets API
+         |
+   AWS SES Notification
+```
+
+## Key Features
+
+### WordPress Integration
+Direct API connection to WordPress WooCommerce:
+- Product details (name, SKU, price)
+- Inventory status
+- Category hierarchy
+- Product images
+
+### AI-Enhanced Descriptions
+Claude AI generates professional marketing copy:
+
+```python
+def generate_description(product: Product) -> str:
+    prompt = f"""
+    Write a compelling 2-3 sentence marketing description for:
+    Product: {product.name}
+    Category: {product.category}
+    Key Features: {product.features}
+
+    Style: Professional, benefit-focused, concise
+    """
+
+    response = claude.messages.create(
+        model="claude-3-haiku",
+        messages=[{"role": "user", "content": prompt}]
+    )
+
+    return response.content[0].text
+```
+
+### Deduplication System
+AI descriptions are cached to optimize costs:
+- MD5 hash of product attributes as key
+- Only generate descriptions for new/changed products
+- ~80% reduction in API calls after initial run
+
+### Google Sheets Output
+Structured spreadsheet with:
+- Product details columns
+- AI-generated descriptions
+- Last updated timestamp
+- Change indicators for new items
+
+### Branded Notifications
+HTML email notifications to stakeholders:
+- Summary of products synced
+- Highlights of new additions
+- Direct link to updated spreadsheet
+- Professional branded template
+
+## Technical Implementation
+
+### Scheduling
+```ini
+# systemd timer
+[Timer]
+OnCalendar=Mon *-*-* 05:00:00
+Persistent=true
+```
+
+### Error Handling
+```python
+@retry(stop=stop_after_attempt(3), wait=wait_exponential())
+def sync_products():
+    try:
+        products = fetch_wordpress_products()
+        enriched = enrich_with_ai(products)
+        update_spreadsheet(enriched)
+        send_notification(success=True, count=len(products))
+    except Exception as e:
+        send_notification(success=False, error=str(e))
+        raise
+```
+
+### Cost Optimization
+- Haiku model for cost-effective generation
+- Description caching reduces API calls 80%+
+- Batch operations for Sheets API efficiency
+- Monthly AI cost: ~$3
+
+## Results
+
+The pipeline delivers:
+
+- **100+ products** synced weekly
+- **Consistent quality** in all descriptions
+- **Zero manual effort** for the sales team
+- **Immediate visibility** into new products
+
+## Sample Output
+
+| Product | AI Description | Updated |
+|---------|---------------|---------|
+| Premium Widget A | Elevate your workflow with our flagship widget, engineered for professionals who demand precision and reliability. | 2025-01-13 |
+| Standard Widget B | The perfect balance of quality and value, designed for everyday tasks with enterprise-grade durability. | 2025-01-13 |
+
+---
+
+*This project demonstrates multi-API orchestration, practical AI integration for content generation, and building reliable scheduled automation systems.*

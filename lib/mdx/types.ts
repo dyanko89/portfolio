@@ -8,6 +8,19 @@ export interface BlogPost {
   url: string;
 }
 
+// Result metric for project outcomes
+export interface ProjectResult {
+  value: string;
+  label: string;
+  description?: string;
+}
+
+// Categorized tech stack item
+export interface TechStackCategory {
+  category: string;
+  items: string[];
+}
+
 export interface Project {
   slug: string;
   title: string;
@@ -19,6 +32,10 @@ export interface Project {
   icon?: string;
   content: string;
   url: string;
+  // New fields for enhanced project pages
+  results?: ProjectResult[];
+  techStack?: TechStackCategory[];
+  relatedProjects?: string[];
 }
 
 export interface FrontMatter {
@@ -29,4 +46,8 @@ export interface FrontMatter {
   icon?: string;
   tags?: string[];
   status?: string;
+  // New fields
+  results?: ProjectResult[];
+  techStack?: TechStackCategory[];
+  relatedProjects?: string[];
 }

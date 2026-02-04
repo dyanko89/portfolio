@@ -1,0 +1,132 @@
+---
+title: International Trading Platform
+publishedAt: 2025-01-10
+summary: Complete platform rebuild for B2B2C trading with 52 database tables, 77 foreign key relationships, multi-currency support, and full regulatory compliance infrastructure.
+tags: ["React", "Node.js", "TypeScript", "SQL Server", "REST API"]
+status: Live
+image: /images/projects/gcx-platform.png
+results:
+  - value: "52"
+    label: "Database Tables"
+    description: "Normalized relational schema"
+  - value: "77"
+    label: "FK Relationships"
+    description: "Referential integrity"
+  - value: "3.7M+"
+    label: "Production Rows"
+    description: "Transaction history"
+  - value: "60%"
+    label: "Query Speedup"
+    description: "Response time optimization"
+techStack:
+  - category: "Frontend"
+    items: ["React", "TypeScript"]
+  - category: "Backend"
+    items: ["Node.js", "REST API"]
+  - category: "Database"
+    items: ["SQL Server"]
+  - category: "Auth"
+    items: ["JWT", "RBAC"]
+relatedProjects: ["ccx-backup", "sunoco-dashboard"]
+---
+
+# GCX International Trading Platform
+
+*Full-Stack Platform Rebuild*
+
+## Overview
+
+This international trading platform facilitates B2B2C transactions across multiple jurisdictions. I led the complete rebuild of the platform, redesigning the database architecture, API layer, and React frontend to support complex multi-currency operations while maintaining regulatory compliance.
+
+## The Challenge
+
+The existing platform had accumulated significant technical debt:
+
+- Monolithic codebase with tightly coupled components
+- Database design that couldn't scale with transaction volume
+- No clear separation between B2B and B2C workflows
+- Compliance tracking scattered across multiple systems
+
+## Database Architecture
+
+The rebuild centered on a properly normalized relational schema:
+
+### Scale
+- **52 tables** covering entities, transactions, inventory, and compliance
+- **77 foreign key relationships** ensuring referential integrity
+- **3.7M+ rows** in production with optimized query patterns
+
+### Core Entities
+```
+Organizations ──┬── Users ──── Permissions
+                │
+                ├── Products ── Inventory
+                │
+                └── Transactions ── Line Items
+                                      │
+                                      └── Compliance Records
+```
+
+### Key Design Decisions
+
+**Multi-Currency Support**
+- Separate currency and exchange rate tables
+- Transaction amounts stored in both local and base currency
+- Audit trail for all currency conversions
+
+**Regulatory Compliance**
+- Every transaction linked to compliance checkpoint records
+- Document storage with version history
+- Automated reporting exports per jurisdiction
+
+## API Architecture
+
+Node.js/TypeScript backend with RESTful design:
+
+### Authentication & Authorization
+- JWT-based authentication
+- Role-based access control (RBAC)
+- Organization-level data isolation
+
+### Transaction Processing
+- Atomic operations for multi-step transactions
+- Optimistic locking for inventory management
+- Event sourcing for audit trail
+
+## Frontend Architecture
+
+React frontend with complex state management:
+
+### Multi-View Filtering
+- Saved filter presets per user
+- Real-time inventory availability
+- Bulk operations support
+
+### Responsive Dashboard
+- Key metrics visualization
+- Transaction timeline
+- Compliance status indicators
+
+## Technical Highlights
+
+**Performance Optimization**
+- Query optimization reducing average response time by 60%
+- Pagination and lazy loading for large datasets
+- Connection pooling for database efficiency
+
+**Developer Experience**
+- TypeScript throughout the stack
+- Generated API documentation
+- Comprehensive integration test suite
+
+## Results
+
+The rebuilt platform successfully supports:
+- Active trading operations across multiple countries
+- Thousands of transactions processed monthly
+- Full regulatory audit capabilities
+- Sub-second response times for complex queries
+
+---
+
+*This project demonstrates full-stack architectural thinking, complex relational database design, and building systems that operate in heavily regulated industries.*

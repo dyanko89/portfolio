@@ -10,7 +10,7 @@ const navLinks = [
   { href: "/about", label: "ABOUT" },
   { href: "/projects", label: "WORK" },
   { href: "/services", label: "SERVICES" },
-  { href: "/blog", label: "BLOG" },
+  // { href: "/blog", label: "BLOG" }, // Temporarily disabled
   { href: "/contact", label: "CONTACT" },
 ]
 

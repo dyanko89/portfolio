@@ -1,0 +1,174 @@
+---
+title: Sunoco GMB Analytics Dashboard
+publishedAt: 2024-11-10
+summary: Real-time analytics platform for 2000+ fuel station locations with role-based access control, territory management, and performance leaderboards built on React and Supabase.
+tags: ["React", "Supabase", "TypeScript", "PostgreSQL", "RBAC"]
+status: Live
+image: /images/projects/sunoco-dashboard.png
+results:
+  - value: "2000+"
+    label: "Locations"
+    description: "Real-time monitoring"
+  - value: "5"
+    label: "Territory Managers"
+    description: "Personalized views"
+  - value: "4"
+    label: "Access Levels"
+    description: "RBAC implementation"
+  - value: "Real-time"
+    label: "Updates"
+    description: "Live metric refresh"
+techStack:
+  - category: "Frontend"
+    items: ["React", "TypeScript"]
+  - category: "Backend"
+    items: ["Supabase"]
+  - category: "Database"
+    items: ["PostgreSQL"]
+  - category: "Auth"
+    items: ["RBAC", "Row-Level Security", "JWT"]
+  - category: "Hosting"
+    items: ["Vercel"]
+relatedProjects: ["gcx-platform", "reddit-intel"]
+---
+
+# Sunoco GMB Analytics Dashboard
+
+*Enterprise Analytics Platform*
+
+## Overview
+
+The Sunoco GMB Analytics Dashboard provides real-time insights across 2000+ fuel station locations. Built for the Parkland marketing team, it transforms raw Google My Business data into actionable intelligence with territory-level views, performance comparisons, and manager leaderboards.
+
+## The Challenge
+
+Managing Google My Business presence across thousands of locations requires:
+
+- **Centralized visibility** into location performance
+- **Territory-level insights** for regional managers
+- **Comparative analysis** to identify underperformers
+- **Secure access** based on organizational role
+
+## Solution Architecture
+
+### Tech Stack
+- **Frontend**: React with TypeScript
+- **Backend**: Supabase (PostgreSQL + Auth)
+- **Hosting**: Vercel
+- **Data Pipeline**: CSV uploads + automated processing
+
+### Data Model
+```
+Locations ──┬── Performance Metrics
+            │
+            ├── Territory Assignments
+            │
+            └── Manager Relationships
+```
+
+## Key Features
+
+### Real-Time Filtering
+Dynamic filtering across multiple dimensions:
+- Geographic region
+- Territory manager
+- Performance tier
+- Time period
+
+### Territory Management
+```typescript
+interface Territory {
+  id: string;
+  name: string;
+  manager: User;
+  locations: Location[];
+  metrics: AggregatedMetrics;
+}
+```
+
+Managers see only their assigned locations, while executives get full visibility.
+
+### Performance Leaderboards
+Rankings based on key GMB metrics:
+- Review response rate
+- Average rating
+- Profile completeness
+- Photo engagement
+
+### CSV Upload Workflow
+Simple data refresh process:
+1. Export GMB data from Google
+2. Upload CSV to dashboard
+3. Automatic parsing and validation
+4. Real-time metric updates
+
+## Role-Based Access Control
+
+### Permission Levels
+
+| Role | Access |
+|------|--------|
+| Admin | Full access, user management |
+| Executive | All territories, all metrics |
+| Regional Manager | Assigned territories only |
+| Territory Manager | Own locations only |
+
+### Implementation
+```typescript
+// Row-level security in Supabase
+create policy "Users see own territory"
+on locations for select
+using (
+  territory_id in (
+    select territory_id from user_territories
+    where user_id = auth.uid()
+  )
+);
+```
+
+## Dashboard Views
+
+### Overview Dashboard
+- Total locations with health indicators
+- Aggregate metrics across portfolio
+- Trend charts for key performance indicators
+- Alert panel for locations needing attention
+
+### Location Detail
+- Individual location metrics
+- Review timeline
+- Photo gallery performance
+- Comparison to territory average
+
+### Manager View
+- Territory performance summary
+- Location-by-location breakdown
+- Action items for improvement
+- Export capabilities for reporting
+
+## Technical Highlights
+
+### Performance Optimization
+- Materialized views for aggregate calculations
+- Pagination for large datasets
+- Debounced filter updates
+- Optimistic UI updates
+
+### Security
+- Row-level security at database level
+- JWT-based authentication
+- Secure credential storage
+- Audit logging for data access
+
+## Results
+
+The dashboard enables:
+
+- **2000+ locations** monitored in real-time
+- **5 territory managers** with personalized views
+- **Weekly performance reviews** using dashboard data
+- **Significant improvement** in review response rates
+
+---
+
+*This project demonstrates building multi-tenant analytics platforms with proper access control, handling large-scale location data, and creating intuitive interfaces for non-technical users.*

@@ -10,8 +10,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "dyanko89@gmail.com",
-    href: "mailto:dyanko89@gmail.com",
+    value: "danny@djy89.net",
+    href: "mailto:danny@djy89.net",
   },
   {
     icon: MapPin,
@@ -27,10 +27,11 @@ const contactInfo = [
   },
 ]
 
-const socials = [
-  { name: "LinkedIn", href: "https://linkedin.com/in/dyanko89" },
-  { name: "GitHub", href: "https://github.com/dyanko89" },
-]
+// Social links temporarily disabled
+// const socials = [
+//   { name: "LinkedIn", href: "https://linkedin.com/in/dyanko89" },
+//   { name: "GitHub", href: "https://github.com/dyanko89" },
+// ]
 
 // Reusable Contact Info Component
 function ContactInfoBlock() {
@@ -60,10 +61,9 @@ function ContactInfoBlock() {
         ))}
       </div>
 
-      {/* Divider */}
+      {/* Social Links - Temporarily disabled */}
+      {/*
       <div className="border-t border-border" />
-
-      {/* Social Links */}
       <div>
         <span className="label-uppercase text-muted-foreground block mb-6 tracking-widest">
           Social
@@ -85,6 +85,7 @@ function ContactInfoBlock() {
           ))}
         </div>
       </div>
+      */}
     </>
   )
 }

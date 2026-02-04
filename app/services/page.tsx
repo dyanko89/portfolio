@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { PageHeader } from "@/components/page-header"
 import { ArrowRight, Check } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -98,21 +99,11 @@ export default function ServicesPage() {
     <>
       <Navigation />
       <main>
-        {/* Header */}
-        <section className="pt-32 md:pt-48 pb-20 md:pb-32">
-          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-            <span className="label-uppercase text-accent mb-6 block tracking-widest">
-              Services
-            </span>
-            <h1 className="text-h1 text-foreground max-w-4xl mb-8">
-              How I Can Help
-            </h1>
-            <p className="text-xl md:text-2xl text-foreground-secondary max-w-3xl leading-relaxed">
-              From AI integrations to automation pipelines, I design and build
-              the systems that power modern business.
-            </p>
-          </div>
-        </section>
+        <PageHeader
+          label="Services"
+          title="How I Can Help"
+          description="From AI integrations to automation pipelines, I design and build the systems that power modern business."
+        />
 
         {/* Services List */}
         <section className="border-t border-border">

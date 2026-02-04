@@ -1,0 +1,174 @@
+---
+title: Canada Beef Branding Automation
+publishedAt: 2024-07-20
+summary: Automated PowerPoint rebranding system that transforms 292-slide master presentations into 51 brand-specific training modules in 5-10 minutes - a 97% reduction from manual processing.
+tags: ["Python", "python-pptx", "Pillow", "PowerPoint", "Automation"]
+status: Live
+image: /images/projects/canada-beef.png
+results:
+  - value: "97%"
+    label: "Time Reduction"
+    description: "20+ hours to 5-10 min"
+  - value: "292"
+    label: "Slides Processed"
+    description: "Per master file"
+  - value: "51"
+    label: "Output Files"
+    description: "Brainshark-ready modules"
+  - value: "7+"
+    label: "Retail Partners"
+    description: "Scalable support"
+techStack:
+  - category: "Backend"
+    items: ["Python"]
+  - category: "Libraries"
+    items: ["python-pptx", "Pillow"]
+  - category: "Formats"
+    items: ["PowerPoint", "VBA Macros"]
+  - category: "Processing"
+    items: ["LAB Color Space", "Fuzzy Matching"]
+relatedProjects: ["lls-pipeline"]
+---
+
+# Canada Beef Branding Automation
+
+*Enterprise Content Automation*
+
+## Overview
+
+The Canada Beef Branding Automation system transforms master training presentations into retailer-specific branded versions automatically. What previously took 20+ hours of manual work now completes in 5-10 minutes, enabling rapid deployment of training materials to 7+ retail partners.
+
+## The Problem
+
+Canada Beef produces training materials for multiple retail partners, each requiring:
+
+- **Custom branding** (logos, colors, partner names)
+- **Consistent quality** across all materials
+- **Rapid turnaround** for partner requests
+- **Multiple output formats** (slides, Brainshark modules)
+
+Manual rebranding was:
+- Extremely time-consuming (20+ hours per partner)
+- Error-prone (missed slides, inconsistent styling)
+- Difficult to scale (new partners = repeat all work)
+
+## Solution Architecture
+
+```
+Master PPTX (292 slides)
+         |
+    Python Processor
+         |
+   ┌─────┴─────┐
+   |     |     |
+ Logo  Color  Text
+Replace Match Replace
+   |     |     |
+   └─────┬─────┘
+         |
+    51 Output Files
+    (Brainshark-ready)
+```
+
+## Key Features
+
+### Dynamic Logo Replacement
+Intelligent logo detection and replacement:
+- Position-aware placement
+- Automatic sizing to match original
+- Transparency handling for complex logos
+
+### Fuzzy Color Matching
+```python
+def match_brand_color(source_color: RGB, brand_palette: List[RGB]) -> RGB:
+    """Find closest brand color using LAB color space"""
+    source_lab = rgb_to_lab(source_color)
+
+    best_match = min(
+        brand_palette,
+        key=lambda c: delta_e(source_lab, rgb_to_lab(c))
+    )
+
+    return best_match
+```
+
+Handles color variations in source files:
+- Gradient colors
+- Slight color variations
+- Theme vs. explicit colors
+
+### Text Token Replacement
+Partner-specific text replacement:
+- Company names
+- Contact information
+- Custom messaging
+- Slide-specific content
+
+### Batch Processing
+Single execution processes entire presentation:
+- 292 slides analyzed
+- 51 output files generated
+- Full audit log created
+
+## Technical Implementation
+
+### PPTX Processing
+```python
+from pptx import Presentation
+from pptx.util import Inches, Pt
+
+def process_slide(slide, brand_config):
+    # Process shapes
+    for shape in slide.shapes:
+        if shape.has_text_frame:
+            replace_text(shape, brand_config.text_map)
+
+        if is_logo(shape):
+            replace_logo(shape, brand_config.logo_path)
+
+        if has_fill_color(shape):
+            remap_color(shape, brand_config.color_map)
+```
+
+### Image Processing
+Pillow for logo manipulation:
+- Resize to match original dimensions
+- Handle transparency (PNG with alpha)
+- Color space conversion when needed
+
+### VBA Macro Injection
+Brainshark-ready outputs include:
+- Navigation macros
+- Timing configuration
+- Audio sync points
+
+## Results
+
+The automation delivers:
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Time per partner | 20+ hours | 5-10 minutes |
+| Error rate | ~5% | Under 0.1% |
+| Partners supported | 3 | 7+ |
+| Scalability | Limited | Unlimited |
+
+### Efficiency Gain
+**97% reduction** in processing time
+
+### Quality Improvement
+- Consistent branding across all slides
+- Zero missed replacements
+- Audit trail for verification
+
+## Sample Output
+
+For each retail partner, the system produces:
+- 51 individual PPTX modules
+- Named with partner prefix
+- Brainshark macro-enabled
+- Ready for immediate deployment
+
+---
+
+*This project demonstrates file format mastery, image processing, and building automation that dramatically improves operational efficiency for enterprise clients.*

@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Add any necessary configuration here
+  turbopack: {
+    root: __dirname,
+  },
 }
 
 module.exports = nextConfig;

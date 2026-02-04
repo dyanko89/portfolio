@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { PageHeader } from "@/components/page-header"
 import { ArrowUpRight, Download } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -58,20 +59,11 @@ export default function CVPage() {
     <>
       <Navigation />
       <main>
-        {/* Header */}
-        <section className="pt-32 md:pt-48 pb-20 md:pb-32">
-          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-            <span className="label-uppercase text-accent mb-6 block tracking-widest">
-              Curriculum Vitae
-            </span>
-            <h1 className="text-h1 text-foreground max-w-4xl mb-8">
-              Experience & Background
-            </h1>
-            <p className="text-xl md:text-2xl text-foreground-secondary max-w-3xl leading-relaxed">
-              A summary of my professional experience, technical skills, and education.
-            </p>
-          </div>
-        </section>
+        <PageHeader
+          label="Curriculum Vitae"
+          title="Experience & Background"
+          description="A summary of my professional experience, technical skills, and education."
+        />
 
         {/* Experience Section */}
         <section className="py-20 md:py-32 border-t border-border">

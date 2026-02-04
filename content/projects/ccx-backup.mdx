@@ -1,0 +1,167 @@
+---
+title: CCX Database Backup System
+publishedAt: 2024-08-15
+summary: Automated daily backup system for production trading platform managing 3.7M rows across 52 tables with sub-10-minute disaster recovery SLA and AWS S3 storage.
+tags: ["Node.js", "AWS S3", "AWS SES", "SQL Server", "systemd"]
+status: Live
+image: /images/projects/ccx-backup.png
+results:
+  - value: "52"
+    label: "Tables Backed"
+    description: "Complete database coverage"
+  - value: "3.7M"
+    label: "Rows Protected"
+    description: "Transaction history"
+  - value: "<10 min"
+    label: "Recovery Time"
+    description: "Disaster recovery SLA"
+  - value: "100%"
+    label: "Success Rate"
+    description: "Zero failed backups"
+techStack:
+  - category: "Backend"
+    items: ["Node.js", "TypeScript"]
+  - category: "Cloud"
+    items: ["AWS S3", "AWS SES", "Secrets Manager"]
+  - category: "Database"
+    items: ["SQL Server"]
+  - category: "Infrastructure"
+    items: ["systemd", "cron"]
+relatedProjects: ["gcx-platform", "mainframe"]
+---
+
+# CCX Database Backup System
+
+*Production Disaster Recovery*
+
+## Overview
+
+The CCX Backup System is an automated disaster recovery solution for a production trading platform. Running daily at 5:45 PM, it creates compressed backups of the entire database, uploads to AWS S3, and maintains a retention policy - all with email notifications on success or failure.
+
+## The Problem
+
+The CCX trading platform manages critical business data:
+
+- **3.7 million rows** of transaction history
+- **52 tables** of operational data
+- **Regulatory requirements** for data retention
+- **Business continuity** needs for rapid recovery
+
+Without proper backups, a database failure could mean:
+- Loss of transaction records
+- Regulatory compliance violations
+- Significant business disruption
+
+## Solution Architecture
+
+```
+SQL Server Database
+       |
+   [Daily 5:45 PM]
+       |
+  Node.js Backup Service
+       |
+   ┌───┴───┐
+   |       |
+ Compress  Validate
+   |       |
+   └───┬───┘
+       |
+   AWS S3 Upload
+       |
+   Email Notification
+```
+
+### Backup Process
+
+1. **Connection**: Secure connection to SQL Server via credentials from AWS Secrets Manager
+2. **Export**: Table-by-table data extraction with transaction consistency
+3. **Compression**: GZIP compression reducing ~40MB raw to ~8.7MB
+4. **Upload**: Encrypted upload to S3 with versioning enabled
+5. **Notification**: Success/failure email via AWS SES
+
+## Technical Implementation
+
+### Data Volume
+```
+Production Statistics:
+- Tables: 52
+- Total Rows: 3,744,892
+- Largest Table: 2.1M rows (transaction_lines)
+- Backup Size: ~8.7 MB compressed
+- Backup Duration: ~45 seconds
+```
+
+### AWS Integration
+
+**S3 Storage**
+- Versioned bucket for point-in-time recovery
+- Lifecycle rules for cost optimization
+- Cross-region replication for DR
+
+**Secrets Manager**
+- Database credentials rotated quarterly
+- IAM role-based access
+- No secrets in code or config files
+
+**SES Notifications**
+- Success emails with backup statistics
+- Failure alerts with error details
+- Branded HTML templates
+
+### Scheduling
+
+```ini
+# systemd timer for daily backups
+[Timer]
+OnCalendar=*-*-* 17:45:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+## Recovery Capabilities
+
+### Recovery Time Objective (RTO)
+- **Target**: Under 10 minutes
+- **Tested**: 7 minutes average
+- **Process**: Download, decompress, restore
+
+### Recovery Point Objective (RPO)
+- **Maximum data loss**: 24 hours
+- **Backup frequency**: Daily
+- **Retention**: 90 days
+
+### Recovery Procedure
+1. Download latest backup from S3
+2. Verify checksum integrity
+3. Decompress backup file
+4. Restore to SQL Server instance
+5. Validate row counts against manifest
+
+## Monitoring & Alerting
+
+### Success Metrics Tracked
+- Backup duration
+- Compressed file size
+- Row counts per table
+- S3 upload confirmation
+
+### Failure Handling
+- Immediate email alert on any error
+- Error details and stack trace included
+- Manual intervention instructions
+
+## Results
+
+Since deployment:
+
+- **100% backup success rate**
+- **Zero data loss incidents**
+- **Full compliance** with regulatory requirements
+- **Proven recovery** during planned DR tests
+
+---
+
+*This project demonstrates database administration skills, AWS service integration, and building reliable disaster recovery systems for production environments.*

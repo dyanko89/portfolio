@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { PageHeader } from "@/components/page-header"
 import { ArrowUpRight, Clock } from "lucide-react"
 import { getAllBlogPosts } from "@/lib/mdx/content"
 
@@ -36,20 +37,13 @@ export default async function BlogPage() {
     <>
       <Navigation />
       <main>
-        {/* Header */}
-        <section className="pt-32 md:pt-48 pb-20 md:pb-32">
-          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-            <span className="label-uppercase text-accent mb-6 block tracking-widest">
-              Blog
-            </span>
-            <h1 className="text-h1 text-foreground max-w-4xl mb-8">
-              Thoughts & Writing
-            </h1>
-            <p className="text-xl text-foreground-secondary max-w-2xl leading-relaxed">
-              On AI, systems architecture, and the craft of building digital products.
-            </p>
-          </div>
-        </section>
+        <PageHeader
+          label="Blog"
+          title="Thoughts & Writing"
+          description="On AI, systems architecture, and the craft of building digital products."
+          count={posts.length}
+          countLabel="Articles"
+        />
 
         {/* Featured Post */}
         {featuredPost && (

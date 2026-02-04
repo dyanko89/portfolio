@@ -1,0 +1,194 @@
+---
+title: Reddit Market Intelligence
+publishedAt: 2024-10-05
+summary: Business intelligence platform analyzing 13 industry subreddits for market trends, generating dual-perspective opportunity reports with evidence-based citations.
+tags: ["Python", "Reddit API", "Claude AI", "python-docx", "NLP"]
+status: Live
+image: /images/projects/reddit-intel.png
+results:
+  - value: "13"
+    label: "Subreddits"
+    description: "Active monitoring"
+  - value: "20+"
+    label: "Insights/Report"
+    description: "Actionable intelligence"
+  - value: "100%"
+    label: "Citation Coverage"
+    description: "Evidence-based claims"
+  - value: "Weekly"
+    label: "Report Cadence"
+    description: "Fresh intelligence"
+techStack:
+  - category: "AI"
+    items: ["Claude AI", "NLP"]
+  - category: "Backend"
+    items: ["Python"]
+  - category: "Integration"
+    items: ["Reddit API (PRAW)"]
+  - category: "Libraries"
+    items: ["python-docx"]
+  - category: "Output"
+    items: ["DOCX Reports", "Branded Templates"]
+relatedProjects: ["sunoco-dashboard", "lls-pipeline"]
+---
+
+# Reddit Market Intelligence
+
+*Market Intelligence Platform*
+
+## Overview
+
+The Reddit Market Intelligence system monitors 13 industry subreddits for market trends, consumer sentiment, and business opportunities. Using Claude AI for analysis, it generates professional dual-perspective reports with evidence-based citations, enabling data-driven business decisions.
+
+## The Challenge
+
+The industry moves fast:
+
+- **Regulatory changes** happen frequently
+- **Consumer preferences** shift rapidly
+- **Market opportunities** emerge and disappear quickly
+- **Competitive intelligence** is scattered across forums
+
+Traditional market research is:
+- Expensive ($10K+ per report)
+- Slow (weeks to months)
+- Often outdated by publication
+
+## Solution Architecture
+
+```
+13 Industry Subreddits
+         |
+    Reddit API Scraper
+         |
+    Content Filtering
+         |
+    Claude AI Analysis
+         |
+   ┌─────┴─────┐
+   |           |
+ Danny's    Basil's
+  View       View
+   |           |
+   └─────┬─────┘
+         |
+    DOCX Report Generator
+```
+
+## Key Features
+
+### Multi-Subreddit Monitoring
+Tracking 13 relevant subreddits:
+- r/weedbiz
+- r/[industry-specific]
+- r/canadients
+- r/TheOCS
+- And 9 more industry-specific communities
+
+### Content Extraction
+```python
+def extract_relevant_posts(subreddit: str, timeframe: str) -> List[Post]:
+    """Extract posts with business relevance"""
+    posts = reddit.subreddit(subreddit).top(timeframe)
+
+    return [
+        post for post in posts
+        if meets_relevance_criteria(post)
+        and has_engagement_threshold(post)
+    ]
+```
+
+### AI-Powered Analysis
+Claude analyzes aggregated content for:
+- **Market Trends**: What's gaining/losing popularity
+- **Consumer Pain Points**: Unmet needs and complaints
+- **Competitive Intelligence**: What companies are being discussed
+- **Regulatory Signals**: Policy changes and impacts
+
+### Dual-Perspective Reports
+Two professional personas provide analysis:
+
+**Danny** - The Opportunist
+- Focuses on business opportunities
+- Aggressive growth recommendations
+- First-mover advantage emphasis
+
+**Basil** - The Analyst
+- Risk-aware perspective
+- Data-driven recommendations
+- Conservative market positioning
+
+### Evidence-Based Citations
+Every claim links to source:
+```markdown
+## Market Trend: Vape Decline
+
+Consumer sentiment around vape products has shifted negatively,
+with health concerns driving preference toward flower and edibles.
+
+**Sources:**
+- [r/canadients] "Switching back to flower after..." (342 upvotes)
+- [r/TheOCS] "Edibles are the only way to go now" (189 upvotes)
+```
+
+### DOCX Report Generation
+Professional branded documents:
+- Executive summary
+- Detailed findings by category
+- Opportunity matrix
+- Source appendix
+
+## Technical Implementation
+
+### Reddit API Integration
+```python
+import praw
+
+reddit = praw.Reddit(
+    client_id=config.REDDIT_CLIENT_ID,
+    client_secret=config.REDDIT_SECRET,
+    user_agent="MarketIntel/2.0"
+)
+```
+
+### Content Processing Pipeline
+1. **Scrape**: Collect posts from target subreddits
+2. **Filter**: Remove noise, duplicates, irrelevant content
+3. **Aggregate**: Group by topic and sentiment
+4. **Analyze**: Claude AI extracts insights
+5. **Generate**: Create formatted DOCX report
+
+### Report Automation
+```python
+from docx import Document
+from docx.shared import Inches, Pt
+
+def generate_report(analysis: Analysis) -> Document:
+    doc = Document('template.docx')
+
+    add_executive_summary(doc, analysis.summary)
+    add_trend_section(doc, analysis.trends)
+    add_opportunity_matrix(doc, analysis.opportunities)
+    add_citations(doc, analysis.sources)
+
+    return doc
+```
+
+## Results
+
+The system delivers:
+
+- **Weekly intelligence reports**
+- **20+ actionable insights** per report
+- **100% citation coverage**
+- **$5K-50K+ deal opportunities** identified
+
+### Use Cases
+- New market entry decisions
+- Product development priorities
+- Competitive positioning
+- Regulatory preparedness
+
+---
+
+*This project demonstrates web scraping, NLP analysis, practical AI application for business intelligence, and automated report generation.*

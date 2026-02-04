@@ -1,0 +1,150 @@
+---
+title: Mainframe Personal Infrastructure
+publishedAt: 2024-06-01
+summary: Self-hosted Debian 12 VPN server providing secure remote access and hosting 3 mission-critical production automation services with 24/7 uptime.
+tags: ["Debian", "WireGuard", "systemd", "Node.js", "Python"]
+status: Live
+image: /images/projects/mainframe.png
+results:
+  - value: "99.9%"
+    label: "Uptime"
+    description: "6+ months production"
+  - value: "3"
+    label: "VPN Clients"
+    description: "Active devices"
+  - value: "3"
+    label: "Production Services"
+    description: "Mission-critical systems"
+  - value: "500GB"
+    label: "Monthly Data"
+    description: "Processed volume"
+techStack:
+  - category: "Operating System"
+    items: ["Debian 12"]
+  - category: "Network"
+    items: ["WireGuard", "iptables"]
+  - category: "Backend"
+    items: ["Node.js", "Python"]
+  - category: "Infrastructure"
+    items: ["systemd", "journald", "cron"]
+  - category: "Security"
+    items: ["SSH Keys", "Fail2ban"]
+relatedProjects: ["email-triage", "lls-pipeline", "ccx-backup"]
+---
+
+# Mainframe Personal Infrastructure
+
+*24/7 Production Server*
+
+## Overview
+
+Mainframe is my personal infrastructure backbone - a Debian 12 server running WireGuard VPN that provides secure remote access and hosts production automation services. It represents my approach to self-hosting: maintaining full control over critical systems while ensuring reliability.
+
+## Infrastructure Purpose
+
+### Secure Remote Access
+- WireGuard VPN with 3 active client devices
+- Full tunnel routing for remote work
+- Split tunneling options for specific services
+
+### Production Service Hosting
+Currently running 3 mission-critical services:
+
+1. **Email Triage Assistant** - AI-powered email classification
+2. **LLS Product Pipeline** - Weekly product sync automation
+3. **CCX Database Backups** - Daily backup to AWS S3
+
+## Technical Stack
+
+### Operating System
+- **Debian 12 (Bookworm)** - Stable, security-focused
+- Automated security updates
+- Minimal attack surface
+
+### VPN Configuration
+```ini
+# WireGuard server configuration
+[Interface]
+Address = 10.0.0.1/24
+ListenPort = 51820
+PrivateKey = [REDACTED]
+
+# Client configurations with unique keys
+[Peer]
+PublicKey = [client-1-key]
+AllowedIPs = 10.0.0.2/32
+```
+
+### Service Management
+All services run as systemd units:
+
+```ini
+[Unit]
+Description=Email Triage Service
+After=network.target
+
+[Service]
+Type=simple
+User=automation
+WorkingDirectory=/opt/email-triage
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+## Service Architecture
+
+### Process Isolation
+- Each service runs under dedicated user account
+- Separate working directories
+- Environment-based configuration
+
+### Logging & Monitoring
+- journald for service logs
+- Custom log rotation policies
+- AWS SES alerts on service failures
+
+### Scheduled Operations
+```bash
+# Cron schedule for automation services
+45 17 * * * /opt/ccx-backup/run.sh      # Daily backup
+0  5  * * 1 /opt/lls-pipeline/run.sh    # Weekly sync
+```
+
+## Reliability Features
+
+### Automatic Recovery
+- systemd auto-restart on failures
+- Health check endpoints for critical services
+- Watchdog integration for long-running processes
+
+### Backup Strategy
+- Configuration backups to separate storage
+- Service state snapshots before updates
+- Documented recovery procedures
+
+## Security Posture
+
+### Access Control
+- SSH key-only authentication
+- Fail2ban for intrusion prevention
+- Firewall rules allowing only necessary ports
+
+### Updates
+- Unattended security updates enabled
+- Quarterly maintenance windows for major updates
+- Rollback procedures documented
+
+## Operational Stats
+
+- **Uptime**: 99.9%+ over past 6 months
+- **Active VPN Clients**: 3
+- **Production Services**: 3
+- **Monthly Data Processed**: ~500GB
+
+---
+
+*This project demonstrates infrastructure engineering, security-first thinking, and the ability to maintain production systems with high availability.*

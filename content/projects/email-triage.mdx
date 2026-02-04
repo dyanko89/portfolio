@@ -1,0 +1,126 @@
+---
+title: Email Triage Assistant
+publishedAt: 2025-01-15
+summary: AI-powered email classification system using Claude that monitors Office 365, applies intelligent routing rules, and automatically creates Asana tasks. Running 24/7 in production on personal infrastructure.
+tags: ["Claude AI", "Node.js", "Microsoft Graph", "Asana API", "SQLite"]
+status: Live
+image: /images/projects/email-triage.png
+results:
+  - value: "30 min"
+    label: "Saved Daily"
+    description: "Email processing time eliminated"
+  - value: "100%"
+    label: "Capture Rate"
+    description: "Actionable items identified"
+  - value: "<$5"
+    label: "Monthly AI Cost"
+    description: "Claude Haiku optimized"
+  - value: "24/7"
+    label: "Uptime"
+    description: "Zero missed requests"
+techStack:
+  - category: "AI"
+    items: ["Claude AI", "Prompt Engineering"]
+  - category: "Backend"
+    items: ["Node.js", "TypeScript"]
+  - category: "Database"
+    items: ["SQLite"]
+  - category: "Integration"
+    items: ["Microsoft Graph", "Asana API", "AWS SES"]
+  - category: "Infrastructure"
+    items: ["Debian 12", "systemd"]
+relatedProjects: ["mainframe", "lls-pipeline"]
+---
+
+# Email Triage Assistant
+
+*Production System - Running 24/7*
+
+## Overview
+
+The Email Triage Assistant is an intelligent automation system that eliminates the daily burden of email management. By combining Claude AI's classification capabilities with a robust rules engine, it transforms incoming emails into actionable tasks without human intervention.
+
+## The Problem
+
+Professional teams face a constant battle with email overload:
+
+- Critical requests buried in promotional noise
+- Action items forgotten in long thread chains
+- Context lost when forwarding emails to project tools
+- Hours wasted on manual sorting and task creation
+
+## The Solution
+
+A production-grade system that runs continuously on personal VPN infrastructure, processing emails every 15 minutes:
+
+### Intelligent Classification
+
+Claude AI analyzes each email against a trained skill matrix, determining:
+- **Category**: Client request, internal task, notification, spam
+- **Priority**: Urgent, high, normal, low
+- **Routing**: Which team member or workflow should handle it
+- **Action Type**: Requires response, task creation, or archive
+
+### Automated Task Creation
+
+When an email requires action, the system:
+1. Extracts key details (deadline, stakeholders, requirements)
+2. Links relevant SOPs for self-service resolution
+3. Creates properly formatted Asana tasks
+4. Attaches the original email for context
+5. Assigns based on skill-based routing matrix
+
+## Technical Architecture
+
+```
+Office 365 Inbox
+       |
+   [15-min Poll]
+       |
+  Microsoft Graph API
+       |
+   Claude AI Classifier
+       |
+   Rules Engine (SQLite)
+       |
+  Asana Task Creation
+       |
+   Email Notifications
+```
+
+### Key Components
+
+**Email Monitor Service**
+- Systemd service running on Debian 12 VPN server
+- Polls Microsoft Graph API every 15 minutes
+- Tracks processed emails to prevent duplicates
+
+**AI Classification Engine**
+- Claude 3.5 Haiku for cost-effective classification
+- Custom prompt engineering for business context
+- Structured output parsing for reliable routing
+
+**Rules Database**
+- SQLite for routing rules and client associations
+- Configurable skill matrix for team assignments
+- SOP linking for common request types
+
+## Results
+
+The system has been running in production since late 2024:
+
+- **~30 minutes saved daily** on email processing
+- **100% capture rate** of actionable items
+- **Zero missed** client requests since deployment
+- **24/7 operation** with email failure alerts
+
+## Technical Highlights
+
+- **Stateless Design**: Each poll is independent, enabling easy recovery
+- **Failure Resilience**: AWS SES notifications on any processing errors
+- **Context Preservation**: Full email thread linked to every task
+- **Cost Optimized**: Haiku model keeps AI costs under $5/month
+
+---
+
+*This project demonstrates production AI deployment, API orchestration across multiple platforms, and infrastructure automation running on personal VPN infrastructure.*

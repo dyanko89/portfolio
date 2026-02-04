@@ -1,15 +1,9 @@
 import Link from "next/link"
-import { Github, Twitter, Linkedin } from "lucide-react"
-
-const socialLinks = [
-  { icon: Github, href: "https://github.com/dyanko89", label: "GitHub" },
-  { icon: Twitter, href: "https://twitter.com/dyanko89", label: "Twitter" },
-  { icon: Linkedin, href: "https://linkedin.com/in/dyanko89", label: "LinkedIn" },
-]
+import Image from "next/image"
 
 const footerLinks = [
   { href: "/projects", label: "Projects" },
-  { href: "/blog", label: "Blog" },
+  // { href: "/blog", label: "Blog" }, // Temporarily disabled
   { href: "/services", label: "Services" },
   { href: "/cv", label: "CV" },
 ]
@@ -22,13 +16,19 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
-          {/* Brand */}
+          {/* Brand with Logo */}
           <div className="lg:col-span-4">
             <Link
               href="/"
-              className="inline-block text-h3 text-foreground hover:text-accent transition-colors duration-150 mb-4"
+              className="inline-block mb-4 hover:opacity-80 transition-opacity duration-150"
             >
-              Dyanko89
+              <Image
+                src="/assets/djy89.svg"
+                alt="DJY89"
+                width={64}
+                height={64}
+                className="h-16 w-auto"
+              />
             </Link>
             <p className="text-foreground-secondary text-sm leading-relaxed max-w-xs">
               Systems Architect & AI Consultant crafting digital experiences that transform complexity into clarity.
@@ -54,32 +54,24 @@ export function Footer() {
             </ul>
           </nav>
 
-          {/* Social */}
+          {/* Contact */}
           <div className="lg:col-span-3 lg:col-start-10">
             <h4 className="label-uppercase text-muted-foreground mb-4 tracking-widest">
-              Connect
+              Contact
             </h4>
-            <div className="flex items-center gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center text-foreground-secondary hover:text-accent border border-border hover:border-accent transition-all duration-150"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-4 h-4" />
-                </a>
-              ))}
-            </div>
+            <a
+              href="mailto:danny@djy89.net"
+              className="text-foreground-secondary hover:text-accent transition-colors duration-150"
+            >
+              danny@djy89.net
+            </a>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            {currentYear} Dyanko89. All rights reserved.
+            {currentYear} DJY89. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground">
             From Chaos to Clarity.

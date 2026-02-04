@@ -3,9 +3,13 @@ import Image from "next/image"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { ResultsCards } from "@/components/results-cards"
+import { TechStackIcons } from "@/components/tech-stack-icons"
+import { RelatedProjects } from "@/components/related-projects"
 import { ArrowLeft, Calendar } from "lucide-react"
 import { getProject, getAllProjects } from "@/lib/mdx/content"
 import { renderMDX } from "@/lib/mdx/mdx"
+import { Project } from "@/lib/mdx/types"
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -83,41 +87,65 @@ export default async function ProjectPage({ params }: PageProps) {
   // Render MDX content
   const content = await renderMDX(project.content)
 
+  // Fetch related projects if specified
+  let relatedProjectsData: Project[] = []
+  if (project.relatedProjects && project.relatedProjects.length > 0) {
+    const relatedPromises = project.relatedProjects.map((relatedSlug) =>
+      getProject(relatedSlug)
+    )
+    const results = await Promise.all(relatedPromises)
+    relatedProjectsData = results.filter((p): p is Project => p !== null)
+  }
+
   return (
     <>
       <Navigation />
       <main>
-        {/* Header */}
-        <section className="pt-32 md:pt-48 pb-12 md:pb-20">
-          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+        {/* Hero Header with Background Image */}
+        <section className="relative min-h-[70vh] flex flex-col justify-end overflow-hidden">
+          {/* Background Image */}
+          {project.image && (
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              className="object-cover"
+              priority
+            />
+          )}
+
+          {/* Dark Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/40" />
+
+          {/* Content */}
+          <div className="relative z-10 mx-auto max-w-7xl w-full px-6 md:px-12 lg:px-16 pb-12 md:pb-16 pt-32">
             {/* Back Link */}
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-12"
+              className="inline-flex items-center gap-2 text-sm text-foreground/70 hover:text-foreground transition-colors mb-8 md:mb-12"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Projects</span>
             </Link>
 
-            {/* Title */}
-            <h1 className="text-h1 text-foreground mb-6">{project.title}</h1>
+            {/* Title - Display Sizing */}
+            <h1 className="text-h1 md:text-display text-foreground mb-6">{project.title}</h1>
 
             {/* Summary/Description */}
-            <p className="text-xl md:text-2xl text-foreground-secondary max-w-3xl leading-relaxed mb-12">
+            <p className="text-lg md:text-xl text-foreground-secondary max-w-3xl leading-relaxed mb-8">
               {project.summary}
             </p>
 
             {/* Meta */}
-            <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-4">
               {year && (
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>{year}</span>
-                </div>
+                <span className="px-4 py-2 text-sm font-medium text-foreground bg-surface/80 border border-border backdrop-blur-sm">
+                  {year}
+                </span>
               )}
               {project.status && (
                 <span
-                  className={`px-3 py-1 text-xs font-medium tracking-wider uppercase ${statusStyles.bg} ${statusStyles.text}`}
+                  className={`px-4 py-2 text-sm font-medium tracking-wider uppercase bg-surface/80 border backdrop-blur-sm ${statusStyles.text} ${statusStyles.bg.replace('bg-', 'border-')}`}
                 >
                   {statusStyles.label}
                 </span>
@@ -126,20 +154,9 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* Hero Image */}
-        {project.image && (
-          <section className="pb-20 md:pb-32">
-            <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-              <div className="relative aspect-[16/9] bg-surface border border-border overflow-hidden">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          </section>
+        {/* Results Cards (if project has results) */}
+        {project.results && project.results.length > 0 && (
+          <ResultsCards results={project.results} />
         )}
 
         {/* Project Content */}
@@ -149,7 +166,15 @@ export default async function ProjectPage({ params }: PageProps) {
               {/* Sidebar */}
               <aside className="lg:col-span-4">
                 <div className="lg:sticky lg:top-32 space-y-8">
-                  {project.tags && project.tags.length > 0 && (
+                  {/* Use TechStackIcons if available, otherwise fall back to tags */}
+                  {project.techStack && project.techStack.length > 0 ? (
+                    <div>
+                      <h3 className="label-uppercase text-muted-foreground mb-4 tracking-widest">
+                        Technologies
+                      </h3>
+                      <TechStackIcons techStack={project.techStack} />
+                    </div>
+                  ) : project.tags && project.tags.length > 0 ? (
                     <div>
                       <h3 className="label-uppercase text-muted-foreground mb-3 tracking-widest">
                         Technologies
@@ -165,7 +190,7 @@ export default async function ProjectPage({ params }: PageProps) {
                         ))}
                       </div>
                     </div>
-                  )}
+                  ) : null}
                   {project.status && (
                     <div>
                       <h3 className="label-uppercase text-muted-foreground mb-3 tracking-widest">
@@ -195,25 +220,29 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* Navigation */}
-        <section className="py-20 md:py-32 border-t border-border">
-          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-              <div>
-                <h2 className="text-h2 text-foreground mb-4">Explore More</h2>
-                <p className="text-foreground-secondary">
-                  Continue exploring my work
-                </p>
+        {/* Related Projects (if available) or fallback to Explore More */}
+        {relatedProjectsData.length > 0 ? (
+          <RelatedProjects projects={relatedProjectsData} />
+        ) : (
+          <section className="py-20 md:py-32 border-t border-border">
+            <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+                <div>
+                  <h2 className="text-h2 text-foreground mb-4">Explore More</h2>
+                  <p className="text-foreground-secondary">
+                    Continue exploring my work
+                  </p>
+                </div>
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center justify-center px-8 py-4 border border-border text-foreground text-sm font-medium tracking-wide hover:border-border-hover hover:bg-surface/50 transition-all duration-150"
+                >
+                  VIEW ALL PROJECTS
+                </Link>
               </div>
-              <Link
-                href="/projects"
-                className="inline-flex items-center justify-center px-8 py-4 border border-border text-foreground text-sm font-medium tracking-wide hover:border-border-hover hover:bg-surface/50 transition-all duration-150"
-              >
-                VIEW ALL PROJECTS
-              </Link>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
       <Footer />
     </>
