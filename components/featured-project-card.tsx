@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 import { useState } from "react"
 
@@ -59,13 +60,14 @@ export function FeaturedProjectCard({
 
           {/* Project Image */}
           {image ? (
-            <div className="relative w-full h-full overflow-hidden">
-              <img
-                src={image}
-                alt={title}
-                className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-              />
-            </div>
+            <Image
+              src={image}
+              alt={title}
+              fill
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+              priority
+            />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-20 h-20 border-2 border-border flex items-center justify-center text-muted-foreground text-sm font-mono">
