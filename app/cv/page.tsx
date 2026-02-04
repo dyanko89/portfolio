@@ -7,51 +7,55 @@ import { ArrowUpRight, Download } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "CV | Danny Yanko",
-  description: "A summary of my professional experience, technical skills, and education.",
+  description: "14+ years building marketing systems and AI-powered automation. Solutions architect who ships production infrastructure.",
 }
 
 const experience = [
   {
     period: "2022 — Present",
-    role: "Systems Architect & AI Consultant",
-    company: "Independent",
-    description: "Designed and deployed AI automation pipelines, built full-stack applications, and provided strategic consulting for startups and established businesses.",
+    role: "Solutions Architect & Marketing Manager",
+    company: "Mixed Sweet Media",
+    description: "Build AI-powered automation systems and lead marketing operations for enterprise clients including Parkland and Canada Beef. Delivered 200+ training videos, achieved 615% campaign ROI, and created systems generating 20:1 efficiency gains.",
   },
   {
-    period: "2018 — 2022",
-    role: "Digital Marketing & Web Development Lead",
-    company: "Agency & Freelance",
-    description: "Led strategy and execution for digital campaigns, including building conversion-focused websites, funnels, and analytics dashboards.",
+    period: "2017 — 2019",
+    role: "Marketing Manager & IT Support",
+    company: "Summit Kids",
+    description: "Managed full marketing operations and cross-functional project coordination. Authored 50+ SOPs to systematize workflows. Coordinated multi-site initiatives and stakeholder alignment.",
   },
   {
-    period: "2015 — 2018",
-    role: "Technical Project Manager",
-    company: "Enterprise",
-    description: "Managed cross-functional teams, coordinated software development projects, and implemented process improvements that increased delivery efficiency by 40%.",
+    period: "2011 — 2022",
+    role: "Independent Creative & Systems Builder",
+    company: "Consulting",
+    description: "Built marketing operations for clients across healthcare, energy, and tech. Delivered multilingual platforms, achieved 6:1 ROI on SEO/PPC campaigns, and opened 4 new B2B distribution channels.",
   },
 ]
 
-const education = [
+const systems = [
   {
-    year: "2023",
-    title: "AI & Machine Learning Specialization",
-    institution: "Advanced Certification",
-    description: "Advanced coursework in prompt engineering, model fine-tuning, and AI system architecture.",
+    name: "International Trading Platform",
+    description: "Full-stack rebuild of B2B2C trading platform. 52-table normalized schema, 3.7M+ production rows, multi-currency support, and regulatory compliance across jurisdictions.",
+    tech: ["React", "Node.js", "TypeScript", "SQL Server"],
   },
   {
-    year: "2014",
-    title: "Bachelor of Computer Science",
-    institution: "University of Calgary",
-    description: "Focus on software engineering and systems design.",
+    name: "Enterprise Analytics Dashboard",
+    description: "Real-time analytics for 2000+ fuel station locations with RBAC, territory management, and performance leaderboards for Parkland/Sunoco.",
+    tech: ["React", "Supabase", "PostgreSQL", "Row-Level Security"],
+  },
+  {
+    name: "AI Email Triage System",
+    description: "Production system processing Office 365 emails through Claude AI for intelligent categorization, then routing to Asana with proper project assignment.",
+    tech: ["Node.js", "Claude API", "Microsoft Graph", "Asana API"],
   },
 ]
 
 const skills = [
-  { category: "Languages", items: ["TypeScript", "Python", "JavaScript", "SQL"] },
-  { category: "Frameworks", items: ["Next.js", "React", "Node.js", "FastAPI"] },
-  { category: "AI/ML", items: ["OpenAI API", "Prompt Engineering", "LangChain", "RAG Systems"] },
-  { category: "Infrastructure", items: ["AWS", "Vercel", "Docker", "PostgreSQL"] },
-  { category: "Tools", items: ["Git", "Asana", "Figma", "Microsoft Graph"] },
+  { category: "AI & Automation", items: ["Claude API", "OpenAI API", "Prompt Engineering", "Multi-Agent Systems", "CrewAI"] },
+  { category: "Development", items: ["TypeScript", "Python", "JavaScript", "PowerShell", "SQL"] },
+  { category: "Frameworks", items: ["Next.js", "React", "Node.js", "Supabase"] },
+  { category: "Marketing Tech", items: ["HubSpot", "Google Analytics", "Marketo", "Salesforce"] },
+  { category: "Infrastructure", items: ["Linux/Debian", "WireGuard", "AWS SES", "Vercel", "PostgreSQL"] },
+  { category: "Tools", items: ["Git", "Asana", "Notion", "Final Cut Pro", "Figma"] },
 ]
 
 export default function CVPage() {
@@ -61,8 +65,8 @@ export default function CVPage() {
       <main>
         <PageHeader
           label="Curriculum Vitae"
-          title="Experience & Background"
-          description="A summary of my professional experience, technical skills, and education."
+          title="14 Years of Building Systems That Ship"
+          description="Marketing operations architect turned AI-first systems builder. I don't just use tools—I build the infrastructure."
         />
 
         {/* Experience Section */}
@@ -93,27 +97,35 @@ export default function CVPage() {
           </div>
         </section>
 
-        {/* Education Section */}
+        {/* Systems Section */}
         <section className="py-20 md:py-32 border-t border-border">
           <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-            <h2 className="text-h2 text-foreground mb-16">
-              Education & Certifications
+            <h2 className="text-h2 text-foreground mb-6">
+              Systems I&apos;ve Built
             </h2>
+            <p className="text-foreground-secondary text-lg mb-16 max-w-3xl">
+              Production systems I&apos;ve architected. Not tutorials or toy projects—real infrastructure handling real transactions.
+            </p>
             <div className="space-y-0">
-              {education.map((item, index) => (
+              {systems.map((item, index) => (
                 <div
                   key={index}
                   className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 py-8 border-t border-border last:border-b"
                 >
-                  <div className="md:col-span-2">
-                    <span className="text-sm text-accent font-mono">{item.year}</span>
-                  </div>
                   <div className="md:col-span-4">
-                    <h3 className="text-lg font-semibold text-foreground">{item.title}</h3>
-                    <p className="text-muted-foreground">{item.institution}</p>
+                    <h3 className="text-lg font-semibold text-foreground">{item.name}</h3>
                   </div>
-                  <div className="md:col-span-6">
+                  <div className="md:col-span-5">
                     <p className="text-foreground-secondary">{item.description}</p>
+                  </div>
+                  <div className="md:col-span-3">
+                    <div className="flex flex-wrap gap-2">
+                      {item.tech.map((t) => (
+                        <span key={t} className="text-xs font-mono text-muted-foreground">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}
