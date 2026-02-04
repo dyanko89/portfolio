@@ -1,10 +1,11 @@
 ---
-title: CCX Database Backup System
+title: Database Backup System
 publishedAt: 2024-08-15
 summary: Automated daily backup system for production trading platform managing 3.7M rows across 52 tables with sub-10-minute disaster recovery SLA and AWS S3 storage.
 tags: ["Node.js", "AWS S3", "AWS SES", "SQL Server", "systemd"]
 status: Live
 image: /images/projects/ccx-backup.png
+client: CCX
 results:
   - value: "52"
     label: "Tables Backed"
@@ -30,17 +31,17 @@ techStack:
 relatedProjects: ["gcx-platform", "mainframe"]
 ---
 
-# CCX Database Backup System
+# Database Backup System
 
 *Production Disaster Recovery*
 
 ## Overview
 
-The CCX Backup System is an automated disaster recovery solution for a production trading platform. Running daily at 5:45 PM, it creates compressed backups of the entire database, uploads to AWS S3, and maintains a retention policy - all with email notifications on success or failure.
+An automated disaster recovery solution for a production trading platform. Running daily, it creates compressed backups of the entire database, uploads to AWS S3, and maintains a retention policy with email notifications on success or failure.
 
 ## The Problem
 
-The CCX trading platform manages critical business data:
+The trading platform manages critical business data:
 
 - **3.7 million rows** of transaction history
 - **52 tables** of operational data

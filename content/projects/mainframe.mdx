@@ -1,7 +1,7 @@
 ---
-title: Mainframe Personal Infrastructure
+title: Personal Infrastructure Server
 publishedAt: 2024-06-01
-summary: Self-hosted Debian 12 VPN server providing secure remote access and hosting 3 mission-critical production automation services with 24/7 uptime.
+summary: Self-hosted Debian 12 server providing secure remote access via WireGuard VPN and hosting mission-critical production automation services with 99.9% uptime.
 tags: ["Debian", "WireGuard", "systemd", "Node.js", "Python"]
 status: Live
 image: /images/projects/mainframe.png
@@ -32,27 +32,26 @@ techStack:
 relatedProjects: ["email-triage", "lls-pipeline", "ccx-backup"]
 ---
 
-# Mainframe Personal Infrastructure
+# Personal Infrastructure Server
 
 *24/7 Production Server*
 
 ## Overview
 
-Mainframe is my personal infrastructure backbone - a Debian 12 server running WireGuard VPN that provides secure remote access and hosts production automation services. It represents my approach to self-hosting: maintaining full control over critical systems while ensuring reliability.
+A personal infrastructure backbone running on Debian 12 with WireGuard VPN for secure remote access. Hosts multiple production automation services with high availability and automatic recovery.
 
 ## Infrastructure Purpose
 
 ### Secure Remote Access
-- WireGuard VPN with 3 active client devices
-- Full tunnel routing for remote work
+- WireGuard VPN for encrypted tunneling
+- Multiple client device support
 - Split tunneling options for specific services
 
 ### Production Service Hosting
-Currently running 3 mission-critical services:
-
-1. **Email Triage Assistant** - AI-powered email classification
-2. **LLS Product Pipeline** - Weekly product sync automation
-3. **CCX Database Backups** - Daily backup to AWS S3
+Hosts mission-critical automation services including:
+- AI-powered email classification
+- Scheduled data sync pipelines
+- Automated backup systems
 
 ## Technical Stack
 
@@ -61,32 +60,18 @@ Currently running 3 mission-critical services:
 - Automated security updates
 - Minimal attack surface
 
-### VPN Configuration
-```ini
-# WireGuard server configuration
-[Interface]
-Address = 10.0.0.1/24
-ListenPort = 51820
-PrivateKey = [REDACTED]
-
-# Client configurations with unique keys
-[Peer]
-PublicKey = [client-1-key]
-AllowedIPs = 10.0.0.2/32
-```
-
 ### Service Management
-All services run as systemd units:
+All services run as systemd units with automatic restart:
 
 ```ini
 [Unit]
-Description=Email Triage Service
+Description=Production Service
 After=network.target
 
 [Service]
 Type=simple
 User=automation
-WorkingDirectory=/opt/email-triage
+WorkingDirectory=/opt/service
 ExecStart=/usr/bin/node dist/index.js
 Restart=always
 RestartSec=10
@@ -103,16 +88,12 @@ WantedBy=multi-user.target
 - Environment-based configuration
 
 ### Logging & Monitoring
-- journald for service logs
+- journald for centralized service logs
 - Custom log rotation policies
-- AWS SES alerts on service failures
+- Email alerts on service failures
 
 ### Scheduled Operations
-```bash
-# Cron schedule for automation services
-45 17 * * * /opt/ccx-backup/run.sh      # Daily backup
-0  5  * * 1 /opt/lls-pipeline/run.sh    # Weekly sync
-```
+Cron-based scheduling for automation services with staggered execution times to avoid resource contention.
 
 ## Reliability Features
 

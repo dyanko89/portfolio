@@ -36,6 +36,7 @@ export interface Project {
   results?: ProjectResult[];
   techStack?: TechStackCategory[];
   relatedProjects?: string[];
+  client?: string;
 }
 
 export interface FrontMatter {
@@ -50,4 +51,5 @@ export interface FrontMatter {
   results?: ProjectResult[];
   techStack?: TechStackCategory[];
   relatedProjects?: string[];
+  client?: string;
 }

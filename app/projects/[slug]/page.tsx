@@ -130,8 +130,8 @@ export default async function ProjectPage({ params }: PageProps) {
               <span>Back to Projects</span>
             </Link>
 
-            {/* Title - Display Sizing */}
-            <h1 className="text-h1 md:text-display text-foreground mb-6">{project.title}</h1>
+            {/* Title - Responsive sizing */}
+            <h1 className="text-3xl sm:text-4xl md:text-h1 lg:text-display text-foreground mb-6">{project.title}</h1>
 
             {/* Summary/Description */}
             <p className="text-lg md:text-xl text-foreground-secondary max-w-3xl leading-relaxed mb-8">
@@ -140,6 +140,11 @@ export default async function ProjectPage({ params }: PageProps) {
 
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-4">
+              {project.client && (
+                <span className="px-4 py-2 text-sm font-medium text-accent bg-accent/10 border border-accent/30 backdrop-blur-sm">
+                  {project.client}
+                </span>
+              )}
               {year && (
                 <span className="px-4 py-2 text-sm font-medium text-foreground bg-surface/80 border border-border backdrop-blur-sm">
                   {year}
