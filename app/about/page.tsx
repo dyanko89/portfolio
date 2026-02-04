@@ -1,39 +1,57 @@
 import { Metadata } from "next"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { PageHeader } from "@/components/page-header"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "About | Danny Yanko",
-  description: "Learn more about my background, experience, and approach to AI automation and systems architecture.",
+  description: "Systems architect and AI orchestration specialist. Making complexity invisible so creativity can flourish.",
 }
 
 const capabilities = [
-  { number: "01", title: "AI Automation", description: "Custom GPTs, intelligent pipelines, and AI-powered workflows" },
-  { number: "02", title: "Technical PM", description: "Scope management, team coordination, and project delivery" },
-  { number: "03", title: "Full-Stack Development", description: "Modern web apps with Next.js, React, and TypeScript" },
-  { number: "04", title: "Systems Architecture", description: "Scalable infrastructure and integration design" },
+  {
+    number: "01",
+    title: "AI Orchestration",
+    description: "Designing AI as infrastructure, not automation. Systems that make decisions invisible.",
+  },
+  {
+    number: "02",
+    title: "Systems Architecture",
+    description: "Pattern recognition at scale. Finding the 20% of work that generates 80% of friction.",
+  },
+  {
+    number: "03",
+    title: "Process Optimization",
+    description: "Energy economics applied to workflows. Eliminating decision fatigue through design.",
+  },
+  {
+    number: "04",
+    title: "Framework Design",
+    description: "Teaching systems that scale. Build once, leverage forever.",
+  },
 ]
 
-const techStack = [
-  "TypeScript", "Python", "Next.js", "React",
-  "Node.js", "OpenAI API", "PostgreSQL", "AWS",
-  "Vercel", "Docker", "Microsoft Graph", "Asana API",
-]
+const techStack = {
+  "AI & Orchestration": ["Claude AI", "OpenAI API", "LangChain", "Prompt Engineering"],
+  "Languages": ["TypeScript", "Python", "SQL"],
+  "Infrastructure": ["Next.js", "Node.js", "PostgreSQL", "AWS", "Vercel"],
+  "Integration": ["Microsoft Graph", "Asana API", "REST APIs", "systemd"],
+}
 
 const values = [
   {
-    title: "Systems Thinking",
-    description: "I approach problems holistically, understanding how components connect and affect each other to build solutions that actually work in the real world.",
+    title: "High-Signal, Low-Noise",
+    description: "Communication should be direct and frameworks-over-details. If it can be a decision tree, it should be.",
   },
   {
-    title: "Pragmatic Automation",
-    description: "Not everything needs AI. I focus on practical automation that delivers real value, keeping humans in control of decisions that matter.",
+    title: "Energy Economics",
+    description: "Every system has friction costs. The best solutions eliminate decisions, not just automate tasks.",
   },
   {
-    title: "Continuous Learning",
-    description: "The AI landscape evolves weekly. Staying current with the latest tools and techniques is essential to delivering cutting-edge solutions.",
+    title: "Intentional Adoption",
+    description: "True AI mastery means knowing when NOT to use it. The goal is invisible infrastructure, not visible tools.",
   },
 ]
 
@@ -43,20 +61,11 @@ export default function AboutPage() {
       <Navigation />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 md:pt-48 pb-20 md:pb-32">
-          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-            <span className="label-uppercase text-accent mb-6 block tracking-widest">
-              About
-            </span>
-            <h1 className="text-h1 text-foreground max-w-5xl mb-8">
-              Building Systems That Work
-            </h1>
-            <p className="text-xl md:text-2xl text-foreground-secondary max-w-3xl leading-relaxed">
-              Systems architect and AI consultant helping businesses automate the tedious
-              and focus on what matters.
-            </p>
-          </div>
-        </section>
+        <PageHeader
+          label="About"
+          title="Make Complexity Invisible"
+          description="Systems architect and AI orchestration specialist building infrastructure that lets creativity flourish."
+        />
 
         {/* Bio Section */}
         <section className="py-20 md:py-32 border-t border-border">
@@ -69,19 +78,19 @@ export default function AboutPage() {
                 </h2>
                 <div className="space-y-6 text-foreground-secondary leading-relaxed text-lg">
                   <p>
-                    I started my career in technical project management, learning how to
-                    coordinate teams and deliver software on time. Over the years, that
-                    evolved into a deeper focus on systems design and automation.
+                    I treat AI as orchestration, not automation. Where others see chatbots and
+                    assistants, I see infrastructure: the invisible layer that transforms how
+                    work gets done.
                   </p>
                   <p>
-                    Today, I work at the intersection of AI and practical business
-                    operations. I build systems that extract insights from emails, automate
-                    repetitive workflows, and help teams focus on work that actually
-                    requires human judgment.
+                    My approach is evidence-based and precision-focused: build once, leverage
+                    forever. I design frameworks that eliminate repetitive decisions, letting
+                    teams focus on work that actually requires human judgment.
                   </p>
                   <p>
-                    Based in Calgary, I work with clients globally on projects ranging
-                    from email triage automation to full-scale platform development.
+                    As an INTJ-T, I thrive on pattern recognition and systems thinking. I&apos;ve
+                    spent years mapping how information flows through organizations, identifying
+                    friction points, and designing solutions that make complexity invisible.
                   </p>
                 </div>
               </div>
@@ -90,16 +99,16 @@ export default function AboutPage() {
               <div className="lg:col-span-6 lg:col-start-7">
                 <div className="grid grid-cols-2 gap-8 mb-16">
                   <div className="p-8 border border-border">
+                    <span className="text-h2 text-accent block">0.1%</span>
+                    <p className="text-sm text-muted-foreground mt-2">AI Early Adopter Tier</p>
+                  </div>
+                  <div className="p-8 border border-border">
                     <span className="text-h2 text-foreground block">10+</span>
-                    <p className="text-sm text-muted-foreground mt-2">Years in Tech</p>
+                    <p className="text-sm text-muted-foreground mt-2">Production AI Systems</p>
                   </div>
                   <div className="p-8 border border-border">
-                    <span className="text-h2 text-foreground block">50+</span>
-                    <p className="text-sm text-muted-foreground mt-2">Projects Delivered</p>
-                  </div>
-                  <div className="p-8 border border-border">
-                    <span className="text-h2 text-foreground block">AI</span>
-                    <p className="text-sm text-muted-foreground mt-2">Current Focus</p>
+                    <span className="text-h2 text-foreground block">24/7</span>
+                    <p className="text-sm text-muted-foreground mt-2">Infrastructure Uptime</p>
                   </div>
                   <div className="p-8 border border-border">
                     <span className="text-h2 text-foreground block">YYC</span>
@@ -120,8 +129,8 @@ export default function AboutPage() {
                   Capabilities
                 </h2>
                 <p className="text-foreground-secondary text-lg leading-relaxed">
-                  A blend of technical expertise and project management experience
-                  to deliver end-to-end solutions.
+                  From identifying patterns to building frameworks that scale, turning
+                  complexity into leverage.
                 </p>
               </div>
               <div className="lg:col-span-6 lg:col-start-7">
@@ -149,17 +158,24 @@ export default function AboutPage() {
         {/* Tech Stack Section */}
         <section className="py-20 md:py-32 border-t border-border">
           <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-            <h2 className="label-uppercase text-muted-foreground mb-8 tracking-widest">
+            <h2 className="label-uppercase text-muted-foreground mb-12 tracking-widest">
               Technologies
             </h2>
-            <div className="flex flex-wrap gap-3">
-              {techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="px-6 py-3 border border-border text-foreground-secondary font-mono text-sm hover:border-border-hover hover:text-foreground transition-colors duration-150"
-                >
-                  {tech}
-                </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+              {Object.entries(techStack).map(([category, items]) => (
+                <div key={category}>
+                  <h3 className="text-sm font-medium text-foreground mb-4">{category}</h3>
+                  <div className="flex flex-col gap-2">
+                    {items.map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-4 py-2 border border-border text-foreground-secondary font-mono text-sm hover:border-border-hover hover:text-foreground transition-colors duration-150"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
