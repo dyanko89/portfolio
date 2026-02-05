@@ -20,13 +20,13 @@ export function HomePageLoader({ onComplete }: HomePageLoaderProps) {
   }>>([])
   const [glitchFrame, setGlitchFrame] = useState(0)
 
-  // Hardcoded settings for homepage
+  // Hardcoded settings for homepage - optimized for speed
   const settings = {
-    pathDrawSpeed: 1,
-    fillDelay: 0.5,
+    pathDrawSpeed: 2,      // Faster drawing (was 1)
+    fillDelay: 0.3,        // Shorter delay (was 0.5)
     logoSize: 260,
     phosphorGlow: 70,
-    glowDuration: 1.2,
+    glowDuration: 0.8,     // Shorter glow (was 1.2)
     glowStrength: 55,
     glowColor: '#ffffff',
     chromaticAberration: 0,
@@ -36,7 +36,7 @@ export function HomePageLoader({ onComplete }: HomePageLoaderProps) {
     caColorB: '#c9eaff',
     scanLineOpacity: 40,
     scanLineGap: 3,
-    screenNoise: 50,
+    screenNoise: 80,       // More visible noise (was 50)
     vignetteStrength: 10,
     warmth: 35,
     backgroundColor: '#001f1a',
@@ -169,42 +169,51 @@ export function HomePageLoader({ onComplete }: HomePageLoaderProps) {
   return (
     <motion.div
       className="fixed inset-0 z-50"
-      style={{ backgroundColor: settings.backgroundColor }}
       initial={{ opacity: 1 }}
-      animate={isExiting ? {
-        opacity: [1, 1, 1, 1, 0.8, 1, 0],
-        scaleY: [1, 0.8, 0.02, 0.15, 0.01, 0.005, 0],
-        scaleX: [1, 1.05, 1.8, 1.2, 2.5, 3, 0],
-        filter: [
-          'brightness(1)',
-          'brightness(1.5)',
-          'brightness(3)',
-          'brightness(2)',
-          'brightness(4)',
-          'brightness(6)',
-          'brightness(0)',
-        ],
-        y: [0, 0, 0, 0, 0, 0, 0],
-      } : {
-        opacity: isComplete ? 0 : 1,
-      }}
-      transition={{ 
-        duration: isExiting ? glitchDuration * 0.7 : 0.3,
-        ease: isExiting ? [0.95, 0.05, 0.8, 0.04] : 'easeOut',
-        times: isExiting ? [0, 0.08, 0.2, 0.4, 0.6, 0.8, 1] : undefined,
-      }}
+      animate={{ opacity: isComplete ? 0 : 1 }}
+      transition={{ duration: 0.1 }}
     >
+      {/* Background layer that fades during glitch to reveal page */}
+      <motion.div
+        className="absolute inset-0"
+        style={{ backgroundColor: settings.backgroundColor }}
+        initial={{ opacity: 1 }}
+        animate={isExiting ? {
+          opacity: [1, 0.9, 0.7, 0.4, 0.2, 0]
+        } : {
+          opacity: 1
+        }}
+        transition={{
+          duration: isExiting ? glitchDuration * 0.8 : 0,
+          ease: 'easeIn',
+        }}
+      />
       {/* Canvas noise */}
-      <canvas
+      <motion.canvas
         ref={canvasRef}
-        className="pointer-events-none absolute inset-0 opacity-50"
+        className="pointer-events-none absolute inset-0"
+        style={{ opacity: 0.5 }}
+        initial={{ opacity: 0.5 }}
+        animate={isExiting ? { opacity: 0 } : { opacity: 0.5 }}
+        transition={{ duration: glitchDuration * 0.5 }}
       />
 
       {/* Main logo SVG with all layers */}
-      <svg
+      <motion.svg
         viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`}
         className="pointer-events-none absolute inset-0 h-full w-full"
         preserveAspectRatio="xMidYMid meet"
+        initial={{ opacity: 1 }}
+        animate={isExiting ? {
+          opacity: [1, 0.8, 0.5, 0],
+          filter: ['blur(0px)', 'blur(2px)', 'blur(4px)', 'blur(8px)'],
+        } : {
+          opacity: 1,
+        }}
+        transition={{
+          duration: isExiting ? glitchDuration * 0.6 : 0,
+          ease: 'easeIn',
+        }}
       >
         <defs>
           <filter id="phosphor-glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -358,15 +367,18 @@ export function HomePageLoader({ onComplete }: HomePageLoaderProps) {
             <stop offset="100%" stopColor={settings.glowColor} stopOpacity="0" />
           </radialGradient>
         </defs>
-      </svg>
+      </motion.svg>
 
       {/* INITIALIZING text */}
-      <div
+      <motion.div
         className="absolute left-6 top-6 font-mono text-xs tracking-widest"
-        style={{ 
+        style={{
           color: '#ffffff',
           filter: `blur(0px) drop-shadow(0 0 ${glowPx * 0.5}px rgba(255,255,255,${settings.phosphorGlow / 150})) drop-shadow(0 0 ${glowPx}px rgba(255,255,255,${settings.phosphorGlow / 200}))`,
         }}
+        initial={{ opacity: 1 }}
+        animate={isExiting ? { opacity: 0 } : { opacity: 1 }}
+        transition={{ duration: glitchDuration * 0.3 }}
       >
         <span>INITIALIZING</span>
         <motion.span
@@ -381,10 +393,10 @@ export function HomePageLoader({ onComplete }: HomePageLoaderProps) {
           animate={{ opacity: [0, 0, 1, 0] }}
           transition={{ duration: 1, repeat: Infinity, times: [0, 0.5, 0.75, 1] }}
         >.</motion.span>
-      </div>
+      </motion.div>
 
       {/* Scan lines */}
-      <div
+      <motion.div
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage: `repeating-linear-gradient(
@@ -396,23 +408,32 @@ export function HomePageLoader({ onComplete }: HomePageLoaderProps) {
           )`,
           backgroundSize: `100% ${settings.scanLineGap}px`,
         }}
+        initial={{ opacity: 1 }}
+        animate={isExiting ? { opacity: 0 } : { opacity: 1 }}
+        transition={{ duration: glitchDuration * 0.5 }}
       />
 
       {/* Vignette */}
-      <div
+      <motion.div
         className="pointer-events-none absolute inset-0"
         style={{
           background: `radial-gradient(circle, transparent 0%, rgba(0,0,0,${settings.vignetteStrength / 100}) 100%)`,
         }}
+        initial={{ opacity: 1 }}
+        animate={isExiting ? { opacity: 0 } : { opacity: 1 }}
+        transition={{ duration: glitchDuration * 0.5 }}
       />
 
       {/* Warmth overlay */}
-      <div
+      <motion.div
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundColor: `rgba(255, 140, 50, ${settings.warmth / 500})`,
           mixBlendMode: 'multiply',
         }}
+        initial={{ opacity: 1 }}
+        animate={isExiting ? { opacity: 0 } : { opacity: 1 }}
+        transition={{ duration: glitchDuration * 0.5 }}
       />
 
       {/* Glitch slice tears */}
@@ -459,14 +480,14 @@ export function HomePageLoader({ onComplete }: HomePageLoaderProps) {
         </div>
       )}
 
-      {/* Blackout flashes */}
-      {isExiting && glitchFrame % 4 < 2 && (
-        <div 
+      {/* White flashes during glitch - more subtle to let page show through */}
+      {isExiting && glitchFrame % 5 < 2 && (
+        <div
           className="pointer-events-none absolute inset-0"
           style={{
-            backgroundColor: glitchFrame % 6 < 2 ? 'black' : 'white',
-            opacity: glitchFrame % 6 < 2 ? 0.8 : 0.15,
-            mixBlendMode: glitchFrame % 6 < 2 ? 'normal' : 'overlay',
+            backgroundColor: 'white',
+            opacity: 0.1 + (glitchFrame % 3) * 0.05,
+            mixBlendMode: 'overlay',
           }}
         />
       )}
