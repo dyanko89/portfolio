@@ -112,7 +112,7 @@ export default async function ProjectPage({ params }: PageProps) {
               sizes="100vw"
               className="object-cover"
               priority
-              quality={85}
+              quality={90}
             />
           )}
 
