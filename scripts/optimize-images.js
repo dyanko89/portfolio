@@ -7,7 +7,7 @@
  * What it does:
  * 1. Finds all PNG/JPG images in public/images/
  * 2. Resizes to max 2048px width (sufficient for 4K displays)
- * 3. Compresses with quality 80 (good balance of size/quality)
+ * 3. Compresses with quality 90 (high quality for portfolio)
  * 4. Converts to WebP for additional savings (keeps originals)
  * 5. Reports size savings
  */
@@ -18,7 +18,7 @@ const path = require('path');
 
 const IMAGES_DIR = path.join(__dirname, '../public/images');
 const MAX_WIDTH = 2048;
-const QUALITY = 80;
+const QUALITY = 90;
 
 async function getImageFiles(dir) {
   const files = [];
