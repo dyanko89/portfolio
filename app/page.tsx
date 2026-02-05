@@ -6,7 +6,6 @@ import { ServicesSection } from "@/components/services-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { getAllProjects } from "@/lib/mdx/content"
-import { HomeClient } from "./home-client"
 
 export default async function HomePage() {
   const projects = await getAllProjects()
@@ -14,16 +13,14 @@ export default async function HomePage() {
   const featuredProjects = projects.slice(0, 4)
 
   return (
-    <HomeClient>
-      <main className="min-h-screen">
-        <Navigation />
-        <HeroSection />
-        <AboutSection />
-        <ProjectsSection projects={featuredProjects} />
-        <ServicesSection />
-        <ContactSection />
-        <Footer />
-      </main>
-    </HomeClient>
+    <main className="min-h-screen">
+      <Navigation />
+      <HeroSection />
+      <AboutSection />
+      <ProjectsSection projects={featuredProjects} />
+      <ServicesSection />
+      <ContactSection />
+      <Footer />
+    </main>
   )
 }
