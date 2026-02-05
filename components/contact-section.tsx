@@ -7,13 +7,13 @@ import { ArrowUpRight, Send } from "lucide-react"
 const contactMethods = [
   {
     label: "Email",
-    value: "hello@portfolio.dev",
-    href: "mailto:hello@portfolio.dev",
+    value: "danny@djy89.net",
+    href: "mailto:danny@djy89.net",
   },
   {
     label: "LinkedIn",
     value: "Connect with me",
-    href: "https://linkedin.com",
+    href: "https://linkedin.com/in/dyanko89",
     external: true,
   },
 ]
