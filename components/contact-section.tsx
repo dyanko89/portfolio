@@ -3,6 +3,7 @@
 import React from "react"
 import { useState } from "react"
 import { ArrowUpRight, Send } from "lucide-react"
+import { toast } from "sonner"
 
 const contactMethods = [
   {
@@ -29,9 +30,31 @@ export function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setIsSubmitting(false)
-    setFormState({ name: "", email: "", message: "" })
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send message")
+      }
+
+      toast.success("Message sent successfully!", {
+        description: "I'll get back to you as soon as possible.",
+      })
+      setFormState({ name: "", email: "", message: "" })
+    } catch (error) {
+      toast.error("Failed to send message", {
+        description: error instanceof Error ? error.message : "Please try again or email me directly.",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (

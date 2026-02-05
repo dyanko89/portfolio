@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata, Viewport } from 'next'
 import { Ubuntu, Ubuntu_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { Toaster } from 'sonner'
 import './globals.css'
 
 const ubuntu = Ubuntu({
@@ -39,6 +40,22 @@ export default function RootLayout({
     <html lang="en" className="bg-background">
       <body className={`${ubuntu.className} ${ubuntu.variable} ${ubuntuMono.variable} antialiased`}>
         {children}
+        <Toaster
+          position="bottom-right"
+          duration={7000}
+          closeButton
+          toastOptions={{
+            style: {
+              background: '#111a1f',
+              border: '1px solid #2a3942',
+              color: '#e8edef',
+              borderRadius: '2px',
+            },
+            classNames: {
+              closeButton: 'bg-surface hover:bg-border-hover',
+            },
+          }}
+        />
         <Analytics />
       </body>
     </html>

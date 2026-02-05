@@ -5,15 +5,6 @@ const resendApiKey = process.env.RESEND_API_KEY;
 
 export async function POST(request: Request) {
   try {
-    if (!resendApiKey) {
-      console.warn("Resend API key not configured");
-      return NextResponse.json(
-        { error: "Email service not configured" },
-        { status: 503 }
-      );
-    }
-
-    const resend = new Resend(resendApiKey);
     const { name, email, company, budget, message } = await request.json();
 
     if (!name || !email || !message) {
@@ -22,6 +13,24 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // Always log submissions to Vercel logs as backup
+    console.log("=== NEW CONTACT FORM SUBMISSION ===");
+    console.log(`Name: ${name}`);
+    console.log(`Email: ${email}`);
+    if (company) console.log(`Company: ${company}`);
+    if (budget) console.log(`Budget: ${budget}`);
+    console.log(`Message: ${message}`);
+    console.log(`Timestamp: ${new Date().toISOString()}`);
+    console.log("===================================");
+
+    if (!resendApiKey) {
+      console.warn("Resend API key not configured - submission logged only");
+      // Still return success so user gets confirmation
+      return NextResponse.json({ success: true, logged: true });
+    }
+
+    const resend = new Resend(resendApiKey);
 
     // Build email body with optional fields
     let emailBody = `Name: ${name}\nEmail: ${email}\n`;

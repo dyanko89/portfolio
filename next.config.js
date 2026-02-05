@@ -9,6 +9,8 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Prefer modern formats
     formats: ['image/avif', 'image/webp'],
+    // Allow quality=90 used in Image components
+    qualities: [90],
     // Minimize quality for faster loads (still looks good)
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
   },
