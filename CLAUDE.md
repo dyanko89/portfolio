@@ -102,8 +102,10 @@ export async function generateStaticParams() {
 
 **Contact Form** (`app/api/contact/route.ts`):
 - POST endpoint for form submissions
-- Requires `RESEND_API_KEY` environment variable
-- Sends email via Resend API to dyanko89@gmail.com
+- Uses AWS SES for email delivery (us-east-1)
+- Sends notification to danny@djy89.net
+- Sends auto-reply confirmation to form submitter
+- All submissions logged to Vercel logs as backup
 - Input validation for name, email, message fields
 
 ### Path Aliases
@@ -148,8 +150,23 @@ image: "/images/optional-image.jpg"
 
 ## Environment Variables
 
-Required for contact form functionality:
-- `RESEND_API_KEY`: Resend API key for email sending
+Required for contact form functionality (AWS SES):
+- `AWS_ACCESS_KEY_ID`: AWS access key for SES
+- `AWS_SECRET_ACCESS_KEY`: AWS secret key for SES
+- `AWS_REGION`: `us-east-1`
+
+Legacy (deprecated):
+- `RESEND_API_KEY`: Resend API key (being replaced by SES)
+
+## AWS Configuration
+
+**CLI Profile:** `admin-cli` is configured for AWS operations.
+
+```bash
+aws <command> --profile admin-cli
+```
+
+**SES Status:** Production access approved (50K emails/day, us-east-1)
 
 ## Important Patterns
 
