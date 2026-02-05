@@ -46,13 +46,13 @@ export default function RootLayout({
           closeButton
           toastOptions={{
             style: {
-              background: '#111a1f',
-              border: '1px solid #2a3942',
-              color: '#e8edef',
+              background: '#ff5722',
+              border: 'none',
+              color: '#ffffff',
               borderRadius: '2px',
             },
             classNames: {
-              closeButton: 'bg-surface hover:bg-border-hover',
+              closeButton: 'bg-transparent hover:bg-white/20 text-white border-none right-2 top-1/2 -translate-y-1/2 left-auto',
             },
           }}
         />

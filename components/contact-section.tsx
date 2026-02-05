@@ -2,7 +2,7 @@
 
 import React from "react"
 import { useState } from "react"
-import { ArrowUpRight, Send } from "lucide-react"
+import { ArrowUpRight, Send, SendHorizonal } from "lucide-react"
 import { toast } from "sonner"
 
 const contactMethods = [
@@ -44,14 +44,12 @@ export function ContactSection() {
         throw new Error(data.error || "Failed to send message")
       }
 
-      toast.success("Message sent successfully!", {
-        description: "I'll get back to you as soon as possible.",
+      toast("Sent. Chat soon.", {
+        icon: <SendHorizonal className="w-4 h-4" />,
       })
       setFormState({ name: "", email: "", message: "" })
     } catch (error) {
-      toast.error("Failed to send message", {
-        description: error instanceof Error ? error.message : "Please try again or email me directly.",
-      })
+      toast.error("Failed to send. Try again.")
     } finally {
       setIsSubmitting(false)
     }
