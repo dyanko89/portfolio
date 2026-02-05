@@ -50,9 +50,14 @@ export default function RootLayout({
               border: 'none',
               color: '#ffffff',
               borderRadius: '2px',
+              padding: '16px 20px',
+              fontSize: '14px',
+              fontWeight: '500',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
             },
             classNames: {
-              closeButton: 'bg-transparent hover:bg-white/20 text-white border-none right-2 top-1/2 -translate-y-1/2 left-auto',
+              toast: '[&_svg]:text-white',
+              closeButton: '!bg-transparent hover:!bg-white/20 !text-white !border-none !shadow-none',
             },
           }}
         />
