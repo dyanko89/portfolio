@@ -329,11 +329,23 @@ https://djy89.net
       },
     });
 
-    // Send both emails
-    await Promise.all([
-      sesClient.send(notificationCommand),
-      sesClient.send(autoReplyCommand),
-    ]);
+    // Send notification email first
+    try {
+      await sesClient.send(notificationCommand);
+      console.log("✓ Notification email sent to owner");
+    } catch (notifError) {
+      console.error("✗ Failed to send notification email:", notifError);
+      throw notifError;
+    }
+
+    // Send auto-reply email
+    try {
+      await sesClient.send(autoReplyCommand);
+      console.log("✓ Auto-reply email sent to:", email);
+    } catch (replyError) {
+      console.error("✗ Failed to send auto-reply to:", email, replyError);
+      // Don't throw - notification was sent, auto-reply is secondary
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

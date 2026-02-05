@@ -159,6 +159,39 @@
     transition: background-color 9999s ease-in-out 0s !important;
   }
 
+  /* Sonner Toast - Toast 3 V3 (Starforge) */
+  /* Solid orange, all white elements, no border, 2px radius */
+  [data-sonner-toaster] [data-sonner-toast] {
+    background: #ff5722 !important;
+    border: none !important;
+    border-radius: 2px !important;
+    color: #ffffff !important;
+    padding: 16px 20px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  [data-sonner-toaster] [data-sonner-toast] [data-icon] svg,
+  [data-sonner-toaster] [data-sonner-toast] svg {
+    color: #ffffff !important;
+  }
+
+  [data-sonner-toaster] [data-sonner-toast] [data-close-button] {
+    background: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+  }
+
+  [data-sonner-toaster] [data-sonner-toast] [data-close-button]:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  [data-sonner-toaster] [data-sonner-toast][data-type="error"] {
+    background: #dc2626 !important;
+  }
+
   /* Typography Scale - Swiss Minimalist with Ubuntu Sans */
   .text-display {
     font-size: clamp(56px, 14vw, 140px);
