@@ -165,7 +165,7 @@ export function AboutSection() {
               className="space-y-6 text-foreground-secondary leading-relaxed text-lg"
             >
               <p>
-                With over 5 years of experience spanning design and development,
+                With over 10 years of experience spanning design and development,
                 I create digital products that balance visual refinement with
                 technical precision.
               </p>
@@ -250,7 +250,7 @@ export function AboutSection() {
             >
               <div className="grid grid-cols-2 gap-8">
                 <motion.div variants={statItemVariants}>
-                  <span className="text-h2 text-foreground">5+</span>
+                  <span className="text-h2 text-foreground">10+</span>
                   <p className="text-sm text-muted-foreground mt-2">Years Experience</p>
                 </motion.div>
                 <motion.div variants={statItemVariants}>
