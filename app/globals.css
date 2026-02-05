@@ -142,6 +142,7 @@
   }
 
   /* Autofill styling - prevent white background */
+  /* Using explicit hex values for better browser compatibility */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
@@ -150,10 +151,12 @@
   textarea:-webkit-autofill:hover,
   textarea:-webkit-autofill:focus,
   textarea:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px var(--background-elevated) inset !important;
-    -webkit-text-fill-color: var(--foreground) !important;
-    caret-color: var(--foreground) !important;
-    transition: background-color 5000s ease-in-out 0s;
+    -webkit-box-shadow: 0 0 0 1000px #111a1f inset !important;
+    box-shadow: 0 0 0 1000px #111a1f inset !important;
+    -webkit-text-fill-color: #f0f4f8 !important;
+    caret-color: #f0f4f8 !important;
+    background-color: #111a1f !important;
+    transition: background-color 9999s ease-in-out 0s !important;
   }
 
   /* Typography Scale - Swiss Minimalist with Ubuntu Sans */
