@@ -9,7 +9,7 @@ const sesClient = new SESClient({
   },
 });
 
-const FROM_EMAIL = "Danny Yanko <noreply@djy89.net>";
+const FROM_EMAIL = "Danny Yanko <danny@djy89.net>";
 const TO_EMAIL = "danny@djy89.net";
 
 // Starforge design tokens for email
