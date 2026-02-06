@@ -2,8 +2,8 @@
 
 import React from "react"
 import { useState } from "react"
-import { ArrowUpRight, Send, SendHorizonal } from "lucide-react"
-import { toast } from "sonner"
+import { ArrowUpRight, Send } from "lucide-react"
+import { StarforgeToast } from "./starforge-toast"
 
 const contactMethods = [
   {
@@ -26,10 +26,13 @@ export function ContactSection() {
     message: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+  const [toastError, setToastError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setToastError(null)
 
     try {
       const response = await fetch("/api/contact", {
@@ -44,19 +47,38 @@ export function ContactSection() {
         throw new Error(data.error || "Failed to send message")
       }
 
-      toast("Sent. Chat soon.", {
-        icon: <SendHorizonal className="w-4 h-4" />,
-      })
+      setShowToast(true)
       setFormState({ name: "", email: "", message: "" })
     } catch (error) {
-      toast.error("Failed to send. Try again.")
+      setToastError("Failed to send. Try again.")
+      setTimeout(() => setToastError(null), 5000)
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <section id="contact" className="relative py-32 md:py-48 bg-background-elevated">
+    <>
+      {/* Success Toast */}
+      {showToast && (
+        <StarforgeToast
+          message="Chat soon."
+          onDismiss={() => setShowToast(false)}
+          duration={7000}
+        />
+      )}
+
+      {/* Error Toast */}
+      {toastError && (
+        <div
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-red-600 px-4 py-3 min-w-[300px] max-w-[400px] shadow-2xl"
+          style={{ borderRadius: '2px' }}
+        >
+          <div className="text-sm text-white font-medium">{toastError}</div>
+        </div>
+      )}
+
+      <section id="contact" className="relative py-32 md:py-48 bg-background-elevated">
       <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
         {/* Large Headline */}
         <div className="mb-20 md:mb-32">
@@ -198,5 +220,6 @@ export function ContactSection() {
         </div>
       </div>
     </section>
+    </>
   )
 }
