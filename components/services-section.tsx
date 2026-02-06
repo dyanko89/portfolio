@@ -6,27 +6,27 @@ import { ArrowRight } from "lucide-react"
 const services = [
   {
     number: "01",
-    title: "Web Development",
-    description: "Custom web applications built with modern frameworks, optimized for performance and scalability.",
-    scope: ["Next.js & React", "API Development", "Database Design", "Performance"],
+    title: "Enterprise Automation Architecture",
+    description: "Production AI systems and workflow automation for enterprise-scale process optimization.",
+    scope: ["Production Systems", "Workflow Automation", "Process Optimization", "Scalability"],
   },
   {
     number: "02",
-    title: "UI/UX Design",
-    description: "User-centered design that balances aesthetics with functionality to create memorable experiences.",
-    scope: ["User Research", "Prototyping", "Visual Design", "Testing"],
+    title: "Data Pipeline Engineering",
+    description: "Building robust API integrations and ETL processes for automated data synchronization.",
+    scope: ["API Integrations", "ETL Processes", "Data Sync", "System Integration"],
   },
   {
     number: "03",
-    title: "Design Systems",
-    description: "Scalable component libraries and design tokens that ensure consistency across products.",
-    scope: ["Component Libraries", "Documentation", "Figma Systems", "Implementation"],
+    title: "Marketing Technology Systems",
+    description: "Marketo integration, campaign automation, and analytics dashboards for marketing excellence.",
+    scope: ["Marketo Integration", "Campaign Automation", "Analytics Dashboards", "Reporting"],
   },
   {
     number: "04",
-    title: "Consulting",
-    description: "Strategic guidance on technology choices, architecture decisions, and digital transformation.",
-    scope: ["Tech Advisory", "Code Reviews", "Mentorship", "Optimization"],
+    title: "AI Integration & Deployment",
+    description: "Claude-powered systems with intelligent routing and automated decision-making capabilities.",
+    scope: ["Claude Integration", "Intelligent Routing", "Automated Decisions", "AI Deployment"],
   },
 ]
 

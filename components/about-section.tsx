@@ -4,10 +4,10 @@ import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 
 const capabilities = [
-  { number: "01", title: "Design Systems", description: "Scalable component libraries" },
-  { number: "02", title: "Web Development", description: "Modern, performant applications" },
-  { number: "03", title: "User Experience", description: "Research-driven interfaces" },
-  { number: "04", title: "Brand Identity", description: "Visual language & strategy" },
+  { number: "01", title: "Enterprise Automation Architecture", description: "Production AI systems, workflow automation, process optimization" },
+  { number: "02", title: "Data Pipeline Engineering", description: "API integrations, automated sync systems, ETL processes" },
+  { number: "03", title: "Marketing Technology Systems", description: "Marketo reporting, campaign automation, analytics dashboards" },
+  { number: "04", title: "AI Integration & Deployment", description: "Claude-powered systems, intelligent routing, automated decision-making" },
 ]
 
 const techStack = [
