@@ -6,27 +6,27 @@ import { ArrowRight } from "lucide-react"
 const services = [
   {
     number: "01",
-    title: "Enterprise Automation Architecture",
-    description: "Production AI systems and workflow automation for enterprise-scale process optimization.",
-    scope: ["Production Systems", "Workflow Automation", "Process Optimization", "Scalability"],
+    title: "Systems Architecture",
+    description: "I design and build production infrastructure that scales. Complex databases, API ecosystems, and intelligent automation for enterprises in regulated industries.",
+    scope: ["Scalable Infrastructure", "Complex Databases", "API Ecosystems", "Enterprise Automation"],
   },
   {
     number: "02",
-    title: "Data Pipeline Engineering",
-    description: "Building robust API integrations and ETL processes for automated data synchronization.",
-    scope: ["API Integrations", "ETL Processes", "Data Sync", "System Integration"],
+    title: "AI Systems Integration",
+    description: "LLM-powered workflows that bring intelligence to your operations. Automated decision-making, content generation, and intelligent routing deployed on your infrastructure.",
+    scope: ["LLM Integration", "Workflow Automation", "Decision Making", "Content Generation"],
   },
   {
     number: "03",
-    title: "Marketing Technology Systems",
-    description: "Marketo integration, campaign automation, and analytics dashboards for marketing excellence.",
-    scope: ["Marketo Integration", "Campaign Automation", "Analytics Dashboards", "Reporting"],
+    title: "Marketing Automation",
+    description: "Fractional CMO + technical implementation. Marketing platform expertise, campaign automation, and custom reporting for clients across energy, agriculture, and retail sectors.",
+    scope: ["Platform Expertise", "Campaign Automation", "Custom Reporting", "Industry Focus"],
   },
   {
     number: "04",
-    title: "AI Integration & Deployment",
-    description: "Claude-powered systems with intelligent routing and automated decision-making capabilities.",
-    scope: ["Claude Integration", "Intelligent Routing", "Automated Decisions", "AI Deployment"],
+    title: "Integration Engineering",
+    description: "Connect your systems. Email platforms, project management tools, databases, CMS platforms, and spreadsheet applications. I build the pipelines that make your tools work together seamlessly.",
+    scope: ["Email Platforms", "Project Management", "Databases", "CMS & Spreadsheets"],
   },
 ]
 

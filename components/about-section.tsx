@@ -4,10 +4,10 @@ import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 
 const capabilities = [
-  { number: "01", title: "Enterprise Automation Architecture", description: "Production AI systems, workflow automation, process optimization" },
-  { number: "02", title: "Data Pipeline Engineering", description: "API integrations, automated sync systems, ETL processes" },
-  { number: "03", title: "Marketing Technology Systems", description: "Marketo reporting, campaign automation, analytics dashboards" },
-  { number: "04", title: "AI Integration & Deployment", description: "Claude-powered systems, intelligent routing, automated decision-making" },
+  { number: "01", title: "Systems Architecture", description: "I design and build production infrastructure that scales. Complex databases, API ecosystems, and intelligent automation for enterprises in regulated industries." },
+  { number: "02", title: "AI Systems Integration", description: "LLM-powered workflows that bring intelligence to your operations. Automated decision-making, content generation, and intelligent routing deployed on your infrastructure." },
+  { number: "03", title: "Marketing Automation", description: "Fractional CMO + technical implementation. Marketing platform expertise, campaign automation, and custom reporting for clients across energy, agriculture, and retail sectors." },
+  { number: "04", title: "Integration Engineering", description: "Connect your systems. Email platforms, project management tools, databases, CMS platforms, and spreadsheet applications. I build the pipelines that make your tools work together seamlessly." },
 ]
 
 const techStack = [
