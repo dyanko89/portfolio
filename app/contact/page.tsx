@@ -182,34 +182,13 @@ export default function ContactPage() {
 
               {/* Right Column - Form */}
               <div className="lg:col-span-7 order-2 lg:order-none">
-                {formState === "success" ? (
-                  <div className="bg-surface border border-border p-12 text-center">
-                    <div className="w-16 h-16 rounded-full bg-accent/20 text-accent flex items-center justify-center mx-auto mb-6">
-                      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  {/* Error Message */}
+                  {formState === "error" && errorMessage && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400">
+                      {errorMessage}
                     </div>
-                    <h2 className="text-h3 text-foreground mb-4">
-                      Message Sent
-                    </h2>
-                    <p className="text-foreground-secondary mb-8">
-                      Thanks for reaching out! I&apos;ll get back to you within 24-48 hours.
-                    </p>
-                    <button
-                      onClick={() => setFormState("idle")}
-                      className="text-accent hover:text-accent-hover transition-colors"
-                    >
-                      Send another message
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-8">
-                    {/* Error Message */}
-                    {formState === "error" && errorMessage && (
-                      <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400">
-                        {errorMessage}
-                      </div>
-                    )}
+                  )}
 
                     {/* Name & Email */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
