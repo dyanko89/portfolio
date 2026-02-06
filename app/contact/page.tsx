@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { StarforgeToast } from "@/components/starforge-toast"
 import { ArrowRight, Mail, MapPin, Clock, ArrowUpRight, Loader2 } from "lucide-react"
 
 const contactInfo = [
@@ -93,6 +94,7 @@ function ContactInfoBlock() {
 export default function ContactPage() {
   const [formState, setFormState] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState("")
+  const [showToast, setShowToast] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -116,7 +118,8 @@ export default function ContactPage() {
       })
 
       if (response.ok) {
-        setFormState("success")
+        setFormState("idle")
+        setShowToast(true)
         setFormData({ name: "", email: "", company: "", budget: "", message: "" })
       } else {
         const errorData = await response.json()
@@ -139,6 +142,16 @@ export default function ContactPage() {
   return (
     <>
       <Navigation />
+
+      {/* Success Toast */}
+      {showToast && (
+        <StarforgeToast
+          message="Chat soon."
+          onDismiss={() => setShowToast(false)}
+          duration={7000}
+        />
+      )}
+
       <main>
         {/* Main Contact Section - Single merged section */}
         <section className="pt-28 md:pt-36 lg:pt-40 pb-16 md:pb-24">
@@ -307,7 +320,6 @@ export default function ContactPage() {
                       </button>
                     </div>
                   </form>
-                )}
               </div>
 
               {/* Mobile Contact Info - After Form */}
