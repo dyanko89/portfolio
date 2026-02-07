@@ -1,5 +1,6 @@
 import React from "react"
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 import { Ubuntu, Ubuntu_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Toaster } from 'sonner'
@@ -38,6 +39,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background">
+      <head>
+        {/* Google Analytics */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-MYMTSFXK6P"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-MYMTSFXK6P');
+            `,
+          }}
+        />
+      </head>
       <body className={`${ubuntu.className} ${ubuntu.variable} ${ubuntuMono.variable} antialiased`}>
         {children}
         <Toaster
