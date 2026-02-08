@@ -417,3 +417,70 @@
 .code-block-content span[style] {
   background: transparent !important;
 }
+
+/* Mermaid diagram styling */
+.mermaid-wrapper {
+  overflow-x: auto;
+}
+
+.mermaid {
+  color: #e8edef;
+  font-family: 'Ubuntu Sans', sans-serif;
+}
+
+.mermaid svg {
+  max-width: 100%;
+}
+
+.mermaid text {
+  fill: #e8edef;
+  font-family: 'Ubuntu Sans', sans-serif;
+}
+
+.mermaid g.node rect,
+.mermaid g.node circle,
+.mermaid g.node ellipse,
+.mermaid g.node polygon {
+  fill: #1a2329;
+  stroke: #3d4f5c;
+  stroke-width: 1.5px;
+}
+
+.mermaid g.edgePath path {
+  stroke: #3d4f5c;
+  stroke-width: 1.5px;
+}
+
+.mermaid g.edgeLabel text {
+  fill: #e8edef;
+}
+
+/* Edge label backgrounds match page background to hide arrows underneath */
+.mermaid .edgeLabel rect,
+.mermaid g.edgeLabel rect {
+  fill: #0a0f12 !important;
+}
+
+.mermaid .edgeLabel .label-container,
+.mermaid .edgeLabel foreignObject,
+.mermaid .edgeLabel foreignObject div,
+.mermaid .edgeLabel span,
+.mermaid .edgeLabel p,
+.mermaid .edgeLabels .edgeLabel {
+  background: #0a0f12 !important;
+  background-color: #0a0f12 !important;
+}
+
+.mermaid .arrowheadPath {
+  fill: #3d4f5c;
+}
+
+.mermaid .actor {
+  stroke: #3d4f5c;
+  fill: #1a2329;
+}
+
+.mermaid .label {
+  background: transparent;
+  color: #e8edef;
+}
