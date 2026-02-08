@@ -72,20 +72,19 @@ When an email requires action, the system:
 
 ## Technical Architecture
 
-```
-Office 365 Inbox
-       |
-   [15-min Poll]
-       |
-  Microsoft Graph API
-       |
-   Claude AI Classifier
-       |
-   Rules Engine (SQLite)
-       |
-  Asana Task Creation
-       |
-   Email Notifications
+```mermaid
+graph TD
+    A["fa:fa-envelope Office 365 Inbox"] -->|15-min Poll| B["fa:fa-clock Scheduler"]
+    B -->|Fetch Unread| C["fa:fa-cloud Microsoft Graph API"]
+    C -->|Email Threads| D["fa:fa-brain Classification Engine"]
+    D -->|Claude AI Haiku| E["fa:fa-tags Category & Priority"]
+    E -->|Query Rules| F["fa:fa-database SQLite Rules DB"]
+    F -->|Routing Rules| G["fa:fa-code-branch Decision Logic"]
+    G -->|"Decision: Create Task"| H["fa:fa-check-square Asana Task Creator"]
+    G -->|"Decision: Skip/Archive"| I["fa:fa-archive Archive Handler"]
+    H -->|Task Created| J["fa:fa-bell Send Notification"]
+    I -->|No Action| J
+    J -->|AWS SES| K["fa:fa-paper-plane Notification Email"]
 ```
 
 ### Key Components
