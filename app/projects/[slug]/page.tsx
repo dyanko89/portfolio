@@ -141,7 +141,7 @@ export default async function ProjectPage({ params }: PageProps) {
               {/* Text Column */}
               <div className={project.cardDisplay && project.cardDisplay.type !== 'image' ? 'lg:col-span-3' : ''}>
                 {/* Title */}
-                <h1 className="text-3xl sm:text-4xl md:text-h1 lg:text-display text-foreground mb-6">{project.title}</h1>
+                <h1 className="text-3xl sm:text-4xl md:text-h1 lg:text-display text-foreground font-bold mb-6">{project.title}</h1>
 
                 {/* Summary */}
                 <p className="text-lg md:text-xl text-foreground-secondary max-w-3xl leading-relaxed mb-8">
@@ -238,7 +238,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
               {/* MDX Content */}
               <div className="lg:col-span-7 lg:col-start-6">
-                <article className="prose prose-invert prose-lg max-w-none prose-headings:text-foreground prose-p:text-foreground-secondary prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-strong:text-foreground prose-code:text-accent prose-code:bg-surface prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-pre:bg-surface prose-pre:border prose-pre:border-border prose-ul:text-foreground-secondary prose-ol:text-foreground-secondary prose-li:marker:text-accent">
+                <article className="prose prose-invert md:prose-lg max-w-none prose-headings:text-foreground prose-h2:font-medium prose-p:text-foreground-secondary prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-strong:text-foreground prose-code:text-accent prose-code:bg-surface prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-pre:bg-surface prose-pre:border prose-pre:border-border prose-ul:text-foreground-secondary prose-ol:text-foreground-secondary prose-li:marker:text-accent">
                   {content}
                 </article>
               </div>
