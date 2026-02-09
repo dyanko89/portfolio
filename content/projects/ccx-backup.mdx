@@ -5,6 +5,31 @@ summary: Automated daily backup system for production trading platform managing 
 tags: ["Node.js", "AWS S3", "AWS SES", "SQL Server", "systemd"]
 status: Live
 image: /images/projects/ccx-backup.png
+cardDisplay:
+  type: terminal
+  title: db-backup
+  content: |
+    [17:45:00] backup-service started (v1.3)
+    [17:45:00] Connecting to SQL Server...
+    ✓ Connected — 52 tables detected
+    [17:45:02] Exporting tables...
+    [muted]  → transaction_lines: 2,103,447 rows
+    [muted]  → order_history: 891,204 rows
+    [muted]  → user_accounts: 12,883 rows
+    [muted]  → ...49 more tables
+    ✓ 3,744,892 rows exported (38.4 MB)
+    [17:45:31] Compressing backup...
+    ✓ Compressed: 38.4 MB → 8.7 MB (77%)
+    [17:45:33] Uploading to S3...
+    [muted]  → Bucket: prod-backups/2025-01-20/
+    [muted]  → Encryption: AES-256
+    ✓ Upload complete (3.2s)
+    [17:45:37] Sending notification...
+    ✓ Email sent via SES
+    [success]
+    [success] ── Backup Complete ──
+    [success]  Tables: 52 │ Rows: 3.7M │ Size: 8.7 MB
+    [success]  Duration: 37s │ Status: OK
 client: CCX
 results:
   - value: "52"
