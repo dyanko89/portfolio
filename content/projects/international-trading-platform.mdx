@@ -56,14 +56,15 @@ The rebuild centered on a properly normalized relational schema:
 - **3.7M+ rows** in production with optimized query patterns
 
 ### Core Entities
-```
-Organizations ──┬── Users ──── Permissions
-                │
-                ├── Products ── Inventory
-                │
-                └── Transactions ── Line Items
-                                      │
-                                      └── Compliance Records
+```mermaid
+graph TD
+    A["fa:fa-building Organizations"] --> B["fa:fa-users Users"]
+    B --> C["fa:fa-lock Permissions"]
+    A --> D["fa:fa-box Products"]
+    D --> E["fa:fa-warehouse Inventory"]
+    A --> F["fa:fa-exchange-alt Transactions"]
+    F --> G["fa:fa-list Line Items"]
+    G --> H["fa:fa-shield-alt Compliance Records"]
 ```
 
 ### Key Design Decisions
