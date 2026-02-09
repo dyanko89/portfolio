@@ -4,12 +4,22 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 import { useState } from "react"
+import { TerminalDisplay, parseTerminalContent } from "./terminal-display"
+
+// Card display configuration - supports multiple display types
+interface CardDisplay {
+  type: 'image' | 'terminal'
+  content?: string
+  title?: string
+  src?: string
+}
 
 interface FeaturedProjectCardProps {
   title: string
   description: string
   tags: string[]
   image?: string
+  cardDisplay?: CardDisplay
   href: string
   status: "live" | "in-progress" | "archived"
   category?: string
@@ -35,12 +45,67 @@ export function FeaturedProjectCard({
   description,
   tags,
   image,
+  cardDisplay,
   href,
   status,
   category,
 }: FeaturedProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const displayTags = tags.slice(0, 5)
+
+  // Determine what to render in the card display area
+  const renderCardDisplay = () => {
+    // If cardDisplay is specified, use it
+    if (cardDisplay) {
+      if (cardDisplay.type === 'terminal' && cardDisplay.content) {
+        const lines = parseTerminalContent(cardDisplay.content)
+        return (
+          <TerminalDisplay
+            lines={lines}
+            title={cardDisplay.title}
+            className="absolute inset-0"
+          />
+        )
+      }
+      if (cardDisplay.type === 'image' && cardDisplay.src) {
+        return (
+          <Image
+            src={cardDisplay.src}
+            alt={title}
+            fill
+            sizes="(max-width: 1024px) 100vw, 40vw"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+            priority
+            quality={90}
+          />
+        )
+      }
+    }
+
+    // Fallback to image prop
+    if (image) {
+      return (
+        <Image
+          src={image}
+          alt={title}
+          fill
+          sizes="(max-width: 1024px) 100vw, 40vw"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+          priority
+          quality={90}
+        />
+      )
+    }
+
+    // No display - show placeholder
+    return (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-20 h-20 border-2 border-border flex items-center justify-center text-muted-foreground text-sm font-mono">
+          IMG
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Link
@@ -53,29 +118,13 @@ export function FeaturedProjectCard({
         className="grid grid-cols-1 lg:grid-cols-12 gap-0 bg-background-elevated border border-border overflow-hidden transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-border-hover"
         style={{ borderRadius: "2px" }}
       >
-        {/* Image Container */}
+        {/* Display Container */}
         <div className="relative lg:col-span-5 aspect-[16/10] lg:aspect-auto lg:min-h-[280px] bg-surface overflow-hidden">
           {/* Grid Pattern Overlay */}
           <div className="absolute inset-0 grid-pattern opacity-50" />
 
-          {/* Project Image */}
-          {image ? (
-            <Image
-              src={image}
-              alt={title}
-              fill
-              sizes="(max-width: 1024px) 100vw, 40vw"
-              className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-              priority
-              quality={90}
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 border-2 border-border flex items-center justify-center text-muted-foreground text-sm font-mono">
-                IMG
-              </div>
-            </div>
-          )}
+          {/* Card Display Content */}
+          {renderCardDisplay()}
 
           {/* Status Badge */}
           <div className="absolute top-4 right-4">

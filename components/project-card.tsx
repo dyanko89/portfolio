@@ -4,12 +4,24 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { TerminalDisplay, parseTerminalContent } from "./terminal-display"
+
+// Card display configuration - supports multiple display types
+interface CardDisplay {
+  type: 'image' | 'terminal'
+  // For terminal type
+  content?: string
+  title?: string
+  // For image type (falls back to image prop)
+  src?: string
+}
 
 interface ProjectCardProps {
   title: string
   description: string
   tags: string[]
   image?: string
+  cardDisplay?: CardDisplay
   href: string
   status?: "live" | "in-progress" | "archived"
 }
@@ -31,28 +43,64 @@ export function ProjectCard({
   description,
   tags,
   image,
+  cardDisplay,
   href,
   status = "live",
 }: ProjectCardProps) {
-  return (
-    <Link
-      href={href}
-      className="group relative flex flex-col bg-background-elevated border border-border rounded-sm overflow-hidden hover:border-border-hover hover:translate-y-[-2px] transition-all duration-250"
-    >
-      {/* Image Container */}
-      <div className="relative overflow-hidden bg-surface aspect-[16/9]">
-        {image ? (
+  // Determine what to render in the card display area
+  const renderCardDisplay = () => {
+    // If cardDisplay is specified, use it
+    if (cardDisplay) {
+      if (cardDisplay.type === 'terminal' && cardDisplay.content) {
+        const lines = parseTerminalContent(cardDisplay.content)
+        return (
+          <TerminalDisplay
+            lines={lines}
+            title={cardDisplay.title}
+            className="absolute inset-0"
+          />
+        )
+      }
+      if (cardDisplay.type === 'image' && cardDisplay.src) {
+        return (
           <Image
-            src={image}
+            src={cardDisplay.src}
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             quality={90}
           />
-        ) : (
-          <div className="absolute inset-0 grid-pattern opacity-50" />
-        )}
+        )
+      }
+    }
+
+    // Fallback to image prop
+    if (image) {
+      return (
+        <Image
+          src={image}
+          alt={title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          quality={90}
+        />
+      )
+    }
+
+    // No display - show grid pattern
+    return <div className="absolute inset-0 grid-pattern opacity-50" />
+  }
+
+  return (
+    <Link
+      href={href}
+      className="group relative flex flex-col bg-background-elevated border border-border rounded-sm overflow-hidden hover:border-border-hover hover:translate-y-[-2px] transition-all duration-250"
+    >
+      {/* Display Container */}
+      <div className="relative overflow-hidden bg-surface aspect-[16/9]">
+        {renderCardDisplay()}
         
         {/* Status Badge */}
         <div className="absolute top-4 left-4">

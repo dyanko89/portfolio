@@ -5,6 +5,27 @@ summary: AI-powered email classification system using Claude that monitors Offic
 tags: ["Claude AI", "Node.js", "Microsoft Graph", "Asana API", "SQLite"]
 status: Live
 image: /images/projects/email-triage.png
+cardDisplay:
+  type: terminal
+  title: email-triage
+  content: |
+    [09:15:22] Polling inbox... 5 unread
+    Analyzing: "Re: Project deliverables"
+      → Client Request (0.94) | Priority: High
+      → Skill match: Project Management
+    ✓ Task created → Assigned to @danny
+    Analyzing: "Weekly Newsletter"
+      → Marketing (0.99)
+      → Rule: skip-newsletters
+    ⊘ Skipped (auto-archive)
+    Analyzing: "Invoice #4521 attached"
+      → Finance Request (0.91)
+      → Skill match: Accounting
+    ✓ Task created → Assigned to @sarah
+    Analyzing: "Quick question about API"
+      → Technical Support (0.88)
+    ✓ Task created → Assigned to @danny
+    [09:15:31] 3 tasks created | 1 skipped
 results:
   - value: "30 min"
     label: "Saved Daily"

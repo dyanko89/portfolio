@@ -53,6 +53,7 @@ export default async function ProjectsPage() {
                     description={project.summary}
                     tags={project.tags || []}
                     image={project.image}
+                    cardDisplay={project.cardDisplay}
                     href={`/projects/${project.slug}`}
                     status={mapStatus(project.status)}
                     category={project.tags?.[0]}
@@ -75,6 +76,7 @@ export default async function ProjectsPage() {
                     description={project.summary}
                     tags={project.tags || []}
                     image={project.image}
+                    cardDisplay={project.cardDisplay}
                     href={`/projects/${project.slug}`}
                     status={mapStatus(project.status)}
                   />
