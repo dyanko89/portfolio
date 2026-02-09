@@ -23,7 +23,7 @@ export function ProjectHeroDisplay({ cardDisplay, className = '' }: ProjectHeroD
   if (cardDisplay.type === 'terminal' && cardDisplay.content) {
     const lines = parseTerminalContent(cardDisplay.content)
     return (
-      <div className={`aspect-[16/10] overflow-hidden border border-[#252d33] rounded-sm ${className}`}>
+      <div className={`aspect-[16/10] overflow-hidden rounded-sm border border-white/[0.08] ${className}`}>
         <TerminalDisplay lines={lines} title={cardDisplay.title} />
       </div>
     )
@@ -33,7 +33,7 @@ export function ProjectHeroDisplay({ cardDisplay, className = '' }: ProjectHeroD
     const WireframeComponent = wireframes[cardDisplay.component]
     if (!WireframeComponent) return null
     return (
-      <div className={`aspect-[16/10] overflow-hidden border border-[#252d33] rounded-sm ${className}`}>
+      <div className={`aspect-[16/10] overflow-hidden rounded-sm border border-white/[0.08] ${className}`}>
         <WireframeComponent className="w-full h-full" />
       </div>
     )

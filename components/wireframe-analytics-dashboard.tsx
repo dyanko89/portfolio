@@ -4,18 +4,20 @@ interface WireframeAnalyticsDashboardProps {
   className?: string
 }
 
+// Glassmorphism monochrome palette
 const c = {
-  bg: '#0a0f12',
-  border: '#252d33',
-  borderLight: '#1c2328',
-  textDim: '#3a4248',
-  text: '#5a6368',
-  textBright: '#7a8288',
+  bg: 'rgba(10, 15, 18, 0.6)',
+  surface: 'rgba(20, 28, 34, 0.5)',
+  border: '#2f3940',
+  borderLight: '#232c33',
+  textDim: '#5a6a72',
+  text: '#8a9298',
+  textBright: '#b0b8be',
 }
 
 export function WireframeAnalyticsDashboard({ className = '' }: WireframeAnalyticsDashboardProps) {
   return (
-    <div className={`w-full h-full flex flex-col overflow-hidden font-mono ${className}`} style={{ background: c.bg }}>
+    <div className={`w-full h-full flex flex-col overflow-hidden font-mono ${className}`} style={{ background: c.bg, backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}>
       {/* Nav bar */}
       <div className="flex items-center px-3 gap-3" style={{ height: '14%', minHeight: 0, borderBottom: `1px solid ${c.border}` }}>
         <div className="w-16 h-2.5 rounded-sm" style={{ background: c.border }} />
@@ -37,7 +39,7 @@ export function WireframeAnalyticsDashboard({ className = '' }: WireframeAnalyti
             <div
               key={i}
               className="flex-1 flex flex-col justify-center px-1.5 rounded-sm overflow-hidden"
-              style={{ border: `1px solid ${c.border}`, background: '#0e1418' }}
+              style={{ border: `1px solid ${c.border}`, background: c.surface }}
             >
               <div className="text-[5px] uppercase tracking-wider leading-none" style={{ color: c.textDim }}>{card.label}</div>
               <div className="text-[10px] font-bold leading-tight mt-0.5" style={{ color: c.textBright }}>{card.value}</div>

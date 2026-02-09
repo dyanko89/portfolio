@@ -4,19 +4,20 @@ interface WireframeChatOnboardingProps {
   className?: string
 }
 
+// Glassmorphism monochrome palette
 const c = {
-  bg: '#0a0f12',
-  border: '#252d33',
-  borderLight: '#1c2328',
-  textDim: '#3a4248',
-  text: '#5a6368',
-  textBright: '#7a8288',
-  surface: '#0e1418',
+  bg: 'rgba(10, 15, 18, 0.6)',
+  surface: 'rgba(20, 28, 34, 0.5)',
+  border: '#2f3940',
+  borderLight: '#232c33',
+  textDim: '#5a6a72',
+  text: '#8a9298',
+  textBright: '#b0b8be',
 }
 
 export function WireframeChatOnboarding({ className = '' }: WireframeChatOnboardingProps) {
   return (
-    <div className={`w-full h-full flex overflow-hidden font-mono ${className}`} style={{ background: c.bg }}>
+    <div className={`w-full h-full flex overflow-hidden font-mono ${className}`} style={{ background: c.bg, backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}>
       {/* Sidebar */}
       <div className="flex flex-col overflow-hidden" style={{ width: '22%', borderRight: `1px solid ${c.border}` }}>
         {/* Sidebar header */}

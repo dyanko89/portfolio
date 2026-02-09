@@ -4,19 +4,20 @@ interface WireframeTradingPlatformProps {
   className?: string
 }
 
-// Single monochrome color palette
+// Glassmorphism monochrome palette
 const c = {
-  bg: '#0a0f12',
-  border: '#252d33',
-  borderLight: '#1c2328',
-  textDim: '#3a4248',
-  text: '#5a6368',
-  textBright: '#7a8288',
+  bg: 'rgba(10, 15, 18, 0.6)',
+  surface: 'rgba(20, 28, 34, 0.5)',
+  border: '#2f3940',
+  borderLight: '#232c33',
+  textDim: '#5a6a72',
+  text: '#8a9298',
+  textBright: '#b0b8be',
 }
 
 export function WireframeTradingPlatform({ className = '' }: WireframeTradingPlatformProps) {
   return (
-    <div className={`w-full h-full flex flex-col bg-[${c.bg}] overflow-hidden font-mono ${className}`} style={{ background: c.bg }}>
+    <div className={`w-full h-full flex flex-col overflow-hidden font-mono ${className}`} style={{ background: c.bg, backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}>
       {/* Top Bar */}
       <div className="h-8 flex items-center px-3 gap-2" style={{ borderBottom: `1px solid ${c.border}` }}>
         <div className="w-14 h-3 rounded-sm" style={{ border: `1px solid ${c.border}` }} />
@@ -47,7 +48,7 @@ export function WireframeTradingPlatform({ className = '' }: WireframeTradingPla
           className="h-6 flex items-center text-[7.5px] whitespace-nowrap"
           style={{
             borderBottom: `1px solid ${c.borderLight}`,
-            background: row.highlight ? '#0e1418' : 'transparent',
+            background: row.highlight ? c.surface : 'transparent',
           }}
         >
           <div className="px-2 truncate flex items-center gap-1" style={{ width: '20%', color: c.textBright }}>
