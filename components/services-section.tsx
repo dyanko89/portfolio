@@ -40,7 +40,7 @@ export function ServicesSection() {
             <span className="label-uppercase text-accent mb-6 block tracking-widest">
               Services
             </span>
-            <h2 className="text-h1 text-foreground">
+            <h2 className="text-h2 text-foreground">
               How I Can Help
             </h2>
           </div>

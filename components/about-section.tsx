@@ -95,41 +95,14 @@ const techTagVariants = {
   },
 }
 
-const statsVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.22, 1, 0.36, 1],
-      staggerChildren: 0.1,
-    },
-  },
-}
-
-const statItemVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-}
-
 export function AboutSection() {
   const headerRef = useRef(null)
   const leftColumnRef = useRef(null)
   const rightColumnRef = useRef(null)
-  const statsRef = useRef(null)
 
   const headerInView = useInView(headerRef, { once: true, margin: "-100px" })
   const leftColumnInView = useInView(leftColumnRef, { once: true, margin: "-100px" })
   const rightColumnInView = useInView(rightColumnRef, { once: true, margin: "-100px" })
-  const statsInView = useInView(statsRef, { once: true, margin: "-100px" })
 
   return (
     <section id="about" className="relative py-32 md:py-48">
@@ -145,7 +118,7 @@ export function AboutSection() {
           <span className="label-uppercase text-accent mb-6 block tracking-widest">
             About
           </span>
-          <h2 className="text-h1 text-foreground max-w-4xl">
+          <h2 className="text-h2 text-foreground max-w-4xl">
             Enterprise Automation for Teams That Need to Scale
           </h2>
         </motion.div>
@@ -242,25 +215,6 @@ export function AboutSection() {
               ))}
             </div>
 
-            {/* Experience Stat */}
-            <motion.div
-              ref={statsRef}
-              initial="hidden"
-              animate={statsInView ? "visible" : "hidden"}
-              variants={statsVariants}
-              className="mt-16 pt-16 border-t border-border"
-            >
-              <div className="grid grid-cols-2 gap-8">
-                <motion.div variants={statItemVariants}>
-                  <span className="text-h2 text-foreground">10+</span>
-                  <p className="text-sm text-muted-foreground mt-2">Years Experience</p>
-                </motion.div>
-                <motion.div variants={statItemVariants}>
-                  <span className="text-h2 text-foreground">40+</span>
-                  <p className="text-sm text-muted-foreground mt-2">Projects Completed</p>
-                </motion.div>
-              </div>
-            </motion.div>
           </motion.div>
         </div>
       </div>

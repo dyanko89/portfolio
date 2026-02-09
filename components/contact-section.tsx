@@ -85,7 +85,7 @@ export function ContactSection() {
           <span className="label-uppercase text-accent mb-6 block tracking-widest">
             Contact
           </span>
-          <h2 className="text-h1 text-foreground max-w-5xl">
+          <h2 className="text-h2 text-foreground max-w-5xl">
             Let&apos;s Build Something Great Together
           </h2>
         </div>

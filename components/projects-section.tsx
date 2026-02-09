@@ -16,7 +16,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
             <span className="label-uppercase text-accent mb-6 block tracking-widest">
               Work
             </span>
-            <h2 className="text-h1 text-foreground">
+            <h2 className="text-h2 text-foreground">
               Selected Projects
             </h2>
           </div>
