@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   description: 'Systems Architect & AI Consultant crafting digital experiences that transform complexity into elegant solutions.',
   icons: {
     icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon-dark.png', media: '(prefers-color-scheme: dark)' },
       { url: '/favicon-light.png', media: '(prefers-color-scheme: light)' },
     ],
