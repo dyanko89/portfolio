@@ -8,6 +8,7 @@ import { TerminalDisplay, parseTerminalContent } from "./terminal-display"
 import { WireframeTradingPlatform } from "./wireframe-trading-platform"
 import { WireframeAnalyticsDashboard } from "./wireframe-analytics-dashboard"
 import { WireframeChatOnboarding } from "./wireframe-chat-onboarding"
+import { WireframeServerStatus } from "./wireframe-server-status"
 
 // Card display configuration - supports multiple display types
 interface CardDisplay {
@@ -80,6 +81,7 @@ export function FeaturedProjectCard({
           'trading-platform': WireframeTradingPlatform,
           'analytics-dashboard': WireframeAnalyticsDashboard,
           'chat-onboarding': WireframeChatOnboarding,
+          'server-status': WireframeServerStatus,
         }
         const WireframeComponent = wireframes[cardDisplay.component || '']
         if (WireframeComponent) {
