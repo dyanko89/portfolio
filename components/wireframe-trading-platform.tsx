@@ -29,15 +29,15 @@ export function WireframeTradingPlatform({ className = '' }: WireframeTradingPla
 
       {/* Table Header */}
       <div className="h-6 flex items-center text-[7px] uppercase tracking-wider whitespace-nowrap" style={{ borderBottom: `1px solid ${c.border}`, color: c.textDim }}>
-        <div className="w-[100px] px-2 flex-shrink-0">Product</div>
-        <div className="w-[44px] px-1 text-center flex-shrink-0">Lot</div>
-        <div className="w-[52px] px-1 text-center flex-shrink-0">ID</div>
-        <div className="w-[36px] px-1 text-center flex-shrink-0">Grade</div>
-        <div className="w-[44px] px-1 text-center flex-shrink-0">Qty</div>
-        <div className="w-[36px] px-1 text-center flex-shrink-0">Period</div>
-        <div className="w-[52px] px-1 text-center flex-shrink-0" style={{ borderLeft: `1px solid ${c.borderLight}` }}>Bid</div>
-        <div className="w-[52px] px-1 text-center flex-shrink-0">Ask</div>
-        <div className="flex-1 px-1 text-right">Actions</div>
+        <div className="px-2" style={{ width: '20%' }}>Product</div>
+        <div className="px-1 text-center" style={{ width: '8%' }}>Lot</div>
+        <div className="px-1 text-center" style={{ width: '10%' }}>ID</div>
+        <div className="px-1 text-center" style={{ width: '7%' }}>Grade</div>
+        <div className="px-1 text-center" style={{ width: '8%' }}>Qty</div>
+        <div className="px-1 text-center" style={{ width: '7%' }}>Period</div>
+        <div className="px-1 text-center" style={{ width: '10%', borderLeft: `1px solid ${c.borderLight}` }}>Bid</div>
+        <div className="px-1 text-center" style={{ width: '10%' }}>Ask</div>
+        <div className="px-1 text-right" style={{ width: '20%' }}>Actions</div>
       </div>
 
       {/* Table Rows */}
@@ -50,18 +50,18 @@ export function WireframeTradingPlatform({ className = '' }: WireframeTradingPla
             background: row.highlight ? '#0e1418' : 'transparent',
           }}
         >
-          <div className="w-[100px] px-2 flex-shrink-0 truncate flex items-center gap-1" style={{ color: c.textBright }}>
+          <div className="px-2 truncate flex items-center gap-1" style={{ width: '20%', color: c.textBright }}>
             {row.expandable && <span style={{ color: c.textDim, fontSize: '5px' }}>&#9654;</span>}
             {row.name}
           </div>
-          <div className="w-[44px] px-1 text-center flex-shrink-0" style={{ color: c.text }}>{row.lot}</div>
-          <div className="w-[52px] px-1 text-center flex-shrink-0" style={{ color: c.text }}>{row.id}</div>
-          <div className="w-[36px] px-1 text-center flex-shrink-0" style={{ color: c.text }}>{row.grade}</div>
-          <div className="w-[44px] px-1 text-center flex-shrink-0" style={{ color: c.text }}>{row.qty}</div>
-          <div className="w-[36px] px-1 text-center flex-shrink-0" style={{ color: c.text }}>{row.period}</div>
-          <div className="w-[52px] px-1 text-center flex-shrink-0" style={{ borderLeft: `1px solid ${c.borderLight}`, color: c.textBright }}>{row.bid}</div>
-          <div className="w-[52px] px-1 text-center flex-shrink-0" style={{ color: c.text }}>{row.ask}</div>
-          <div className="flex-1 px-2 flex items-center justify-end gap-1">
+          <div className="px-1 text-center" style={{ width: '8%', color: c.text }}>{row.lot}</div>
+          <div className="px-1 text-center" style={{ width: '10%', color: c.text }}>{row.id}</div>
+          <div className="px-1 text-center" style={{ width: '7%', color: c.text }}>{row.grade}</div>
+          <div className="px-1 text-center" style={{ width: '8%', color: c.text }}>{row.qty}</div>
+          <div className="px-1 text-center" style={{ width: '7%', color: c.text }}>{row.period}</div>
+          <div className="px-1 text-center" style={{ width: '10%', borderLeft: `1px solid ${c.borderLight}`, color: c.textBright }}>{row.bid}</div>
+          <div className="px-1 text-center" style={{ width: '10%', color: c.text }}>{row.ask}</div>
+          <div className="px-2 flex items-center justify-end gap-1" style={{ width: '20%' }}>
             {row.actions?.map((action, j) => (
               <span
                 key={j}
