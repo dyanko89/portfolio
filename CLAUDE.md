@@ -90,7 +90,10 @@ export async function generateStaticParams() {
   - `navigation.tsx`: Site navigation
   - `footer.tsx`: Site footer
   - `hero-section.tsx`, `about-section.tsx`, etc.: Homepage sections
-  - `project-card.tsx`: Reusable project card component
+  - `project-card.tsx`: Standard project card (grid) with cardDisplay support
+  - `featured-project-card.tsx`: Featured project card (horizontal) with cardDisplay support
+  - `terminal-display.tsx`: Reusable terminal component with auto-coloring
+  - `wireframe-*.tsx`: Monochrome wireframe components for project cards
 
 ### Styling
 
@@ -134,19 +137,102 @@ image: "/images/optional-image.jpg"
 ### New Project
 
 1. Create `content/projects/your-slug.mdx`
-2. Add frontmatter:
+2. Add frontmatter (see full schema below)
+3. Choose a card display type (terminal, wireframe, or image)
+4. If wireframe: create component, register in both card files
+5. Write MDX content
+6. Build will automatically generate static page
+
+#### Project Frontmatter Schema
+
 ```yaml
 ---
 title: "Project Name"
-publishedAt: "2025-01-15"
+publishedAt: "2025-01-15"        # Controls sort order — top 2 become Featured
 summary: "Brief description"
-status: "Completed" # or "In Progress", "Planning"
 tags: ["Next.js", "TypeScript"]
-image: "/images/optional-image.jpg"
+status: "Live"                    # Live | In Progress | QA Testing | Archived
+image: "/images/projects/slug.png"  # Fallback if no cardDisplay
+cardDisplay:                      # Optional — overrides image on project cards
+  type: terminal                  # terminal | wireframe | image
+  title: my-service               # Terminal title bar text (terminal type only)
+  content: |                      # Terminal content with auto-coloring (terminal type only)
+    [09:15:22] Starting service...
+    ✓ Connected
+  component: trading-platform     # Wireframe component key (wireframe type only)
+  src: /images/custom.png         # Custom image path (image type only)
+results:                          # Stats displayed on project detail page
+  - value: "99%"
+    label: "Uptime"
+    description: "6 months"
+techStack:                        # Grouped tech tags for detail page
+  - category: "Frontend"
+    items: ["React", "TypeScript"]
+relatedProjects: ["other-slug"]   # Links to related project pages
 ---
 ```
-3. Write content in MDX format
-4. Build will automatically generate static page
+
+#### Status Badges
+
+| Status Value | Badge Label | Color |
+|---|---|---|
+| `Live` | Live | Green |
+| `In Progress` / `In Development` | In Progress | Warning/orange |
+| `QA Testing` | QA Testing | Accent/blue |
+| `Archived` | Archived | Muted |
+
+Status mapping is in `app/projects/page.tsx` → `mapStatus()`.
+
+#### Featured vs Standard Projects
+
+`app/projects/page.tsx` splits projects by sort position:
+- **Featured** (top 2 by `publishedAt` desc) → `FeaturedProjectCard` — large horizontal layout
+- **Standard** (remaining) → `ProjectCard` — grid cards
+
+To make a project featured, give it a newer `publishedAt` date than other projects.
+
+#### Card Display System
+
+Three display types replace generic AI-generated project card images:
+
+**Terminal** — for pipeline/automation/CLI projects. Content is inline in MDX frontmatter.
+
+Auto-coloring rules (in `parseTerminalContent`):
+- `✓` / `[OK]` / contains `created`/`Complete` → green
+- `✗` / `[ERROR]` / contains `failed`/`Error` → red
+- `⚠` / `[WARN]` → warning/orange
+- Lines starting with `[` + `]` (timestamps) → muted gray
+- Prefix overrides: `[success]`, `[error]`, `[warning]`, `[muted]`, `[accent]`
+
+**Wireframe** — for web apps/dashboards/platforms. Each wireframe is a React component.
+
+Existing wireframe components:
+- `trading-platform` → `components/wireframe-trading-platform.tsx`
+- `analytics-dashboard` → `components/wireframe-analytics-dashboard.tsx`
+- `chat-onboarding` → `components/wireframe-chat-onboarding.tsx`
+- `server-status` → `components/wireframe-server-status.tsx`
+
+To add a new wireframe:
+1. Create `components/wireframe-{name}.tsx` (must accept `className?: string` prop)
+2. Register in BOTH `components/project-card.tsx` AND `components/featured-project-card.tsx`:
+   - Add import
+   - Add entry to the `wireframes` registry object inside `renderCardDisplay()`
+3. Reference in MDX: `component: {name}`
+
+Wireframe design rules:
+- Monochrome only — use the shared palette: `bg: '#0a0f12'`, `border: '#252d33'`, `text: '#5a6368'`, `textBright: '#7a8288'`, `textDim: '#3a4248'`
+- All layout must be percentage-based or flex — no fixed pixel heights
+- Every container needs `overflow-hidden` and `minHeight: 0`
+- Must work at any card aspect ratio (16/9 standard, variable featured)
+
+**Image** — override the default `image` field with a custom card-specific image.
+
+#### Content Guidelines
+
+- No real emails, company names, or personal data in card displays
+- No personal identifiers (name, usernames, server names) in terminal content
+- Terminal content should tell a story (pipeline flow, not just stats)
+- Each project should use the cardDisplay type that best represents what the project IS
 
 ## Environment Variables
 

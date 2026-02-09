@@ -123,7 +123,7 @@ export function ProjectCard({
         {renderCardDisplay()}
         
         {/* Status Badge */}
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 right-4">
           <span
             className={cn(
               "px-2 py-1 text-xs border rounded-sm",

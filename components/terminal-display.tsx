@@ -25,11 +25,11 @@ export function TerminalDisplay({ lines, title = 'terminal', className = '' }: T
     <div className={`w-full h-full flex flex-col bg-[#0a0f12] overflow-hidden ${className}`}>
       {/* Terminal Window Chrome */}
       <div className="flex items-center gap-2 px-3 py-2 bg-[#1a2329] border-b border-[#2a3942]/50">
-        {/* Traffic Light Dots */}
+        {/* Window Dots */}
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#2a3942]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#2a3942]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#2a3942]" />
         </div>
         {/* Title */}
         <span className="ml-2 text-[10px] font-mono text-[#6b7a85] uppercase tracking-wider">
