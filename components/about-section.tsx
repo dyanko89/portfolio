@@ -146,7 +146,7 @@ export function AboutSection() {
             About
           </span>
           <h2 className="text-h1 text-foreground max-w-4xl">
-            Turning Ideas Into Digital Reality
+            Enterprise Automation for Teams That Need to Scale
           </h2>
         </motion.div>
 
@@ -165,14 +165,16 @@ export function AboutSection() {
               className="space-y-6 text-foreground-secondary leading-relaxed text-lg"
             >
               <p>
-                With over 10 years of experience spanning design and development,
-                I create digital products that balance visual refinement with
-                technical precision.
+                Over a decade spanning marketing, design, and development gave me a
+                superpower: I recognize inefficiency instantly. I&apos;ve lived inside
+                the manual workflows, disconnected tools, and repetitive tasks that
+                drain momentum.
               </p>
               <p>
-                I believe in the intersection of aesthetics and function. Every project
-                is an opportunity to craft solutions that resonate with users while
-                solving complex business challenges.
+                Now I build the automation that eliminates them. Production infrastructure,
+                AI-powered workflows, and intelligent integrations informed by years of
+                understanding what slows businesses down and the technical depth to
+                architect solutions that work.
               </p>
             </motion.div>
 

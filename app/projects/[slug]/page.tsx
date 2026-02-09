@@ -109,11 +109,11 @@ export default async function ProjectPage({ params }: PageProps) {
       <Navigation />
       <main>
         {/* Hero Header */}
-        <section className="relative min-h-[60vh] flex flex-col justify-end overflow-hidden">
-          {/* Background: image only when no cardDisplay */}
-          {(!project.cardDisplay || project.cardDisplay.type === 'image') && project.image && (
+        <section className="relative min-h-[70vh] flex flex-col justify-end overflow-hidden">
+          {/* Background Image */}
+          {project.image && (
             <Image
-              src={project.cardDisplay?.type === 'image' && project.cardDisplay.src ? project.cardDisplay.src : project.image}
+              src={project.image}
               alt={project.title}
               fill
               sizes="100vw"
