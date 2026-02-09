@@ -23,6 +23,13 @@ const ubuntuMono = Ubuntu_Mono({
 export const metadata: Metadata = {
   title: 'Dyanko89 | From Chaos to Clarity',
   description: 'Systems Architect & AI Consultant crafting digital experiences that transform complexity into elegant solutions.',
+  icons: {
+    icon: [
+      { url: '/favicon-dark.png', media: '(prefers-color-scheme: dark)' },
+      { url: '/favicon-light.png', media: '(prefers-color-scheme: light)' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 }
 
 export const viewport: Viewport = {
