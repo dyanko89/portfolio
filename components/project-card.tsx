@@ -5,15 +5,18 @@ import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { TerminalDisplay, parseTerminalContent } from "./terminal-display"
+import { WireframeTradingPlatform } from "./wireframe-trading-platform"
 
 // Card display configuration - supports multiple display types
 interface CardDisplay {
-  type: 'image' | 'terminal'
+  type: 'image' | 'terminal' | 'wireframe'
   // For terminal type
   content?: string
   title?: string
   // For image type (falls back to image prop)
   src?: string
+  // For wireframe type
+  component?: string
 }
 
 interface ProjectCardProps {
@@ -60,6 +63,15 @@ export function ProjectCard({
             className="absolute inset-0"
           />
         )
+      }
+      if (cardDisplay.type === 'wireframe') {
+        const wireframes: Record<string, React.ComponentType<{ className?: string }>> = {
+          'trading-platform': WireframeTradingPlatform,
+        }
+        const WireframeComponent = wireframes[cardDisplay.component || '']
+        if (WireframeComponent) {
+          return <WireframeComponent className="absolute inset-0" />
+        }
       }
       if (cardDisplay.type === 'image' && cardDisplay.src) {
         return (

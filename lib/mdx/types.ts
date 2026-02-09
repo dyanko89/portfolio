@@ -23,12 +23,14 @@ export interface TechStackCategory {
 
 // Card display configuration for project cards
 export interface CardDisplay {
-  type: 'image' | 'terminal';
+  type: 'image' | 'terminal' | 'wireframe';
   // For terminal type - multiline content with auto-coloring
   content?: string;
   title?: string;
   // For image type - overrides default image
   src?: string;
+  // For wireframe type - which wireframe component to render
+  component?: string;
 }
 
 export interface Project {
