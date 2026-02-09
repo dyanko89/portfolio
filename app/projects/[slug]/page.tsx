@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer"
 import { ResultsCards } from "@/components/results-cards"
 import { TechStackIcons } from "@/components/tech-stack-icons"
 import { RelatedProjects } from "@/components/related-projects"
+import { ProjectHeroDisplay } from "@/components/project-hero-display"
 import { ArrowLeft, Calendar } from "lucide-react"
 import { getProject, getAllProjects } from "@/lib/mdx/content"
 import { renderMDX } from "@/lib/mdx/mdx"
@@ -37,15 +38,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 // Map MDX status to display badge styling
-function getStatusStyles(status: string): { bg: string; text: string; label: string } {
+function getStatusStyles(status: string): { bg: string; text: string; border: string; label: string } {
   const normalized = status.toLowerCase()
   if (normalized === "completed" || normalized === "live") {
-    return { bg: "bg-accent/10", text: "text-accent", label: "Live" }
+    return { bg: "bg-accent/10", text: "text-accent", border: "border-accent/30", label: "Live" }
   }
-  if (normalized === "beta" || normalized === "in progress" || normalized === "in-progress") {
-    return { bg: "bg-yellow-500/10", text: "text-yellow-500", label: "In Progress" }
+  if (normalized === "qa testing") {
+    return { bg: "bg-accent/10", text: "text-accent", border: "border-accent/30", label: "QA Testing" }
   }
-  return { bg: "bg-muted", text: "text-muted-foreground", label: status }
+  if (normalized === "beta" || normalized === "in progress" || normalized === "in-progress" || normalized === "in development") {
+    return { bg: "bg-yellow-500/10", text: "text-yellow-500", border: "border-yellow-500/30", label: "In Progress" }
+  }
+  if (normalized === "archived") {
+    return { bg: "bg-muted", text: "text-muted-foreground", border: "border-border", label: "Archived" }
+  }
+  return { bg: "bg-muted", text: "text-muted-foreground", border: "border-border", label: status }
 }
 
 export default async function ProjectPage({ params }: PageProps) {
@@ -101,12 +108,12 @@ export default async function ProjectPage({ params }: PageProps) {
     <>
       <Navigation />
       <main>
-        {/* Hero Header with Background Image */}
-        <section className="relative min-h-[70vh] flex flex-col justify-end overflow-hidden">
-          {/* Background Image */}
-          {project.image && (
+        {/* Hero Header */}
+        <section className="relative min-h-[60vh] flex flex-col justify-end overflow-hidden">
+          {/* Background: image only when no cardDisplay */}
+          {(!project.cardDisplay || project.cardDisplay.type === 'image') && project.image && (
             <Image
-              src={project.image}
+              src={project.cardDisplay?.type === 'image' && project.cardDisplay.src ? project.cardDisplay.src : project.image}
               alt={project.title}
               fill
               sizes="100vw"
@@ -130,32 +137,44 @@ export default async function ProjectPage({ params }: PageProps) {
               <span>Back to Projects</span>
             </Link>
 
-            {/* Title - Responsive sizing */}
-            <h1 className="text-3xl sm:text-4xl md:text-h1 lg:text-display text-foreground mb-6">{project.title}</h1>
+            <div className={`${project.cardDisplay && project.cardDisplay.type !== 'image' ? 'grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-end' : ''}`}>
+              {/* Text Column */}
+              <div className={project.cardDisplay && project.cardDisplay.type !== 'image' ? 'lg:col-span-3' : ''}>
+                {/* Title */}
+                <h1 className="text-3xl sm:text-4xl md:text-h1 lg:text-display text-foreground mb-6">{project.title}</h1>
 
-            {/* Summary/Description */}
-            <p className="text-lg md:text-xl text-foreground-secondary max-w-3xl leading-relaxed mb-8">
-              {project.summary}
-            </p>
+                {/* Summary */}
+                <p className="text-lg md:text-xl text-foreground-secondary max-w-3xl leading-relaxed mb-8">
+                  {project.summary}
+                </p>
 
-            {/* Meta */}
-            <div className="flex flex-wrap items-center gap-4">
-              {project.client && (
-                <span className="px-4 py-2 text-sm font-medium text-accent bg-accent/10 border border-accent/30 backdrop-blur-sm">
-                  {project.client}
-                </span>
-              )}
-              {year && (
-                <span className="px-4 py-2 text-sm font-medium text-foreground bg-surface/80 border border-border backdrop-blur-sm">
-                  {year}
-                </span>
-              )}
-              {project.status && (
-                <span
-                  className={`px-4 py-2 text-sm font-medium tracking-wider uppercase bg-surface/80 border backdrop-blur-sm ${statusStyles.text} ${statusStyles.bg.replace('bg-', 'border-')}`}
-                >
-                  {statusStyles.label}
-                </span>
+                {/* Meta */}
+                <div className="flex flex-wrap items-center gap-4">
+                  {project.client && (
+                    <span className="px-4 py-2 text-sm font-medium text-accent bg-accent/10 border border-accent/30 backdrop-blur-sm">
+                      {project.client}
+                    </span>
+                  )}
+                  {year && (
+                    <span className="px-4 py-2 text-sm font-medium text-foreground bg-surface/80 border border-border backdrop-blur-sm">
+                      {year}
+                    </span>
+                  )}
+                  {project.status && (
+                    <span
+                      className={`px-4 py-2 text-sm font-medium tracking-wider uppercase bg-surface/80 border backdrop-blur-sm ${statusStyles.text} ${statusStyles.border}`}
+                    >
+                      {statusStyles.label}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* CardDisplay Column */}
+              {project.cardDisplay && project.cardDisplay.type !== 'image' && (
+                <div className="lg:col-span-2">
+                  <ProjectHeroDisplay cardDisplay={project.cardDisplay} />
+                </div>
               )}
             </div>
           </div>
