@@ -1,194 +1,151 @@
 ---
-title: Reddit Market Intelligence
-publishedAt: 2024-10-05
-summary: Business intelligence platform analyzing 13 industry subreddits for market trends, generating dual-perspective opportunity reports with evidence-based citations.
-tags: ["Python", "Reddit API", "Claude AI", "python-docx", "NLP"]
+title: Reddit Intelligence Platform
+publishedAt: 2024-12-15
+summary: AI-powered market research tool that turns Reddit into actionable intelligence. A conversational onboarding experience builds a user profile and maps relevant communities, then generates targeted research briefs across five analysis types.
+tags: ["Next.js", "FastAPI", "Claude AI", "Supabase", "Stripe"]
 status: Live
 image: /images/projects/reddit-intel.png
+cardDisplay:
+  type: wireframe
+  component: chat-onboarding
 results:
-  - value: "13"
-    label: "Subreddits"
-    description: "Active monitoring"
-  - value: "20+"
-    label: "Insights/Report"
-    description: "Actionable intelligence"
-  - value: "100%"
-    label: "Citation Coverage"
-    description: "Evidence-based claims"
-  - value: "Weekly"
-    label: "Report Cadence"
-    description: "Fresh intelligence"
+  - value: "5"
+    label: "Analysis Types"
+    description: "Comprehensive intelligence"
+  - value: "83%"
+    label: "Noise Reduction"
+    description: "AI-powered search"
+  - value: "<$1"
+    label: "Per Report"
+    description: "Cost-optimized AI"
+  - value: "Any"
+    label: "Industry"
+    description: "Generic multi-vertical"
 techStack:
-  - category: "AI"
-    items: ["Claude AI", "NLP"]
+  - category: "Frontend"
+    items: ["Next.js", "React Query", "TypeScript"]
   - category: "Backend"
-    items: ["Python"]
+    items: ["FastAPI", "SQLAlchemy", "Python"]
+  - category: "Database"
+    items: ["PostgreSQL (Supabase)", "Redis"]
+  - category: "AI"
+    items: ["Claude AI", "Prompt Engineering"]
   - category: "Integration"
-    items: ["Reddit API (PRAW)"]
-  - category: "Libraries"
-    items: ["python-docx"]
-  - category: "Output"
-    items: ["DOCX Reports", "Branded Templates"]
-relatedProjects: ["sunoco-dashboard", "lls-pipeline"]
+    items: ["Reddit API (PRAW)", "Stripe"]
+  - category: "Auth"
+    items: ["JWT", "bcrypt"]
+relatedProjects: ["sunoco-dashboard", "email-triage"]
 ---
 
-# Reddit Market Intelligence
+# Reddit Intelligence Platform
 
-*Market Intelligence Platform*
+*AI-Powered Market Research Tool*
 
 ## Overview
 
-The Reddit Market Intelligence system monitors 13 industry subreddits for market trends, consumer sentiment, and business opportunities. Using Claude AI for analysis, it generates professional dual-perspective reports with evidence-based citations, enabling data-driven business decisions.
+A purpose-built research tool that turns Reddit into structured market intelligence. Rather than requiring users to know which subreddits to monitor or what queries to run, a conversational onboarding experience builds a detailed user profile and maps relevant communities — then the system generates targeted research across five analysis types with full source citations.
 
-## The Challenge
+## The Problem
 
-The industry moves fast:
+Reddit is one of the richest sources of unfiltered market intelligence, but extracting value from it is hard:
 
-- **Regulatory changes** happen frequently
-- **Consumer preferences** shift rapidly
-- **Market opportunities** emerge and disappear quickly
-- **Competitive intelligence** is scattered across forums
+- **Signal-to-noise ratio** is terrible without domain expertise
+- **Manual monitoring** doesn't scale across communities
+- **Traditional market research** costs $10K+ per report
+- **Existing tools** require technical users who already know which subreddits to track
 
-Traditional market research is:
-- Expensive ($10K+ per report)
-- Slow (weeks to months)
-- Often outdated by publication
+## Solution: Chat-First Research
 
-## Solution Architecture
+The tool flips the typical approach. Instead of asking users to configure scrapers and pick subreddits, an AI conversation guides the entire setup — building both a user profile and a subreddit map before any research begins.
 
-```
-13 Industry Subreddits
-         |
-    Reddit API Scraper
-         |
-    Content Filtering
-         |
-    Claude AI Analysis
-         |
-   ┌─────┴─────┐
-   |           |
- Danny's    Basil's
-  View       View
-   |           |
-   └─────┬─────┘
-         |
-    DOCX Report Generator
-```
+### Conversational Onboarding
 
-## Key Features
+The onboarding process does two equally important things:
 
-### Multi-Subreddit Monitoring
-Tracking 13 relevant subreddits:
-- r/weedbiz
-- r/[industry-specific]
-- r/canadients
-- r/TheOCS
-- And 9 more industry-specific communities
+**1. Profile Creation**
+The AI builds a detailed understanding of who the user is and what they need:
+- Industry vertical and niche positioning
+- Target audience and customer segments
+- Specific intelligence goals (competitive, content, opportunity)
+- How they'll use the output (content creation, consulting, strategy)
 
-### Content Extraction
-```python
-def extract_relevant_posts(subreddit: str, timeframe: str) -> List[Post]:
-    """Extract posts with business relevance"""
-    posts = reddit.subreddit(subreddit).top(timeframe)
+**2. Subreddit Discovery**
+Using the profile context, the AI discovers and ranks relevant communities:
+- Maps subreddits by relevance score to the user's industry
+- Identifies adjacent communities that surface non-obvious insights
+- Explains why each subreddit was selected
+- Configures monitoring scope automatically
 
-    return [
-        post for post in posts
-        if meets_relevance_criteria(post)
-        and has_engagement_threshold(post)
-    ]
-```
+The profile and subreddit map together form the research foundation — every subsequent analysis is shaped by both.
 
-### AI-Powered Analysis
-Claude analyzes aggregated content for:
-- **Market Trends**: What's gaining/losing popularity
-- **Consumer Pain Points**: Unmet needs and complaints
-- **Competitive Intelligence**: What companies are being discussed
-- **Regulatory Signals**: Policy changes and impacts
+### AI-Powered Search Strategy
 
-### Dual-Perspective Reports
-Two professional personas provide analysis:
+Rather than scraping entire subreddits, the system generates focused search queries from the user's profile context — reducing noise by 83% and keeping analysis costs under $1 per report.
 
-**Danny** - The Opportunist
-- Focuses on business opportunities
-- Aggressive growth recommendations
-- First-mover advantage emphasis
+### Five Analysis Types
 
-**Basil** - The Analyst
-- Risk-aware perspective
-- Data-driven recommendations
-- Conservative market positioning
+**Comprehensive** — Full market overview surfacing dominant themes, recurring patterns, and key takeaways across all mapped communities.
+
+**Pain Points** — Top challenges and frustrations ranked by frequency and confidence scoring, drawn from real user conversations.
+
+**Opportunities** — Service and product opportunities matched directly to the user's profile, with evidence from community discussions.
+
+**Dual Perspective** — Separate analysis for multiple stakeholders (e.g. buyers vs. sellers, practitioners vs. decision-makers).
+
+**Trends** — Emerging patterns and shifts in sentiment backed by evidence trails with timestamps.
+
+### Profile Modes
+
+Users select how they'll use the intelligence, and the output adapts:
+
+- **Content Creator** — blog ideas, LinkedIn posts, newsletter topics backed by Reddit evidence
+- **Consultant** — service opportunities, pitch angles, engagement strategies with supporting data
+
+Each mode tailors the output format, tone, and recommendations to match the use case.
 
 ### Evidence-Based Citations
-Every claim links to source:
-```markdown
-## Market Trend: Vape Decline
 
-Consumer sentiment around vape products has shifted negatively,
-with health concerns driving preference toward flower and edibles.
+Every insight links back to its source — Reddit posts with upvote counts, timestamps, and direct URLs. No black-box analysis.
 
-**Sources:**
-- [r/canadients] "Switching back to flower after..." (342 upvotes)
-- [r/TheOCS] "Edibles are the only way to go now" (189 upvotes)
+## Architecture
+
+```mermaid
+graph TD
+    A["fa:fa-comments Chat Onboarding"] -->|"Industry & Goals"| B["fa:fa-user Profile Creation"]
+    A -->|"Community Mapping"| C["fa:fa-compass Subreddit Discovery"]
+    B --> D["fa:fa-crosshairs Search Strategy"]
+    C --> D
+    D -->|"Targeted Queries"| E["fa:fa-brands-reddit Reddit API"]
+    E -->|"Raw Posts & Comments"| F["fa:fa-brain Claude Analysis Engine"]
+    F --> G["fa:fa-file-lines 5 Analysis Types"]
+    G --> H["fa:fa-quote-left Formatted Briefs + Citations"]
 ```
 
-### DOCX Report Generation
-Professional branded documents:
-- Executive summary
-- Detailed findings by category
-- Opportunity matrix
-- Source appendix
+### Tech Stack
+- **Frontend**: Next.js with React Query
+- **Backend**: FastAPI with SQLAlchemy (async)
+- **Database**: PostgreSQL via Supabase
+- **Cache**: Redis for session and scrape data
+- **Auth**: JWT with bcrypt
+- **Payments**: Stripe subscription billing
+- **AI**: Claude API for analysis and onboarding
 
-## Technical Implementation
+## Current State
 
-### Reddit API Integration
-```python
-import praw
+Core infrastructure is deployed and the analysis engine is production-tested:
+- Full-stack deployed (Vercel + Railway + Supabase)
+- User registration, auth, and session management working
+- Database schema (12 tables) with seed data
+- Analysis engine validated across multiple verticals
+- Payment integration in progress
 
-reddit = praw.Reddit(
-    client_id=config.REDDIT_CLIENT_ID,
-    client_secret=config.REDDIT_SECRET,
-    user_agent="MarketIntel/2.0"
-)
-```
+## What's Next
 
-### Content Processing Pipeline
-1. **Scrape**: Collect posts from target subreddits
-2. **Filter**: Remove noise, duplicates, irrelevant content
-3. **Aggregate**: Group by topic and sentiment
-4. **Analyze**: Claude AI extracts insights
-5. **Generate**: Create formatted DOCX report
-
-### Report Automation
-```python
-from docx import Document
-from docx.shared import Inches, Pt
-
-def generate_report(analysis: Analysis) -> Document:
-    doc = Document('template.docx')
-
-    add_executive_summary(doc, analysis.summary)
-    add_trend_section(doc, analysis.trends)
-    add_opportunity_matrix(doc, analysis.opportunities)
-    add_citations(doc, analysis.sources)
-
-    return doc
-```
-
-## Results
-
-The system delivers:
-
-- **Weekly intelligence reports**
-- **20+ actionable insights** per report
-- **100% citation coverage**
-- **$5K-50K+ deal opportunities** identified
-
-### Use Cases
-- New market entry decisions
-- Product development priorities
-- Competitive positioning
-- Regulatory preparedness
+- Complete Stripe subscription flow
+- Finalize the chat onboarding UI
+- Scheduled monitoring with email delivery
+- Historical trend comparison (week-over-week)
 
 ---
 
-*This project demonstrates web scraping, NLP analysis, practical AI application for business intelligence, and automated report generation.*
+*This project demonstrates conversational AI product design, full-stack development with Python and Next.js, and building research tools that abstract complexity behind intuitive interfaces.*

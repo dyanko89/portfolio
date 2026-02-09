@@ -21,6 +21,18 @@ export interface TechStackCategory {
   items: string[];
 }
 
+// Card display configuration for project cards
+export interface CardDisplay {
+  type: 'image' | 'terminal' | 'wireframe';
+  // For terminal type - multiline content with auto-coloring
+  content?: string;
+  title?: string;
+  // For image type - overrides default image
+  src?: string;
+  // For wireframe type - which wireframe component to render
+  component?: string;
+}
+
 export interface Project {
   slug: string;
   title: string;
@@ -37,6 +49,8 @@ export interface Project {
   techStack?: TechStackCategory[];
   relatedProjects?: string[];
   client?: string;
+  // Card display configuration (terminal, diagram, etc.)
+  cardDisplay?: CardDisplay;
 }
 
 export interface FrontMatter {
@@ -52,4 +66,6 @@ export interface FrontMatter {
   techStack?: TechStackCategory[];
   relatedProjects?: string[];
   client?: string;
+  // Card display configuration
+  cardDisplay?: CardDisplay;
 }

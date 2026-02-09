@@ -5,6 +5,32 @@ summary: Automated weekly sync of 100+ products from WordPress to Google Sheets 
 tags: ["Python", "Claude AI", "Google Sheets API", "WordPress API", "AWS SES"]
 status: Live
 image: /images/projects/lls-pipeline.png
+cardDisplay:
+  type: terminal
+  title: product-sync
+  content: |
+    [05:00:01] sync-service started (v2.4)
+    [05:00:01] Connecting to WordPress API...
+    ✓ Connected — WooCommerce v3
+    [05:00:03] Fetching product catalog...
+    ✓ 384 products retrieved
+    [05:00:04] Checking description cache...
+    [muted]  → 341 cached (hash match)
+    [accent]  → 43 new/modified products
+    [05:00:05] Generating AI descriptions...
+    [muted]  → Model: claude-3-haiku
+    [muted]  → 43 descriptions queued
+    ✓ 43/43 generated ($0.27)
+    [05:00:14] Updating Google Sheets...
+    [muted]  → 384 rows synced
+    [muted]  → 43 descriptions updated
+    ✓ Spreadsheet updated
+    [05:00:16] Sending notification...
+    ✓ Email sent to 3 stakeholders
+    [success]
+    [success] ── Weekly Sync Complete ──
+    [success]  Products: 384 │ New: 43 │ Cache: 89%
+    [success]  AI cost: $0.27 │ Duration: 22s
 client: LLS
 results:
   - value: "100+"
