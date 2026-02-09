@@ -12,9 +12,10 @@ export const metadata: Metadata = {
   description: "A collection of selected work spanning AI automation, web development, and digital experiences.",
 }
 
-function mapStatus(status: string): "live" | "in-progress" | "archived" {
+function mapStatus(status: string): "live" | "in-progress" | "archived" | "qa" {
   const normalized = status.toLowerCase()
-  if (normalized.includes("progress") || normalized.includes("beta")) return "in-progress"
+  if (normalized.includes("qa") || normalized.includes("testing")) return "qa"
+  if (normalized.includes("progress") || normalized.includes("beta") || normalized.includes("development")) return "in-progress"
   if (normalized.includes("archived") || normalized.includes("deprecated")) return "archived"
   return "live"
 }

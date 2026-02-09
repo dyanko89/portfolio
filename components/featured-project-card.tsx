@@ -6,6 +6,8 @@ import { ArrowUpRight } from "lucide-react"
 import { useState } from "react"
 import { TerminalDisplay, parseTerminalContent } from "./terminal-display"
 import { WireframeTradingPlatform } from "./wireframe-trading-platform"
+import { WireframeAnalyticsDashboard } from "./wireframe-analytics-dashboard"
+import { WireframeChatOnboarding } from "./wireframe-chat-onboarding"
 
 // Card display configuration - supports multiple display types
 interface CardDisplay {
@@ -23,7 +25,7 @@ interface FeaturedProjectCardProps {
   image?: string
   cardDisplay?: CardDisplay
   href: string
-  status: "live" | "in-progress" | "archived"
+  status: "live" | "in-progress" | "archived" | "qa"
   category?: string
 }
 
@@ -35,6 +37,10 @@ const statusConfig = {
   "in-progress": {
     label: "In Progress",
     className: "bg-warning/10 text-warning border-warning/30",
+  },
+  qa: {
+    label: "QA Testing",
+    className: "bg-accent/10 text-accent border-accent/30",
   },
   archived: {
     label: "Archived",
@@ -72,6 +78,8 @@ export function FeaturedProjectCard({
       if (cardDisplay.type === 'wireframe') {
         const wireframes: Record<string, React.ComponentType<{ className?: string }>> = {
           'trading-platform': WireframeTradingPlatform,
+          'analytics-dashboard': WireframeAnalyticsDashboard,
+          'chat-onboarding': WireframeChatOnboarding,
         }
         const WireframeComponent = wireframes[cardDisplay.component || '']
         if (WireframeComponent) {
