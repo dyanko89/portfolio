@@ -190,7 +190,7 @@ export default async function ProjectPage({ params }: PageProps) {
           <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
               {/* Sidebar */}
-              <aside className="lg:col-span-4">
+              <aside className="lg:col-span-3">
                 <div className="lg:sticky lg:top-32 space-y-8">
                   {/* Use TechStackIcons if available, otherwise fall back to tags */}
                   {project.techStack && project.techStack.length > 0 ? (
@@ -237,7 +237,7 @@ export default async function ProjectPage({ params }: PageProps) {
               </aside>
 
               {/* MDX Content */}
-              <div className="lg:col-span-7 lg:col-start-6">
+              <div className="lg:col-span-8 lg:col-start-5">
                 <article className="prose prose-invert md:prose-lg max-w-none prose-headings:text-foreground prose-h2:font-medium prose-p:text-foreground-secondary prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-strong:text-foreground prose-code:text-accent prose-code:bg-surface prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-pre:bg-surface prose-pre:border prose-pre:border-border prose-ul:text-foreground-secondary prose-ol:text-foreground-secondary prose-li:marker:text-accent">
                   {content}
                 </article>

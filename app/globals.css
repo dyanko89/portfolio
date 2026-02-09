@@ -420,7 +420,8 @@
 
 /* Mermaid diagram styling */
 .mermaid-wrapper {
-  overflow-x: auto;
+  display: flex;
+  justify-content: center;
 }
 
 .mermaid {
@@ -429,6 +430,7 @@
 }
 
 .mermaid svg {
+  max-width: 100%;
   height: auto;
 }
 
