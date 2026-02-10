@@ -180,8 +180,7 @@ export function HeroSection() {
             variants={fadeInUp}
           >
             <p className="text-base md:text-lg text-background/80 leading-relaxed text-pretty">
-              Crafting digital experiences that transform complexity into elegant,
-              intuitive solutions. Where design meets engineering.
+              Production automation for businesses tired of wasting time on work that shouldn&apos;t exist.
             </p>
           </motion.div>
 
