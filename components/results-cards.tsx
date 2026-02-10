@@ -21,7 +21,7 @@ export function ResultsCards({ results }: ResultsCardsProps) {
               className="border border-border p-6 transition-colors hover:border-border-hover"
             >
               {/* Large Value - Accent Color */}
-              <div className="mb-2 text-h2 font-bold text-accent">
+              <div className="mb-2 text-3xl md:text-4xl font-bold text-accent">
                 {result.value}
               </div>
 

@@ -238,7 +238,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
               {/* MDX Content */}
               <div className="lg:col-span-8 lg:col-start-5">
-                <article className="prose prose-invert md:prose-lg max-w-none prose-headings:text-foreground prose-h2:font-medium prose-p:text-foreground-secondary prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-strong:text-foreground prose-code:text-accent prose-code:bg-surface prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-pre:bg-surface prose-pre:border prose-pre:border-border prose-ul:text-foreground-secondary prose-ol:text-foreground-secondary prose-li:marker:text-accent">
+                <article className="prose prose-invert md:prose-lg max-w-none prose-headings:text-foreground prose-h2:font-medium prose-h3:font-normal prose-h3:text-foreground-secondary prose-h4:font-normal prose-h4:text-foreground-secondary prose-h4:text-sm prose-h4:uppercase prose-h4:tracking-wider prose-p:text-foreground-secondary prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover prose-strong:text-foreground prose-code:text-accent prose-code:bg-surface prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-pre:bg-surface prose-pre:border prose-pre:border-border prose-ul:text-foreground-secondary prose-ol:text-foreground-secondary prose-li:marker:text-accent">
                   {content}
                 </article>
               </div>
