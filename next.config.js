@@ -3,6 +3,15 @@ const nextConfig = {
   turbopack: {
     root: __dirname,
   },
+  async redirects() {
+    return [
+      {
+        source: '/projects/gcx-platform',
+        destination: '/projects/international-trading-platform',
+        permanent: true,
+      },
+    ]
+  },
   images: {
     // Generate responsive image sizes
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
