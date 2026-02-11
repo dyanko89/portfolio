@@ -74,7 +74,7 @@ export function Footer() {
             {currentYear} DJY89. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground">
-            From Chaos to Clarity.
+            Creating Systems That Run Themselves.
           </p>
         </div>
       </div>
