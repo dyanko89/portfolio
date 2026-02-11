@@ -152,19 +152,13 @@ export function HeroSection() {
               className="block"
               variants={fadeInUp}
             >
-              From
+              Creating Systems
             </motion.span>
             <motion.span
               className="block"
               variants={fadeInUp}
             >
-              Chaos to
-            </motion.span>
-            <motion.span
-              className="block"
-              variants={fadeInUp}
-            >
-              Clarity
+              That Run Themselves
             </motion.span>
           </motion.h1>
         </div>
