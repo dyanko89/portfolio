@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const blog = await getBlogPost(slug)
   if (!blog) return {}
   return {
-    title: `${blog.title} | Dyanko89`,
+    title: `${blog.title} | Danny Yanko`,
     description: blog.summary,
   }
 }

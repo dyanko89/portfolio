@@ -22,8 +22,8 @@ const ubuntuMono = Ubuntu_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://djy89.net'),
-  title: 'Dyanko89 | From Chaos to Clarity',
-  description: 'Systems Architect & AI Consultant crafting digital experiences that transform complexity into elegant solutions.',
+  title: 'Danny Yanko | Systems Architect & Automation Consultant',
+  description: 'Automation for businesses tired of wasting time on work that shouldn\'t exist.',
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },

@@ -8,8 +8,8 @@ import { ProjectCard } from "@/components/project-card"
 import { getAllProjects } from "@/lib/mdx/content"
 
 export const metadata: Metadata = {
-  title: "Projects | Dyanko89",
-  description: "A collection of selected work spanning AI automation, web development, and digital experiences.",
+  title: "Projects | Danny Yanko",
+  description: "A collection of selected work spanning AI automation, web & app development, and digital experiences.",
 }
 
 function mapStatus(status: string): "live" | "in-progress" | "archived" | "qa" {
