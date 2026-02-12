@@ -79,10 +79,7 @@ export function Navigation() {
             <Link
               href="/contact"
               className={cn(
-                "ml-4 px-5 py-2.5 bg-accent text-accent-foreground text-sm font-medium tracking-wide hover:bg-accent-hover transition-all duration-250 border-2",
-                isScrolled
-                  ? "border-accent"
-                  : "border-foreground"
+                "ml-4 px-5 py-2.5 bg-transparent text-foreground text-sm font-medium tracking-wide border-2 border-foreground"
               )}
             >
               GET IN TOUCH
@@ -132,7 +129,7 @@ export function Navigation() {
               href="/contact"
               onClick={() => setIsOpen(false)}
               className={cn(
-                "block w-full py-5 bg-accent text-accent-foreground text-center font-medium tracking-wide hover:bg-accent-hover transition-colors duration-150",
+                "block w-full py-5 bg-transparent text-foreground text-center font-medium tracking-wide border-2 border-foreground",
                 isOpen && "animate-fade-in-up"
               )}
               style={{ animationDelay: "300ms" }}

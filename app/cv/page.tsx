@@ -136,6 +136,7 @@ export default function CVPage() {
               </div>
               <a
                 href="/api/cv"
+                download="danny-yanko-cv.pdf"
                 className="group inline-flex items-center justify-between gap-4 px-8 py-5 border border-border text-foreground text-sm font-medium tracking-wide hover:border-border-hover hover:bg-surface/50 transition-all duration-150 min-h-[56px]"
               >
                 <Download className="w-4 h-4" />
