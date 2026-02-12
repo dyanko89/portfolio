@@ -2,7 +2,6 @@ import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
 import { AboutSection } from "@/components/about-section"
 import { ProjectsSection } from "@/components/projects-section"
-import { ServicesSection } from "@/components/services-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { getAllProjects } from "@/lib/mdx/content"
@@ -18,7 +17,6 @@ export default async function HomePage() {
       <HeroSection />
       <AboutSection />
       <ProjectsSection projects={featuredProjects} />
-      <ServicesSection />
       <ContactSection />
       <Footer />
     </main>

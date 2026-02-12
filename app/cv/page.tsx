@@ -1,62 +1,14 @@
 import { Metadata } from "next"
-import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { PageHeader } from "@/components/page-header"
 import { ArrowUpRight, Download } from "lucide-react"
+import { experience, systems, skills } from "@/lib/cv-data"
 
 export const metadata: Metadata = {
   title: "CV | Danny Yanko",
   description: "14+ years building marketing systems and AI-powered automation. Solutions architect who ships production infrastructure.",
 }
-
-const experience = [
-  {
-    period: "2022 — Present",
-    role: "Solutions Architect & Marketing Manager",
-    company: "Mixed Sweet Media",
-    description: "Build AI-powered automation systems and lead marketing operations for enterprise clients including Parkland and Canada Beef. Delivered 200+ training videos, achieved 615% campaign ROI, and created systems generating 20:1 efficiency gains.",
-  },
-  {
-    period: "2017 — 2019",
-    role: "Marketing Manager & IT Support",
-    company: "Summit Kids",
-    description: "Managed full marketing operations and cross-functional project coordination. Authored 50+ SOPs to systematize workflows. Coordinated multi-site initiatives and stakeholder alignment.",
-  },
-  {
-    period: "2011 — 2022",
-    role: "Independent Creative & Systems Builder",
-    company: "Consulting",
-    description: "Built marketing operations for clients across healthcare, energy, and tech. Delivered multilingual platforms, achieved 6:1 ROI on SEO/PPC campaigns, and opened 4 new B2B distribution channels.",
-  },
-]
-
-const systems = [
-  {
-    name: "International Trading Platform",
-    description: "Full-stack rebuild of B2B2C trading platform. 52-table normalized schema, 3.7M+ production rows, multi-currency support, and regulatory compliance across jurisdictions.",
-    tech: ["React", "Node.js", "TypeScript", "SQL Server"],
-  },
-  {
-    name: "Enterprise Analytics Dashboard",
-    description: "Real-time analytics for 2000+ fuel station locations with RBAC, territory management, and performance leaderboards for Parkland/Sunoco.",
-    tech: ["React", "Supabase", "PostgreSQL", "Row-Level Security"],
-  },
-  {
-    name: "AI Email Triage System",
-    description: "Production system processing Office 365 emails through Claude AI for intelligent categorization, then routing to Asana with proper project assignment.",
-    tech: ["Node.js", "Claude API", "Microsoft Graph", "Asana API"],
-  },
-]
-
-const skills = [
-  { category: "AI & Automation", items: ["Claude API", "OpenAI API", "Prompt Engineering", "Multi-Agent Systems", "CrewAI"] },
-  { category: "Development", items: ["TypeScript", "Python", "JavaScript", "PowerShell", "SQL"] },
-  { category: "Frameworks", items: ["Next.js", "React", "Node.js", "Supabase"] },
-  { category: "Marketing Tech", items: ["HubSpot", "Google Analytics", "Marketo", "Salesforce"] },
-  { category: "Infrastructure", items: ["Linux/Debian", "WireGuard", "AWS SES", "Vercel", "PostgreSQL"] },
-  { category: "Tools", items: ["Git", "Asana", "Notion", "Final Cut Pro", "Figma"] },
-]
 
 export default function CVPage() {
   return (
@@ -182,15 +134,14 @@ export default function CVPage() {
                   Download my complete curriculum vitae in PDF format.
                 </p>
               </div>
-              <Link
-                href="/danny-yanko-cv.pdf"
-                download
+              <a
+                href="/api/cv"
                 className="group inline-flex items-center justify-between gap-4 px-8 py-5 border border-border text-foreground text-sm font-medium tracking-wide hover:border-border-hover hover:bg-surface/50 transition-all duration-150 min-h-[56px]"
               >
                 <Download className="w-4 h-4" />
                 <span>DOWNLOAD PDF</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </Link>
+              </a>
             </div>
           </div>
         </section>
