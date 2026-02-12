@@ -88,14 +88,14 @@ const s = StyleSheet.create({
   divider: {
     height: 2,
     backgroundColor: t.accent,
-    marginTop: 8,
-    marginBottom: 14,
+    marginTop: 10,
+    marginBottom: 18,
   },
   thinDivider: {
     height: 1,
     backgroundColor: t.border,
-    marginTop: 12,
-    marginBottom: 12,
+    marginTop: 18,
+    marginBottom: 18,
   },
   // Section
   sectionTitle: {
@@ -104,26 +104,23 @@ const s = StyleSheet.create({
     color: t.text,
     letterSpacing: 1.5,
     textTransform: "uppercase",
-    marginBottom: 8,
+    marginBottom: 12,
   },
-  // Experience — compact inline layout
+  // Experience — compact stacked layout
   expRow: {
-    marginBottom: 10,
-  },
-  expHeader: {
-    flexDirection: "row",
-    alignItems: "baseline",
-    marginBottom: 2,
+    marginBottom: 14,
   },
   expRole: {
     fontSize: 10,
     fontWeight: 700,
     color: t.text,
+    marginBottom: 1,
   },
   expCompany: {
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: 500,
     color: t.accent,
+    marginBottom: 1,
   },
   expPeriod: {
     fontSize: 7.5,
@@ -145,7 +142,7 @@ const s = StyleSheet.create({
     flex: 1,
   },
   sysRow: {
-    marginBottom: 8,
+    marginBottom: 12,
   },
   sysName: {
     fontSize: 10,
@@ -184,7 +181,7 @@ const s = StyleSheet.create({
   },
   skillCategory: {
     width: "48%",
-    marginBottom: 4,
+    marginBottom: 8,
   },
   skillLabel: {
     fontSize: 7,
@@ -229,7 +226,7 @@ const s = StyleSheet.create({
   },
 })
 
-const logoPath = path.join(process.cwd(), "public", "assets", "djy89-solid.png")
+const logoPath = path.join(process.cwd(), "public", "assets", "djy89-outline.png")
 
 export function CVDocument() {
   // Split systems into two columns
@@ -265,10 +262,8 @@ export function CVDocument() {
         <Text style={s.sectionTitle}>Work Experience</Text>
         {experience.map((item, i) => (
           <View key={i} style={s.expRow}>
-            <View style={s.expHeader}>
-              <Text style={s.expRole}>{item.role}</Text>
-              <Text style={s.expCompany}>{"  —  "}{item.company}</Text>
-            </View>
+            <Text style={s.expRole}>{item.role}</Text>
+            <Text style={s.expCompany}>{item.company}</Text>
             <Text style={s.expPeriod}>{item.period}</Text>
             <Text style={s.expDesc}>{item.description}</Text>
           </View>
