@@ -24,6 +24,9 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://djy89.net'),
   title: 'Danny Yanko | Systems Architect & Automation Consultant',
   description: 'Automation for businesses tired of wasting time on work that shouldn\'t exist.',
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },

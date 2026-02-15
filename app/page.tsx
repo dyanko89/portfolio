@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
 import { AboutSection } from "@/components/about-section"
@@ -5,6 +6,12 @@ import { ProjectsSection } from "@/components/projects-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { getAllProjects } from "@/lib/mdx/content"
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+}
 
 export default async function HomePage() {
   const projects = await getAllProjects()

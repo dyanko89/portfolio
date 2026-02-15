@@ -10,6 +10,9 @@ import { getAllProjects } from "@/lib/mdx/content"
 export const metadata: Metadata = {
   title: "Projects | Danny Yanko",
   description: "A collection of selected work spanning AI automation, web & app development, and digital experiences.",
+  alternates: {
+    canonical: '/projects',
+  },
 }
 
 function mapStatus(status: string): "live" | "in-progress" | "archived" | "qa" {

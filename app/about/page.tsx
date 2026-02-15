@@ -8,6 +8,9 @@ import { ArrowRight } from "lucide-react"
 export const metadata: Metadata = {
   title: "About | Danny Yanko",
   description: "Systems architect and AI orchestration specialist. Making complexity invisible so creativity can flourish.",
+  alternates: {
+    canonical: '/about',
+  },
 }
 
 const capabilities = [

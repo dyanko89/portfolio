@@ -34,6 +34,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${project.title} | Projects | Danny Yanko`,
     description: project.summary,
+    alternates: {
+      canonical: `/projects/${slug}`,
+    },
   }
 }
 
