@@ -1,10 +1,16 @@
 import { getBlogPost, getAllBlogPosts } from "@/lib/mdx/content"
 import { renderMDX } from "@/lib/mdx/mdx"
+import { extractHeadings } from "@/lib/mdx/headings"
+import { getRelatedBlogPosts, getSeriesPosts } from "@/lib/mdx/related"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { TableOfContents } from "@/components/blog/table-of-contents"
+import { ShareButtons } from "@/components/blog/share-buttons"
+import { SeriesNavigation } from "@/components/blog/series-navigation"
+import { RelatedArticles } from "@/components/blog/related-articles"
 import { ArrowLeft, Clock } from "lucide-react"
 
 interface PageProps {
@@ -50,12 +56,16 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!blog) notFound()
 
   const content = await renderMDX(blog.content)
+  const headings = extractHeadings(blog.content)
+  const allPosts = await getAllBlogPosts()
+  const relatedPosts = getRelatedBlogPosts(slug, allPosts)
+  const seriesPosts = blog.series ? getSeriesPosts(blog.series, allPosts) : []
 
   return (
     <>
       <Navigation />
       <main className="pt-32 md:pt-40 pb-20 md:pb-32">
-        <article className="mx-auto max-w-3xl px-6 md:px-12">
+        <div className="mx-auto max-w-7xl px-6 md:px-12">
           {/* Back Link */}
           <Link
             href="/blog"
@@ -66,7 +76,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           </Link>
 
           {/* Header */}
-          <header className="mb-12">
+          <header className="max-w-3xl mb-12">
             <div className="flex items-center gap-4 text-sm text-muted-foreground mb-6">
               <span>{formatDate(blog.publishedAt)}</span>
               <span className="w-1 h-1 rounded-full bg-muted-foreground" />
@@ -83,24 +93,54 @@ export default async function BlogPostPage({ params }: PageProps) {
             </p>
           </header>
 
-          {/* Content */}
-          <div className="prose prose-invert prose-lg max-w-none
-            prose-headings:text-foreground prose-headings:font-semibold
-            prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
-            prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-            prose-p:text-foreground-secondary prose-p:leading-relaxed
-            prose-a:text-accent prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-foreground prose-strong:font-semibold
-            prose-code:text-accent prose-code:bg-surface prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
-            prose-pre:bg-surface prose-pre:border prose-pre:border-border prose-pre:rounded-none
-            prose-ul:text-foreground-secondary prose-ol:text-foreground-secondary
-            prose-li:marker:text-accent
-            prose-blockquote:border-l-accent prose-blockquote:text-foreground-secondary prose-blockquote:not-italic
-            prose-hr:border-border
-          ">
-            {content}
+          {/* Series Navigation */}
+          {blog.series && seriesPosts.length > 1 && (
+            <div className="max-w-3xl mb-12">
+              <SeriesNavigation
+                seriesName={blog.series}
+                posts={seriesPosts}
+                currentSlug={slug}
+              />
+            </div>
+          )}
+
+          {/* Two-column layout */}
+          <div className="lg:grid lg:grid-cols-[minmax(0,768px)_1fr] lg:gap-16">
+            {/* Article content */}
+            <article className="prose prose-invert prose-lg max-w-none
+              prose-headings:text-foreground prose-headings:font-semibold
+              prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
+              prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+              prose-p:text-foreground-secondary prose-p:leading-relaxed
+              prose-a:text-accent prose-a:no-underline hover:prose-a:underline
+              prose-strong:text-foreground prose-strong:font-semibold
+              prose-code:text-accent prose-code:bg-surface prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+              prose-pre:bg-surface prose-pre:border prose-pre:border-border prose-pre:rounded-none
+              prose-ul:text-foreground-secondary prose-ol:text-foreground-secondary
+              prose-li:marker:text-accent
+              prose-blockquote:border-l-accent prose-blockquote:text-foreground-secondary prose-blockquote:not-italic
+              prose-hr:border-border
+              prose-table:border-collapse prose-table:w-full
+              prose-th:border prose-th:border-border prose-th:px-4 prose-th:py-2 prose-th:text-foreground prose-th:bg-surface prose-th:text-left prose-th:font-semibold
+              prose-td:border prose-td:border-border prose-td:px-4 prose-td:py-2 prose-td:text-foreground-secondary
+            ">
+              {content}
+            </article>
+
+            {/* Sidebar */}
+            <aside className="hidden lg:block">
+              <div className="sticky top-[calc(80px+2rem)] space-y-10">
+                <TableOfContents headings={headings} />
+                <ShareButtons url={`/blog/${slug}`} title={blog.title} />
+              </div>
+            </aside>
           </div>
-        </article>
+        </div>
+
+        {/* Related Articles */}
+        {relatedPosts.length > 0 && (
+          <RelatedArticles posts={relatedPosts} />
+        )}
       </main>
       <Footer />
     </>

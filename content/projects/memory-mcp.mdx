@@ -1,0 +1,194 @@
+---
+title: AI Memory System
+publishedAt: 2025-01-10
+summary: A 5-layer distributed memory architecture that gives AI coding assistants persistent recall, relationship reasoning, and automated lifecycle management — capabilities that don't exist in any commercial AI product today.
+tags: ["Node.js", "TypeScript", "PostgreSQL", "Neo4j", "Redis", "MCP"]
+status: Live
+image: /images/projects/memory-mcp.png
+cardDisplay:
+  type: terminal
+  title: memory-mcp
+  content: |
+    [09:12:01] memory-mcp v2.0 online
+    [muted]
+    [09:12:01] ✓ PostgreSQL + pgvector (HNSW)
+    [09:12:02] ✓ Neo4j graph (891 entities)
+    [09:12:02] ✓ Redis cache connected
+    [09:12:03] ✓ Embedding model loaded (384-dim)
+    [muted]
+    [09:12:15] STORE scope:project:vaultkeeper
+    [muted]  → Embedded (12ms) │ 3 entities extracted
+    [success]  → Stored #247 │ graph updated
+    [muted]
+    [09:12:22] SEARCH "auth token rotation"
+    [muted]  → hybrid + rerank │ 23 candidates
+    [accent]  → #1 (0.94) "JWT refresh token strategy"
+    [accent]  → #2 (0.87) "Redis session management"
+    [muted]
+    [09:12:30] TRAVERSE entity:"vaultkeeper"
+    [muted]  → 12 connections │ 4 projects │ 3 decisions
+    [muted]
+    [09:13:00] PROMOTE dry_run=false
+    [muted]  → 247 scored │ 14 pinned │ 3 archived
+    [success]
+    [success] ── 247 memories │ 891 entities │ 12 tools ──
+results:
+  - value: "5-Layer"
+    label: "Memory Stack"
+    description: "PostgreSQL, Neo4j, Redis, MinIO, ONNX"
+  - value: "12"
+    label: "MCP Tools"
+    description: "Plug-and-play for any AI assistant"
+  - value: "<50ms"
+    label: "Search Latency"
+    description: "Hybrid semantic + keyword with reranking"
+  - value: "0"
+    label: "External API Calls"
+    description: "All inference runs locally on-device"
+techStack:
+  - category: "API"
+    items: ["Fastify", "TypeScript", "Node.js 20"]
+  - category: "Database"
+    items: ["PostgreSQL 16", "pgvector (HNSW)"]
+  - category: "Graph"
+    items: ["Neo4j", "Cypher"]
+  - category: "Cache"
+    items: ["Redis 7"]
+  - category: "Storage"
+    items: ["MinIO (S3-compatible)"]
+  - category: "AI / ML"
+    items: ["all-MiniLM-L6-v2 (embeddings)", "ms-marco-MiniLM (cross-encoder reranker)", "ONNX Runtime"]
+  - category: "Protocol"
+    items: ["Model Context Protocol (MCP)", "REST API"]
+  - category: "Testing"
+    items: ["Vitest (44 tests)", "Retrieval eval harness (P@K, MRR, NDCG)"]
+relatedProjects: ["mainframe", "email-triage"]
+---
+
+## The Gap
+
+Every major AI assistant -- ChatGPT, Claude, Gemini -- handles memory the same way: a flat list of facts stapled to every conversation. No search. No relationships. No lifecycle. The entire memory is dumped into the context window every turn, regardless of relevance.
+
+This approach doesn't scale. At a few hundred memories, you're burning half your context on irrelevant facts. There's no way to ask "what connects this project to that decision?" because there are no connections -- just a pile of sticky notes.
+
+The tooling gap is even wider for AI coding assistants. They start every session from zero. Yesterday's architectural decisions, past debugging sessions, operator corrections -- all gone. The assistant repeats mistakes it was already corrected on.
+
+## What I Built
+
+A dedicated memory infrastructure layer with five specialized backends, each handling a different type of recall:
+
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Structured + Semantic** | PostgreSQL + pgvector | Long-term storage with HNSW vector indexing for sub-linear similarity search |
+| **Graph** | Neo4j | Entity extraction and relationship traversal -- "what's connected to what" |
+| **Working Memory** | Redis | Ephemeral session state, search caching, multi-agent shared context with TTL |
+| **Artifact Storage** | MinIO | S3-compatible object storage for large files linked to memories |
+| **Intelligence** | ONNX models (local) | Embedding generation + cross-encoder reranking, fully offline |
+
+The system exposes 12 tools via the Model Context Protocol, making it plug-and-play for any MCP-compatible AI assistant. No custom integration, no vendor lock-in.
+
+## Retrieval Architecture
+
+The search pipeline is where this diverges most from flat-memory systems. Instead of dumping everything into context, it retrieves only what's relevant:
+
+```mermaid
+graph TD
+    Q["Query: 'auth token rotation'"] --> P["Pre-filter by scope + tags"]
+    P --> S["Semantic Search<br/>pgvector HNSW cosine"]
+    P --> K["Keyword Search<br/>tsvector BM25"]
+    S --> F["Reciprocal Rank Fusion"]
+    K --> F
+    F --> R["Cross-Encoder Reranker<br/>ms-marco-MiniLM"]
+    R --> T["Top-K Results<br/>(scored, ranked, scoped)"]
+```
+
+Three search modes fuse together:
+- **Semantic** -- query is embedded into a 384-dimension vector, compared against HNSW-indexed memory embeddings via cosine distance
+- **Keyword** -- BM25 ranking against PostgreSQL's `tsvector` full-text index
+- **Hybrid** (default) -- reciprocal rank fusion merges both result sets, then a cross-encoder reranker scores the top candidates for precision
+
+Every search is scoped. A query scoped to `project:vaultkeeper` won't bleed into memories from other projects.
+
+## Graph Reasoning
+
+Vector search answers "what's similar to this?" The graph layer answers "what's connected to this?" -- a fundamentally different question.
+
+When a memory is stored, an entity extraction pipeline identifies people, projects, technologies, and concepts, then writes them as nodes and edges in Neo4j. Over time, a knowledge graph emerges organically from the memories themselves:
+
+```mermaid
+graph LR
+    VK([vaultkeeper])
+    ET([email-triage])
+    MM([memory-mcp])
+
+    Redis{{Redis}}
+    PG{{PostgreSQL}}
+    Neo{{Neo4j}}
+    JWT{{JWT}}
+
+    M41[#41 Session token\nrotation strategy]
+    M87[#87 Redis cache\ninvalidation pattern]
+    M122[#122 Auth middleware\nrewrite decision]
+    M203[#203 Graph query\noptimization notes]
+
+    VK -->|USES| Redis
+    VK -->|USES| PG
+    VK -->|USES| JWT
+    ET -->|USES| Redis
+    MM -->|USES| PG
+    MM -->|USES| Neo
+    MM -->|USES| Redis
+
+    JWT -->|MENTIONS| M41
+    JWT -->|MENTIONS| M122
+    Redis -->|MENTIONS| M87
+    Redis -->|MENTIONS| M41
+    Neo -->|MENTIONS| M203
+    PG -->|MENTIONS| M203
+
+    VK -.->|RELATES_TO| ET
+    VK -.->|RELATES_TO| MM
+```
+
+A query like *"How does Redis connect to the VK platform?"* traverses from the `Redis` entity node to find three paths: the session token strategy, the cache invalidation pattern, and a shared dependency with email-triage. Vector search would only find documents *about* Redis. The graph finds documents *connected through* Redis.
+
+- *"What decisions were made about authentication?"* → traverse from `JWT` entity → 2 connected memories across 1 project
+- *"What infrastructure do these three projects share?"* → fan-out from project nodes → intersection at `Redis` and `PostgreSQL`
+- *"Show me everything connected to the email triage system"* → single entity traversal → technologies, decisions, related projects
+
+This is the kind of reasoning that flat key-value memory fundamentally cannot do.
+
+## Memory Lifecycle
+
+Memories aren't static. An automated promotion pipeline manages the lifecycle:
+
+- **Decay** -- relevance score drops exponentially based on access recency (30-day half-life), with type-weighted adjustments. Frequently accessed memories stay hot
+- **Pinning** -- critical memories (operator identity, foundational corrections) are marked permanent and exempt from decay
+- **Consolidation** -- near-duplicate memories (>0.95 cosine similarity) are detected and flagged for merge or auto-archive
+- **Auto-archive** -- memories below the relevance threshold are soft-archived, never hard-deleted
+
+The pipeline is driven by a scoring function that considers recency, access frequency, memory type, and content quality -- then runs as a scheduled background process.
+
+## Design Principles
+
+**Zero external API dependencies.** Embedding generation (all-MiniLM-L6-v2) and reranking (ms-marco-MiniLM) run locally via ONNX. No token costs, no network latency, no third-party data sharing. A memory system that depends on an API to think isn't a memory system -- it's a feature that disappears when the API changes.
+
+**Interface-driven architecture.** Every backend implements a shared TypeScript interface (`IMemoryStore`, `IVectorSearch`). PostgreSQL can be swapped for SQLite. The in-memory embedding index can be swapped for pgvector. Clients don't know or care which backend is active.
+
+**Eval-gated deployment.** A built-in retrieval evaluation harness measures Precision@K, Recall@K, MRR, and NDCG against a seeded query set. No changes ship without confirming search quality holds. This is how production search systems are maintained -- not vibes, measurements.
+
+**Graceful degradation.** Neo4j, Redis, and MinIO each have an `enabled` flag. The system runs on PostgreSQL alone, or SQLite alone, or with any combination of optional backends. Every layer is additive.
+
+## Results
+
+The system runs 24/7 as a Windows service, accessible across a WireGuard VPN from any device on the network. It's been the primary memory backend for all AI-assisted development work since deployment.
+
+- **Sub-50ms hybrid search** with cross-encoder reranking -- faster than a filesystem glob
+- **12 MCP tools** available to any compatible AI assistant without configuration
+- **Full offline operation** -- embedding, search, and reranking run without internet
+- **Automated lifecycle** -- the memory store stays relevant without manual curation
+- **44-test regression suite** -- every phase validated against the eval harness baseline
+
+---
+
+*Current AI memory is where databases were before indexing -- brute-force scans over flat files. This project is the index.*

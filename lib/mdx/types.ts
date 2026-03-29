@@ -4,6 +4,9 @@ export interface BlogPost {
   publishedAt: string;
   summary: string;
   image?: string;
+  tags?: string[];
+  series?: string;
+  seriesOrder?: number;
   content: string;
   url: string;
 }
@@ -60,6 +63,8 @@ export interface FrontMatter {
   image?: string;
   icon?: string;
   tags?: string[];
+  series?: string;
+  seriesOrder?: number;
   status?: string;
   // New fields
   results?: ProjectResult[];

@@ -486,3 +486,15 @@
   background: transparent;
   color: #e8edef;
 }
+
+/* Subgraph cluster backgrounds match page background */
+.mermaid .cluster rect {
+  fill: #0a0f12 !important;
+  stroke: #3d4f5c !important;
+  stroke-width: 1px;
+}
+
+.mermaid .cluster span {
+  color: #8fa3b0 !important;
+  fill: #8fa3b0 !important;
+}

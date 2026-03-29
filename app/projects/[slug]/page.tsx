@@ -10,6 +10,7 @@ import { ProjectHeroDisplay } from "@/components/project-hero-display"
 import { ArrowLeft, Calendar } from "lucide-react"
 import { getProject, getAllProjects } from "@/lib/mdx/content"
 import { renderMDX } from "@/lib/mdx/mdx"
+import { getRelatedProjects } from "@/lib/mdx/related"
 import { Project } from "@/lib/mdx/types"
 
 interface PageProps {
@@ -97,15 +98,9 @@ export default async function ProjectPage({ params }: PageProps) {
   // Render MDX content
   const content = await renderMDX(project.content)
 
-  // Fetch related projects if specified
-  let relatedProjectsData: Project[] = []
-  if (project.relatedProjects && project.relatedProjects.length > 0) {
-    const relatedPromises = project.relatedProjects.map((relatedSlug) =>
-      getProject(relatedSlug)
-    )
-    const results = await Promise.all(relatedPromises)
-    relatedProjectsData = results.filter((p): p is Project => p !== null)
-  }
+  // Fetch related projects (uses frontmatter relatedProjects if specified, otherwise dynamic matching)
+  const allProjects = await getAllProjects()
+  const relatedProjectsData = getRelatedProjects(slug, allProjects)
 
   return (
     <>
