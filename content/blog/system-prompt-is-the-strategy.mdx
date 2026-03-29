@@ -1,18 +1,8 @@
 ---
 title: "The System Prompt is the Strategy"
-summary: "Your AI doesn't need more tweaks. It needs firmware. Here's how to write system prompts that lock in clarity, tone, and logic--without babying the model."
+summary: "Your AI doesn't need more tweaks. It needs firmware. Here's how to write system prompts that lock in clarity, tone, and logic without babying the model."
 publishedAt: 2025-08-02
-type: blog
-status: draft
-categories: [AI Agent Design, Prompt Architecture]
-tags: [system-prompts, gpt, agent-frameworks, ai-operating-systems]
-moc_links: [Blog Index]
-slug: system-prompt-is-the-strategy
-author: Danny Yanko
-canonical_url: https://djy89.net/blog/system-prompt-is-the-strategy
-cover_image: /images/blog/placeholder.jpg
-word_count: 555
-reading_time: AUTO
+tags: ["Prompt Engineering", "AI Architecture", "Agent Design"]
 ---
 
 # The System Prompt is the Strategy
@@ -21,17 +11,13 @@ reading_time: AUTO
 
 Your system prompt is not a tagline. It’s not branding fluff. It’s the bootloader for cognition.
 
-If your agents are hallucinating, stalling, or acting inconsistent--it’s probably not your model. It’s your **architecture**. And that starts with how you structure the system prompt.
+If your agents are hallucinating, stalling, or acting inconsistent, it's probably not your model. It’s your **architecture**. And that starts with how you structure the system prompt.
 
-## Intro
+Everyone loves fiddling with prompts. One more word, another example, a tone tweak.
 
-Everyone loves fiddling with prompts: one more word, another example, a tone tweak.
+But if you're still writing one-off instructions with no logic stack, you're not prompting. You're guessing.
 
-But if you're still writing one-off instructions with no logic stack, you're not prompting--you're guessing.
-
-The real flex is designing system prompts like **firmware**: layered, modular, composable.
-
-This post gives you a field-tested breakdown for crafting prompts that lock in behavior across every use case--from solo agents to full-stack multi-agent rooms.
+Design them like **firmware**: layered, modular, composable. Here's how to craft prompts that lock in behavior from solo agents to multi-agent rooms.
 
 ## Why Most System Prompts Are Trash
 
@@ -88,7 +74,7 @@ Swap in new versions as your architecture evolves.
 
 System Prompt = `BIOS` + `UX Layer` + `Ethics Stack`
 
-When the model spins up, this is the logic scaffold it boots from. You’re not just controlling outputs--you’re shaping *thinking style*.
+When the model spins up, this is the logic scaffold it boots from. You're not just controlling outputs. You're shaping *thinking style*.
 
 The better your firmware, the fewer downstream hacks you need.
 
@@ -106,22 +92,6 @@ Why it works:
 - ✅ Behavior fallback in place
 
 You don’t need 1,000 tokens. You need clarity.
-
-## Bonus: Prompt Audit Checklist
-
-Before shipping a system prompt, run this:
-
-- [ ] Is the agent’s **identity** explicit?
-- [ ] Is tone and formatting standardized?
-- [ ] Are there fallback and error-handling rules?
-- [ ] Is tool use clearly defined (if applicable)?
-- [ ] Is the prompt **modular**, **version-controlled**, and **reusable**?
-
-If any answer is “kinda” or “not really”--you’re not done.
-
-## Conclusion
-
-This isn’t about clever wordsmithing.
 
 It’s about installing **default behavior** that scales across requests, roles, and reasoning tasks.
 

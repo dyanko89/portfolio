@@ -2,6 +2,7 @@
 title: From Chaos to System - Building Scalable Workflows
 publishedAt: 2024-03-22
 summary: How I transformed a chaotic startup environment into a well-oiled machine using simple automation principles
+tags: ["Automation", "Workflow Design", "Process Optimization"]
 ---
 
 ## The Problem: Startup Chaos
@@ -149,10 +150,10 @@ Beyond time savings, we saw:
 
 You don't need expensive tools or complex systems to create order from chaos. Start with understanding, build incrementally, and always keep the human element in mind.
 
-The goal isn't to automate everything—it's to automate the right things so your team can focus on what matters most.
+The goal isn't to automate everything. It's to automate the right things so your team can focus on what matters most.
 
 ## What's Next?
 
 In my next post, I'll dive deep into the specific tools and scripts we used, including code examples and implementation guides.
 
-The transformation from chaos to system isn't just about efficiency—it's about creating an environment where people can do their best work.
+The transformation from chaos to system isn't just about efficiency. It's about creating an environment where people can do their best work.
