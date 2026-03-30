@@ -55,11 +55,11 @@ relatedProjects: ["mainframe", "lls-pipeline"]
 
 ## Overview
 
-The Email Triage Assistant is an intelligent automation system that eliminates the daily burden of email management. By combining Claude AI's classification capabilities with a robust rules engine, it transforms incoming emails into actionable tasks without human intervention.
+Built for my own workflow and running 24/7 on personal infrastructure. Polls Office 365 every 15 minutes, classifies each email with Claude, and either creates an Asana task or archives it based on configurable routing rules.
 
 ## The Problem
 
-Professional teams face a constant battle with email overload:
+The daily inbox was a time sink:
 
 - Critical requests buried in promotional noise
 - Action items forgotten in long thread chains
@@ -68,7 +68,7 @@ Professional teams face a constant battle with email overload:
 
 ## The Solution
 
-A production-grade system that runs continuously on personal VPN infrastructure, processing emails every 15 minutes:
+A system that runs continuously on personal VPN infrastructure, processing emails every 15 minutes:
 
 ### Intelligent Classification
 
@@ -126,7 +126,7 @@ graph TD
 The system has been running in production since late 2024:
 
 - **~30 minutes saved daily** on email processing
-- **100% capture rate** of actionable items
+- **100% capture rate** on items requiring action
 - **Zero missed** client requests since deployment
 - **24/7 operation** with email failure alerts
 
@@ -138,5 +138,3 @@ The system has been running in production since late 2024:
 - **Cost Optimized**: Haiku model keeps AI costs under $5/month
 
 ---
-
-*This project demonstrates production AI deployment, API orchestration across multiple platforms, and infrastructure automation running on personal VPN infrastructure.*

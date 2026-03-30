@@ -1,7 +1,7 @@
 ---
 title: Personal Infrastructure Server
 publishedAt: 2024-06-01
-summary: Self-hosted Debian 12 server providing secure remote access via WireGuard VPN and hosting mission-critical production automation services with 99.9% uptime.
+summary: Self-hosted Debian 12 server providing secure remote access via WireGuard VPN and hosting production automation services with 99.9% uptime.
 tags: ["Debian", "WireGuard", "systemd", "Node.js", "Python"]
 status: Live
 image: /images/projects/mainframe.png
@@ -37,7 +37,7 @@ relatedProjects: ["email-triage", "lls-pipeline", "global-trading-platform"]
 
 ## Overview
 
-A personal infrastructure backbone running on Debian 12 with WireGuard VPN for secure remote access. Hosts multiple production automation services with high availability and automatic recovery.
+A Debian 12 server with WireGuard VPN for secure remote access. Hosts the automation behind Email Triage, Product Sync Pipeline, and other production workloads.
 
 ## Infrastructure Purpose
 
@@ -47,7 +47,7 @@ A personal infrastructure backbone running on Debian 12 with WireGuard VPN for s
 - Split tunneling options for specific services
 
 ### Production Service Hosting
-Hosts mission-critical automation services including:
+Hosts automation services including:
 - AI-powered email classification
 - Scheduled data sync pipelines
 - Automated backup systems
@@ -106,7 +106,7 @@ Cron-based scheduling for automation services with staggered execution times to 
 - Service state snapshots before updates
 - Documented recovery procedures
 
-## Security Posture
+## Security
 
 ### Access Control
 - SSH key-only authentication
@@ -126,5 +126,3 @@ Cron-based scheduling for automation services with staggered execution times to 
 - **Monthly Data Processed**: ~500GB
 
 ---
-
-*This project demonstrates infrastructure engineering, security-first thinking, and the ability to maintain production systems with high availability.*
