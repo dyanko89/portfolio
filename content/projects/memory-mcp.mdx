@@ -1,42 +1,40 @@
 ---
 title: AI Memory System
 publishedAt: 2025-01-10
-summary: A 5-layer distributed memory architecture that gives AI coding assistants persistent recall, relationship reasoning, and automated lifecycle management.
-tags: ["Node.js", "TypeScript", "PostgreSQL", "Neo4j", "Redis", "MCP"]
+summary: A 5-layer distributed memory architecture with auto-discovery — gives AI coding assistants persistent recall, relationship reasoning, and the ability to learn behavioral patterns from observation.
+tags: ["Node.js", "TypeScript", "PostgreSQL", "Neo4j", "Redis", "MCP", "Pattern Detection"]
 status: Live
 image: /images/projects/memory-mcp.png
 cardDisplay:
   type: terminal
-  title: memory-mcp
+  title: mnemos
   content: |
-    [09:12:01] memory-mcp v2.0 online
+    [09:12:01] mnemos v1.2 online
     [muted]
     [09:12:01] ✓ PostgreSQL + pgvector (HNSW)
     [09:12:02] ✓ Neo4j graph (891 entities)
     [09:12:02] ✓ Redis cache connected
     [09:12:03] ✓ Embedding model loaded (384-dim)
-    [muted]
-    [09:12:15] STORE scope:project:vaultkeeper
-    [muted]  → Embedded (12ms) │ 3 entities extracted
-    [success]  → Stored #247 │ graph updated
+    [09:12:03] ✓ Observation ingestion enabled
+    [09:12:03] ✓ Discovery scheduler started
     [muted]
     [09:12:22] SEARCH "auth token rotation"
     [muted]  → hybrid + rerank │ 23 candidates
     [accent]  → #1 (0.94) "JWT refresh token strategy"
     [accent]  → #2 (0.87) "Redis session management"
     [muted]
-    [09:12:30] TRAVERSE entity:"vaultkeeper"
-    [muted]  → 12 connections │ 4 projects │ 3 decisions
+    [09:13:00] DISCOVER project:mnemos
+    [muted]  → 142 observations │ 4 heuristics
+    [accent]  → Pattern: "npm test" repeated 11x (0.78)
+    [accent]  → Pattern: hot file src/config.ts (0.62)
+    [success]  → 2 created │ 1 reinforced │ ceiling 0.85
     [muted]
-    [09:13:00] PROMOTE dry_run=false
-    [muted]  → 247 scored │ 14 pinned │ 3 archived
-    [success]
-    [success] ── 247 memories │ 891 entities │ 12 tools ──
+    [success] ── 247 memories │ 891 entities │ 13 tools ──
 results:
-  - value: "5-Layer"
-    label: "Memory Stack"
-    description: "PostgreSQL, Neo4j, Redis, MinIO, ONNX"
-  - value: "12"
+  - value: "5+1"
+    label: "Memory Layers"
+    description: "PostgreSQL, Neo4j, Redis, MinIO, ONNX + auto-discovery"
+  - value: "13"
     label: "MCP Tools"
     description: "Plug-and-play for any AI assistant"
   - value: "<50ms"
@@ -49,7 +47,7 @@ techStack:
   - category: "API"
     items: ["Fastify", "TypeScript", "Node.js 20"]
   - category: "Database"
-    items: ["PostgreSQL 16", "pgvector (HNSW)"]
+    items: ["PostgreSQL 16", "pgvector (HNSW)", "SQLite (observations)"]
   - category: "Graph"
     items: ["Neo4j", "Cypher"]
   - category: "Cache"
@@ -57,13 +55,21 @@ techStack:
   - category: "Storage"
     items: ["MinIO (S3-compatible)"]
   - category: "AI / ML"
-    items: ["all-MiniLM-L6-v2 (embeddings)", "ms-marco-MiniLM (cross-encoder reranker)", "ONNX Runtime"]
+    items: ["all-MiniLM-L6-v2 (embeddings)", "ms-marco-MiniLM (cross-encoder reranker)", "ONNX Runtime", "Heuristic pattern detection"]
   - category: "Protocol"
     items: ["Model Context Protocol (MCP)", "REST API"]
   - category: "Testing"
-    items: ["Vitest (44 tests)", "Retrieval eval harness (P@K, MRR, NDCG)"]
+    items: ["Vitest (149 tests)", "Retrieval eval harness (P@K, MRR, NDCG)"]
 relatedProjects: ["mainframe", "email-triage"]
 ---
+
+## Version History
+
+> **v1.0** — SQLite backend, embedding search, basic CRUD. A memory that could store and find.
+>
+> **v1.1** — 5-layer stack (PostgreSQL, Neo4j, Redis, MinIO, ONNX). Graph reasoning, cross-encoder reranking, promotion pipeline. A memory that could *think*.
+>
+> **v1.2** — Auto-discovery pipeline. Observes tool use, detects behavioral patterns, creates confidence-scored memories autonomously. A memory that *learns*.
 
 ## The Gap
 
@@ -72,6 +78,8 @@ Every major AI assistant (ChatGPT, Claude, Gemini) handles memory the same way: 
 This approach doesn't scale. At a few hundred memories, you're burning half your context on irrelevant facts. There's no way to ask "what connects this project to that decision?" because there are no connections. Just a pile of sticky notes.
 
 The tooling gap is even wider for AI coding assistants. They start every session from zero. Yesterday's architectural decisions, past debugging sessions, operator corrections. All gone. The assistant repeats mistakes it was already corrected on.
+
+And even with explicit memory, the operator has to do all the work. Every useful pattern, every learned correction, every workflow preference — manually stored, or lost.
 
 ## What I Built
 
@@ -169,6 +177,38 @@ Memories aren't static. An automated promotion pipeline manages the lifecycle:
 
 The pipeline is driven by a scoring function that considers recency, access frequency, memory type, and content quality, then runs as a scheduled background process.
 
+## Auto-Discovery: Memory That Learns
+
+Everything above is explicit memory — the operator stores it, the system recalls it. Version 1.2 adds an observation layer that watches how the AI assistant is actually used and discovers patterns autonomously.
+
+```mermaid
+graph LR
+    H["Claude Code Hook<br/>(PreToolUse / PostToolUse)"] --> B["Local JSONL Buffer<br/>(sub-ms, never lost)"]
+    B --> A["REST API<br/>(batch flush, scrubbed)"]
+    A --> O["observations.db<br/>(separate lifecycle)"]
+    O --> D["4 Heuristic Detectors"]
+    D --> S["Three-Tier Semantic Dedup"]
+    S --> M["Auto-Discovered Memories<br/>(confidence-scored, 0.85 ceiling)"]
+```
+
+The pipeline has four zero-cost detectors — no API calls, no LLM inference:
+
+- **Repeated tool+input**: same command run 3+ times across sessions → "operator frequently runs `npm test` before committing"
+- **Error-then-fix**: failed tool call followed by successful retry → "when Jest fails with ENOMEM, increase `--maxWorkers`"
+- **Hot files**: same file edited 3+ times per session → "`src/config.ts` is a frequent edit target"
+- **Repeated commands**: normalized shell commands recurring → "operator uses `docker compose up -d` to start the dev stack"
+
+Detected patterns become memories with a confidence score. The scoring is deliberately conservative:
+
+- **Self-limiting reinforcement**: each repeated observation adds `+0.05 * (1 - current)` — high-confidence patterns get smaller bumps, preventing echo chambers
+- **Confidence ceiling at 0.85**: auto-discovered memories never auto-promote past this. The operator must explicitly confirm for higher trust
+- **Read-time decay**: confidence decays with a 60-day half-life if the pattern stops appearing, with a freeze for dormant projects
+- **Bounded search influence**: discovered memories can reduce their search score by at most 50%, ensuring they still surface but don't dominate explicit knowledge
+
+Three-tier semantic deduplication prevents the system from creating near-duplicate memories: similarity >= 0.95 reinforces the existing memory, 0.85-0.95 reinforces and logs new evidence, below 0.85 creates a new entry.
+
+Security is multi-layered: client-side secret scrubbing before network transit, server-side scrubbing as defense-in-depth, content denylist blocking dangerous command patterns, and API key authentication on all observation endpoints.
+
 ## Design Principles
 
 **Zero external API dependencies.** Embedding generation (all-MiniLM-L6-v2) and reranking (ms-marco-MiniLM) run locally via ONNX. No token costs, no network latency, no third-party data sharing. A memory system that depends on an API to think isn't a memory system. It's a feature that disappears when the API changes.
@@ -184,11 +224,12 @@ The pipeline is driven by a scoring function that considers recency, access freq
 The system runs 24/7 as a Windows service, accessible across a WireGuard VPN from any device on the network. It's been the primary memory backend for all AI-assisted development work since deployment.
 
 - **Sub-50ms hybrid search** with cross-encoder reranking, faster than a filesystem glob
-- **12 MCP tools** available to any compatible AI assistant without configuration
-- **Full offline operation**:embedding, search, and reranking run without internet
-- **Automated lifecycle**:the memory store stays relevant without manual curation
-- **44-test regression suite**:every phase validated against the eval harness baseline
+- **13 MCP tools** available to any compatible AI assistant without configuration
+- **Full offline operation**: embedding, search, reranking, and pattern detection run without internet
+- **Automated lifecycle**: the memory store stays relevant without manual curation
+- **Autonomous learning**: the system observes, detects, and remembers without being told
+- **149-test regression suite**: every phase validated against the eval harness baseline
 
 ---
 
-*Current AI memory is where databases were before indexing: brute-force scans over flat files. This project is the index.*
+*v1.0 was a database that could remember. v1.1 was a system that could reason about what it remembers. v1.2 is a system that decides what's worth remembering in the first place.*
