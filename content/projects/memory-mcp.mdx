@@ -1,63 +1,65 @@
 ---
-title: Self-Curating AI Memory
+title: AI Memory System
 publishedAt: 2025-01-10
-summary: A self-hosted memory layer for coding agents that curates itself — an autonomous consolidation pass collapses duplicates, decays stale facts, and routes contradictions, without ever letting an LLM rewrite or delete a memory, and with every change audited and reversible. Fully local.
-tags: ["TypeScript", "Node.js", "MCP", "SQLite", "PostgreSQL", "ONNX", "Ollama", "Autonomous Consolidation"]
+summary: A 5-layer distributed memory architecture with auto-discovery — gives AI coding assistants persistent recall, relationship reasoning, and the ability to learn behavioral patterns from observation.
+tags: ["Node.js", "TypeScript", "PostgreSQL", "Neo4j", "Redis", "MCP", "Pattern Detection"]
 status: Live
 image: /images/projects/memory-mcp.png
 cardDisplay:
   type: terminal
   title: mnemos
   content: |
-    [09:12:01] mnemos online
+    [09:12:01] mnemos v1.2 online
     [muted]
-    [09:12:01] ✓ SQLite + in-memory HNSW (or PostgreSQL + pgvector)
-    [09:12:02] ✓ Embedding + reranker (ONNX, on-device)
-    [09:12:02] ✓ Observation ingestion enabled
-    [09:12:03] ✓ Dreaming scheduler armed (quiet hours)
+    [09:12:01] ✓ PostgreSQL + pgvector (HNSW)
+    [09:12:02] ✓ Neo4j graph (891 entities)
+    [09:12:02] ✓ Redis cache connected
+    [09:12:03] ✓ Embedding model loaded (384-dim)
+    [09:12:03] ✓ Observation ingestion enabled
+    [09:12:03] ✓ Discovery scheduler started
     [muted]
-    [03:00:04] DREAM pass project:mnemos
-    [muted]  → 512 memories scanned │ deterministic-first
-    [accent]  → collapse: 3 exact duplicates → 1
-    [accent]  → decay: 2 stale memories archived
-    [accent]  → contradict: "uses X" ⇢ superseded by "switched to Y"
-    [muted]  → local LLM classified 1 pair │ 0 writes
-    [success]  → 6 changes │ snapshot + audited │ rollback-able
-    [muted]
-    [09:13:00] SEARCH "auth token rotation"
+    [09:12:22] SEARCH "auth token rotation"
+    [muted]  → hybrid + rerank │ 23 candidates
     [accent]  → #1 (0.94) "JWT refresh token strategy"
+    [accent]  → #2 (0.87) "Redis session management"
     [muted]
-    [success] ── 19 tools │ 0 external API calls │ audited ──
+    [09:13:00] DISCOVER project:mnemos
+    [muted]  → 142 observations │ 4 heuristics
+    [accent]  → Pattern: "npm test" repeated 11x (0.78)
+    [accent]  → Pattern: hot file src/config.ts (0.62)
+    [success]  → 2 created │ 1 reinforced │ ceiling 0.85
+    [muted]
+    [success] ── 247 memories │ 891 entities │ 13 tools ──
 results:
-  - value: "19"
+  - value: "5+1"
+    label: "Memory Layers"
+    description: "PostgreSQL, Neo4j, Redis, MinIO, ONNX + auto-discovery"
+  - value: "13"
     label: "MCP Tools"
-    description: "Plug-and-play for any MCP-compatible assistant"
+    description: "Plug-and-play for any AI assistant"
+  - value: "<50ms"
+    label: "Search Latency"
+    description: "Hybrid semantic + keyword with reranking"
   - value: "0"
     label: "External API Calls"
-    description: "Embeddings, reranking, and reasoning run on-device"
-  - value: "Reversible"
-    label: "Every Autonomous Change"
-    description: "Snapshot → audit log → one-call rollback"
-  - value: "593"
-    label: "Tests"
-    description: "Two backends, eval-gated (P@K, MRR, NDCG)"
+    description: "All inference runs locally on-device"
 techStack:
   - category: "API"
     items: ["Fastify", "TypeScript", "Node.js 20"]
   - category: "Database"
-    items: ["SQLite (default)", "PostgreSQL 16 + pgvector (optional)", "SQLite (observations)"]
+    items: ["PostgreSQL 16", "pgvector (HNSW)", "SQLite (observations)"]
   - category: "Graph"
-    items: ["Neo4j (optional)", "Cypher"]
-  - category: "Cache / Storage"
-    items: ["Redis 7 (optional)", "MinIO (optional)"]
+    items: ["Neo4j", "Cypher"]
+  - category: "Cache"
+    items: ["Redis 7"]
+  - category: "Storage"
+    items: ["MinIO (S3-compatible)"]
   - category: "AI / ML"
-    items: ["all-MiniLM-L6-v2 (embeddings)", "ms-marco-MiniLM (reranker)", "ONNX Runtime", "qwen3:8b via Ollama (optional, classify-only)", "Heuristic pattern detection"]
-  - category: "Consolidation"
-    items: ["Deterministic diff engine", "Snapshot + audit log + rollback", "Contradiction routing & supersession"]
+    items: ["all-MiniLM-L6-v2 (embeddings)", "ms-marco-MiniLM (cross-encoder reranker)", "ONNX Runtime", "Heuristic pattern detection"]
   - category: "Protocol"
     items: ["Model Context Protocol (MCP)", "REST API"]
   - category: "Testing"
-    items: ["Vitest (593 tests, two backends)", "Zero-LLM replay harness", "Retrieval eval (P@K, MRR, NDCG)"]
+    items: ["Vitest (149 tests)", "Retrieval eval harness (P@K, MRR, NDCG)"]
 relatedProjects: ["mainframe", "email-triage"]
 ---
 
@@ -68,10 +70,6 @@ relatedProjects: ["mainframe", "email-triage"]
 > **v1.1** — 5-layer stack (PostgreSQL, Neo4j, Redis, MinIO, ONNX). Graph reasoning, cross-encoder reranking, promotion pipeline. A memory that could *think*.
 >
 > **v1.2** — Auto-discovery pipeline. Observes tool use, detects behavioral patterns, creates confidence-scored memories autonomously. A memory that *learns*.
->
-> **v1.3 — The Librarian.** Autonomous nightly consolidation: collapses duplicates, decays stale memories, routes contradictions and supersessions. A memory that *curates itself while it sleeps*.
->
-> **v2.0 — Safe autonomy.** The deterministic engine owns every write; the optional local LLM only classifies and is locked out of the write path. Every change is snapshot-first, audited, and reversible. A memory you can *trust to edit itself*.
 
 ## The Gap
 
@@ -81,23 +79,21 @@ This approach doesn't scale. At a few hundred memories, you're burning half your
 
 The tooling gap is even wider for AI coding assistants. They start every session from zero. Yesterday's architectural decisions, past debugging sessions, operator corrections. All gone. The assistant repeats mistakes it was already corrected on.
 
-But the deepest problem shows up *after* you solve recall. Once a system remembers everything, the memory itself starts to rot: duplicates pile up, stale facts outrank current ones, and contradictions — "we use X" and "we switched to Y" — both keep surfacing with no notion of which is true now. Recall was never the hard part. **Curation is.**
+And even with explicit memory, the operator has to do all the work. Every useful pattern, every learned correction, every workflow preference — manually stored, or lost.
 
 ## What I Built
 
-A dedicated memory infrastructure layer with two halves: a retrieval stack that finds only what's relevant, and a consolidation engine that keeps the store lean and correct over time — without a human gardening it, and without ever shipping the codebase's context to a cloud model.
-
-The retrieval side spans specialized backends, each handling a different type of recall:
+A dedicated memory infrastructure layer with five specialized backends, each handling a different type of recall:
 
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
-| **Structured + Semantic** | SQLite (default) or PostgreSQL + pgvector | Long-term storage with vector similarity search |
-| **Graph** | Neo4j (optional) | Entity extraction and relationship traversal: "what's connected to what" |
-| **Working Memory** | Redis (optional) | Ephemeral session state, search caching, multi-agent shared context with TTL |
-| **Artifact Storage** | MinIO (optional) | S3-compatible object storage for large files linked to memories |
+| **Structured + Semantic** | PostgreSQL + pgvector | Long-term storage with HNSW vector indexing for sub-linear similarity search |
+| **Graph** | Neo4j | Entity extraction and relationship traversal: "what's connected to what" |
+| **Working Memory** | Redis | Ephemeral session state, search caching, multi-agent shared context with TTL |
+| **Artifact Storage** | MinIO | S3-compatible object storage for large files linked to memories |
 | **Intelligence** | ONNX models (local) | Embedding generation + cross-encoder reranking, fully offline |
 
-The system exposes **19 tools** via the Model Context Protocol, making it plug-and-play for any MCP-compatible AI assistant — Claude Code and Codex CLI share the same store. No custom integration, no vendor lock-in. Every optional backend has an `enabled` flag; the whole thing runs on a single SQLite file if you want it to.
+The system exposes 12 tools via the Model Context Protocol, making it plug-and-play for any MCP-compatible AI assistant. No custom integration, no vendor lock-in.
 
 ## Retrieval Architecture
 
@@ -106,21 +102,20 @@ The search pipeline is where this diverges most from flat-memory systems. Instea
 ```mermaid
 graph TD
     Q["Query: 'auth token rotation'"] --> P["Pre-filter by scope + tags"]
-    P --> S["Semantic Search<br/>vector cosine (HNSW / in-memory)"]
-    P --> K["Keyword Search<br/>FTS5 / tsvector BM25"]
+    P --> S["Semantic Search<br/>pgvector HNSW cosine"]
+    P --> K["Keyword Search<br/>tsvector BM25"]
     S --> F["Reciprocal Rank Fusion"]
     K --> F
     F --> R["Cross-Encoder Reranker<br/>ms-marco-MiniLM"]
-    R --> C["Confidence blend"]
-    C --> T["Top-K Results<br/>(scored, ranked, scoped)"]
+    R --> T["Top-K Results<br/>(scored, ranked, scoped)"]
 ```
 
 Three search modes fuse together:
-- **Semantic**: the query is embedded into a 384-dimension vector, compared against indexed memory embeddings via cosine distance
-- **Keyword**: BM25 ranking against a full-text index (SQLite FTS5 or Postgres `tsvector`)
-- **Hybrid** (default): reciprocal rank fusion merges both result sets, a cross-encoder reranker scores the top candidates for precision, and each memory's confidence is blended into the final order — so a well-evidenced memory outranks a lexically-similar guess
+- **Semantic**:query is embedded into a 384-dimension vector, compared against HNSW-indexed memory embeddings via cosine distance
+- **Keyword**:BM25 ranking against PostgreSQL's `tsvector` full-text index
+- **Hybrid** (default): reciprocal rank fusion merges both result sets, then a cross-encoder reranker scores the top candidates for precision
 
-Every search is scoped. A query scoped to `project:vaultkeeper` won't bleed into memories from other projects. A separate fast-recall path — used by the per-prompt hook — skips reranking and runs entirely in-process, no network round-trip.
+Every search is scoped. A query scoped to `project:vaultkeeper` won't bleed into memories from other projects.
 
 ## Graph Reasoning
 
@@ -171,107 +166,70 @@ A query like *"How does Redis connect to the VK platform?"* traverses from the `
 
 This is the kind of reasoning that flat key-value memory fundamentally cannot do.
 
+## Memory Lifecycle
+
+Memories aren't static. An automated promotion pipeline manages the lifecycle:
+
+- **Decay**:relevance score drops exponentially based on access recency (30-day half-life), with type-weighted adjustments. Frequently accessed memories stay hot
+- **Pinning**:critical memories (operator identity, foundational corrections) are marked permanent and exempt from decay
+- **Consolidation**:near-duplicate memories (>0.95 cosine similarity) are detected and flagged for merge or auto-archive
+- **Auto-archive**:memories below the relevance threshold are soft-archived, never hard-deleted
+
+The pipeline is driven by a scoring function that considers recency, access frequency, memory type, and content quality, then runs as a scheduled background process.
+
 ## Auto-Discovery: Memory That Learns
 
-Everything above is explicit memory — the operator stores it, the system recalls it. An observation layer watches how the AI assistant is actually used and discovers patterns autonomously.
+Everything above is explicit memory — the operator stores it, the system recalls it. Version 1.2 adds an observation layer that watches how the AI assistant is actually used and discovers patterns autonomously.
 
 ```mermaid
 graph LR
-    H["Claude Code / Codex Hook<br/>(PreToolUse / PostToolUse)"] --> B["Local JSONL Buffer<br/>(sub-ms, never lost)"]
+    H["Claude Code Hook<br/>(PreToolUse / PostToolUse)"] --> B["Local JSONL Buffer<br/>(sub-ms, never lost)"]
     B --> A["REST API<br/>(batch flush, scrubbed)"]
     A --> O["observations.db<br/>(separate lifecycle)"]
-    O --> D["6 Heuristic Detectors"]
+    O --> D["4 Heuristic Detectors"]
     D --> S["Three-Tier Semantic Dedup"]
     S --> M["Auto-Discovered Memories<br/>(confidence-scored, 0.85 ceiling)"]
 ```
 
-The pipeline has six zero-cost detectors — no API calls, no LLM inference:
+The pipeline has four zero-cost detectors — no API calls, no LLM inference:
 
 - **Repeated tool+input**: same command run 3+ times across sessions → "operator frequently runs `npm test` before committing"
-- **Error-then-fix**: failed tool call followed by a successful retry → "when Jest fails with ENOMEM, increase `--maxWorkers`"
+- **Error-then-fix**: failed tool call followed by successful retry → "when Jest fails with ENOMEM, increase `--maxWorkers`"
 - **Hot files**: same file edited 3+ times per session → "`src/config.ts` is a frequent edit target"
 - **Repeated commands**: normalized shell commands recurring → "operator uses `docker compose up -d` to start the dev stack"
-- **Recurring errors**: the same failure signature across sessions, tiered by recurrence and surfaced proactively on the next prompt
-- **Sequences**: A→B tool patterns recurring across sessions → "after editing a route, you always run the integration test"
 
 Detected patterns become memories with a confidence score. The scoring is deliberately conservative:
 
 - **Self-limiting reinforcement**: each repeated observation adds `+0.05 * (1 - current)` — high-confidence patterns get smaller bumps, preventing echo chambers
 - **Confidence ceiling at 0.85**: auto-discovered memories never auto-promote past this. The operator must explicitly confirm for higher trust
-- **Durability-scaled decay**: confidence decays if a pattern stops appearing, but a memory seen 20 times decays roughly 4× slower than one seen once — and a recall resets its clock
+- **Read-time decay**: confidence decays with a 60-day half-life if the pattern stops appearing, with a freeze for dormant projects
 - **Bounded search influence**: discovered memories can reduce their search score by at most 50%, ensuring they still surface but don't dominate explicit knowledge
 
-Three-tier semantic deduplication prevents near-duplicate creation: similarity ≥ 0.95 reinforces the existing memory, 0.85–0.95 reinforces and logs new evidence, below 0.85 creates a new entry.
+Three-tier semantic deduplication prevents the system from creating near-duplicate memories: similarity >= 0.95 reinforces the existing memory, 0.85-0.95 reinforces and logs new evidence, below 0.85 creates a new entry.
 
-Security is multi-layered: client-side secret scrubbing before network transit, server-side scrubbing as defense-in-depth, a content denylist blocking dangerous command patterns, and API-key authentication on observation endpoints.
-
-## Dreaming: Memory That Curates Itself
-
-Recall and discovery both *add* to the store. Left alone, any memory system that only grows becomes landfill. The consolidation layer — internally, "the Librarian" — is the part that runs while the system is idle and keeps the corpus lean and correct:
-
-- **Duplicate collapse** — exact and near-duplicate memories are merged down to one, preserving the strongest evidence
-- **Decay** — memories that stopped being useful are archived (never hard-deleted), on a durability-aware schedule so well-evidenced knowledge sticks around
-- **Contradiction routing** — when two memories disagree, the system doesn't pick a winner blindly; it classifies the relationship
-- **Supersession as a chain, not a deletion** — "we switched to Y" *supersedes* "we use X": both stay queryable with `deprecated_at` / `valid_from` markers, so history is never lost and the current fact is unambiguous
-
-It runs deterministic-first over a rotating window of the corpus (with a whole-corpus mode for catching far-apart duplicates), fires only during quiet hours when the machine is idle, and is idempotent per window so a crash mid-pass simply retries.
-
-## The Safety Problem — and How It's Solved
-
-Here's the part most memory systems get wrong. The hard problem in autonomous memory isn't *curating* — it's curating **safely**. The moment you let a language model rewrite or delete stored facts, a single hallucinated or prompt-injected rationale can quietly corrupt everything the system knows. So most designs take one of two unsatisfying paths: they don't curate at all (append-only, and you become the janitor), or they let the model edit memory freely and hope. MNEMOS takes neither.
-
-```mermaid
-graph LR
-    P["Candidate pair"] --> C{"Deterministic<br/>classify + route"}
-    LLM["Local LLM<br/>(classify only)"] -.->|verdict — never writes| C
-    C -->|exact dup / decay| A["Auto-apply<br/>(flagged, off by default)"]
-    C -->|merge / supersede / conditional| Q["Operator review queue"]
-    A --> S["Snapshot → archive → append-only audit log"]
-    Q -->|accept| S
-    S --> RB["Rollback available<br/>(and itself reversible)"]
-```
-
-Three invariants make autonomy trustworthy:
-
-**The deterministic engine owns every write.** Routing, supersession direction, and every mutation are plain code. The optional local model *only classifies a pair* — duplicate, preference-change, conditional, contested, or unrelated — and is structurally locked out of the write path. It cannot rewrite or delete a memory. Turn it off, or let it fail, and the system degrades to deterministic-only behavior byte-for-byte.
-
-**Every change is snapshot-first and audited.** Each write goes snapshot → archive → append-only audit log, with a compensation step that unrolls the mutation if the audit append fails — so no unaudited change can survive. `rollback` restores a memory's content, embedding, and tags from the snapshot, and is itself reversible.
-
-**Autonomy is gated.** Only two change classes (exact duplicates and decay) can ever auto-apply, and both ship off by default; everything else queues for a one-click operator review. Adversarial "GATE" reviews run the whole pipeline against a *copy* of real data — including a deliberately malicious classifier with every auto-accept flag turned on — to prove there's no path from any verdict to an unreviewed write.
-
-The whole system is fully local: embeddings, reranking, and the optional reasoner all run on-device via ONNX and Ollama. No cloud LLM sits in the retrieval path *or* the consolidation path. Your codebase context never leaves the box.
-
-## Proactive Surfacing
-
-Memory is only useful if it shows up at the right moment. A per-prompt hook injects the relevant memory — plus the right tool, skill, or project convention — into the assistant's context *before* the operator names it, under a tight latency budget that fails open: a slow or absent server surfaces nothing, never a hang.
-
-## Built to Be Watched
-
-Autonomous systems that touch your knowledge shouldn't be black boxes. A live Server-Sent-Events stream and a four-tab web console expose exactly what the system is doing — real-time observation events, operational panels (confidence distribution, decay, dream history, corpus health), and historical session replay — so every discovery and every consolidation is inspectable after the fact.
+Security is multi-layered: client-side secret scrubbing before network transit, server-side scrubbing as defense-in-depth, content denylist blocking dangerous command patterns, and API key authentication on all observation endpoints.
 
 ## Design Principles
 
-**Deterministic autonomy.** Autonomy people can trust isn't "the model decides" — it's "the code decides, the model advises, and everything is reversible." The LLM is a classifier, never an author.
+**Zero external API dependencies.** Embedding generation (all-MiniLM-L6-v2) and reranking (ms-marco-MiniLM) run locally via ONNX. No token costs, no network latency, no third-party data sharing. A memory system that depends on an API to think isn't a memory system. It's a feature that disappears when the API changes.
 
-**Zero external API dependencies.** Embedding, reranking, and reasoning run locally via ONNX and Ollama. No token costs, no network latency, no third-party data sharing. A memory system that depends on an API to think isn't a memory system — it's a feature that disappears when the API changes.
+**Interface-driven architecture.** Every backend implements a shared TypeScript interface (`IMemoryStore`, `IVectorSearch`). PostgreSQL can be swapped for SQLite. The in-memory embedding index can be swapped for pgvector. Clients don't know or care which backend is active.
 
-**Interface-driven architecture.** Every backend implements a shared TypeScript interface (`IMemoryStore`, `IVectorSearch`). PostgreSQL swaps for SQLite; the in-memory vector index swaps for pgvector. Clients don't know or care which backend is active.
+**Eval-gated deployment.** A built-in retrieval evaluation harness measures Precision@K, Recall@K, MRR, and NDCG against a seeded query set. No changes ship without confirming search quality holds. This is how production search systems are maintained: not vibes, measurements.
 
-**Eval-gated deployment.** A retrieval evaluation harness measures Precision@K, Recall@K, MRR, and NDCG against a seeded query set, and a separate zero-LLM replay harness runs a full consolidation pass over a synthetic gold corpus and asserts it made zero model calls. No changes ship without confirming quality holds. Not vibes — measurements.
-
-**Graceful degradation.** Neo4j, Redis, MinIO, the reasoner, and consolidation each have a flag. The system runs on SQLite alone, or with any combination of optional layers. Every layer is additive.
+**Graceful degradation.** Neo4j, Redis, and MinIO each have an `enabled` flag. The system runs on PostgreSQL alone, or SQLite alone, or with any combination of optional backends. Every layer is additive.
 
 ## Results
 
 The system runs 24/7 as a Windows service, accessible across a WireGuard VPN from any device on the network. It's been the primary memory backend for all AI-assisted development work since deployment.
 
-- **Self-curating**: duplicates collapse, stale facts decay, and contradictions resolve into supersession chains — without manual gardening
-- **Safe by construction**: the deterministic engine owns every write; the LLM only classifies; every autonomous change is snapshot-first, audited, and reversible
-- **Fully local**: embedding, search, reranking, pattern detection, and reasoning run without internet — 0 external API calls
-- **Autonomous learning**: 6 zero-cost detectors observe, detect, and remember without being told
-- **19 MCP tools** shared across Claude Code and Codex CLI without configuration
-- **593-test regression suite** across both backends, plus a zero-LLM replay harness and adversarial GATE reviews against a copy of real data
+- **Sub-50ms hybrid search** with cross-encoder reranking, faster than a filesystem glob
+- **13 MCP tools** available to any compatible AI assistant without configuration
+- **Full offline operation**: embedding, search, reranking, and pattern detection run without internet
+- **Automated lifecycle**: the memory store stays relevant without manual curation
+- **Autonomous learning**: the system observes, detects, and remembers without being told
+- **149-test regression suite**: every phase validated against the eval harness baseline
 
 ---
 
-*v1.0 was a database that could remember. v1.1 was a system that could reason about what it remembers. v1.2 decides what's worth remembering in the first place. v2 curates what it remembers while it sleeps — and can prove, and undo, every change it made.*
+*v1.0 was a database that could remember. v1.1 was a system that could reason about what it remembers. v1.2 is a system that decides what's worth remembering in the first place.*
