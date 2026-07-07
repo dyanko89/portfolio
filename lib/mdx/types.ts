@@ -54,6 +54,8 @@ export interface Project {
   client?: string;
   // Card display configuration (terminal, diagram, etc.)
   cardDisplay?: CardDisplay;
+  // Explicit featured flag - overrides date-based fallback on the projects page
+  featured?: boolean;
 }
 
 export interface FrontMatter {
@@ -73,4 +75,6 @@ export interface FrontMatter {
   client?: string;
   // Card display configuration
   cardDisplay?: CardDisplay;
+  // Explicit featured flag - overrides date-based fallback on the projects page
+  featured?: boolean;
 }

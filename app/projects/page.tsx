@@ -26,9 +26,12 @@ function mapStatus(status: string): "live" | "in-progress" | "archived" | "qa" {
 export default async function ProjectsPage() {
   const projects = await getAllProjects()
 
-  // Split into featured (first 2) and regular projects
-  const featuredProjects = projects.slice(0, 2)
-  const regularProjects = projects.slice(2)
+  // Featured projects are explicitly flagged; fall back to newest 2 if none are flagged
+  const flaggedFeatured = projects.filter((project) => project.featured)
+  const featuredProjects = flaggedFeatured.length > 0 ? flaggedFeatured : projects.slice(0, 2)
+  const regularProjects = flaggedFeatured.length > 0
+    ? projects.filter((project) => !project.featured)
+    : projects.slice(2)
 
   return (
     <>

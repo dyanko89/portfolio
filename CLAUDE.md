@@ -148,10 +148,11 @@ image: "/images/optional-image.jpg"
 ```yaml
 ---
 title: "Project Name"
-publishedAt: "2025-01-15"        # Controls sort order — top 2 become Featured
+publishedAt: "2025-01-15"        # Controls sort order within each group (newest first)
 summary: "Brief description"
 tags: ["Next.js", "TypeScript"]
 status: "Live"                    # Live | In Progress | QA Testing | Archived
+featured: true                    # Optional — explicitly pins this project into the Featured section
 image: "/images/projects/slug.png"  # Fallback if no cardDisplay
 cardDisplay:                      # Optional — overrides image on project cards
   type: terminal                  # terminal | wireframe | image
@@ -185,11 +186,11 @@ Status mapping is in `app/projects/page.tsx` → `mapStatus()`.
 
 #### Featured vs Standard Projects
 
-`app/projects/page.tsx` splits projects by sort position:
-- **Featured** (top 2 by `publishedAt` desc) → `FeaturedProjectCard` — large horizontal layout
-- **Standard** (remaining) → `ProjectCard` — grid cards
+`app/projects/page.tsx` splits projects by the `featured` frontmatter flag:
+- **Featured** (`featured: true`) → `FeaturedProjectCard` — large horizontal layout
+- **Standard** (everything else) → `ProjectCard` — grid cards
 
-To make a project featured, give it a newer `publishedAt` date than other projects.
+If no project has `featured: true` set, the page falls back to the newest 2 by `publishedAt` so it never renders an empty Featured section. To make a project featured, set `featured: true` on it directly — `publishedAt` no longer controls Featured placement, only sort order within each section.
 
 #### Card Display System
 
