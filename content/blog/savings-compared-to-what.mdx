@@ -1,0 +1,98 @@
+---
+title: "Savings Compared to... What?"
+publishedAt: "2026-07-06"
+summary: "My context optimizer reported 93.9% token savings. Claude Code reported the same tool as the biggest single consumer of my context window. Both numbers were true. This is what it took to make the metric honest."
+tags: ["AI Architecture", "Cost Optimization", "Developer Tools"]
+---
+
+## Two True Numbers
+
+I run a Rust MCP server called Cortex. Its whole job is reducing token consumption for coding agents: compressed file reads, summarized shell output, reversible truncation. Its telemetry said it was saving 93.9% of the tokens routed through it.
+
+Then Claude Code's usage report said 31% of my session context was coming from one place.
+
+Cortex.
+
+The context optimizer was the largest line item in my context budget.
+
+Neither number was wrong. That's the interesting part.
+
+---
+
+## The Counterfactual Problem
+
+Cortex measured savings against the raw output: a test run produces 400k tokens of logs, Cortex emits an 8k summary, telemetry records 392k saved.
+
+But that's not what would have happened without Cortex.
+
+Native tools already truncate. Claude Code's Bash tool caps output around 30k characters. Its Read tool caps at 2,000 lines. That 400k-token test run was never going to enter context, with or without me.
+
+Over 30 days, my dashboard counted 36.6 million tokens "saved" on test output alone. Measured against what the native tool would have actually delivered, the volume saving was close to zero.
+
+The honest claim was never volume. It was quality: my truncation keeps every error line and stays reversible; native truncation is blind. That's real value. It's just not 94%.
+
+A savings metric is only as honest as its counterfactual.
+
+---
+
+## What the Telemetry Actually Showed
+
+Once I stopped trusting the headline number, the per-call data told a different story:
+
+| Finding | 30-day reality |
+|---------|---------------|
+| Compression reversals | 21% of summaries got pulled back in full (573k tokens paid twice) |
+| Passthrough traffic | 43% of shell calls were too short to compress (pure overhead) |
+| One handler inflating | curl "compression": 11 tokens in, 44 tokens out |
+| Cache hits | 18. In a month. A 5-minute idle timer was wiping the cache |
+| Command attribution | NULL on every row (the column existed, nothing wrote to it) |
+
+And underneath all of it, an asymmetry I hadn't priced in: Claude Code can evict old native tool output when context gets tight. MCP tool results are permanent until compaction.
+
+Every token Cortex emitted was a permanent resident.
+Every token it displaced was reclaimable anyway.
+
+For big outputs, Cortex still won. For the 43% it couldn't compress, it was strictly worse than doing nothing: same tokens, forever, plus a line on the usage report.
+
+---
+
+## The Fixes
+
+The theme across all of them: stop doing work that doesn't win, and measure the wins honestly.
+
+- **Route both directions.** The hook that pushed long commands toward Cortex now pushes short commands back to native Bash. A tool that can't compress something shouldn't touch it.
+- **Gate every compression on an actual win.** A pattern summary must beat the raw output by 50 tokens (measured on what actually gets delivered, headers included) or it doesn't fire.
+- **Diff-aware re-reads.** The cache already held every file's content and hash. Now a changed file returns a unified diff against the cached copy instead of the whole file. The edit-build-reread loop is where agents actually burn re-read tokens.
+- **Make reversals a feedback signal.** Every time the agent pulls a full output back, that's the compressor confessing its summary wasn't good enough. Reversal rates are now tracked per handler; any handler that gets reversed more than 20% of the time is bypassed for generous truncation instead.
+- **A second savings column.** Every call now records the native counterfactual next to the raw input. The report shows both numbers. The net one can go negative. That's the point.
+
+---
+
+## The Bug Came Back in Its Own Fix
+
+The changes shipped through four agents working parallel worktrees, then an adversarial review pass over the combined diff.
+
+The review found two real bugs. The better one: my new win gates (the mechanism built specifically to guarantee honest savings) were checking the summary body but not the header and retrieval marker the pipeline wraps around it. About 21 tokens of overhead, invisible to the gate that existed to count overhead.
+
+Same disease, smaller dose. The gate promised "saves at least 50 tokens" and could deliver 29.
+
+If your correctness mechanism doesn't charge itself for its own cost, it inherits the exact bug it was built to prevent.
+
+---
+
+## What I'd Generalize
+
+Every optimization layer eventually needs the audit it was built to perform on others.
+
+Three questions worth asking of any savings dashboard (token, cost, latency, any of them):
+
+1. What is the counterfactual, exactly? Not "the raw input," but the thing that would have actually happened instead.
+2. Can the metric go negative? If the accounting can't show the tool losing, it isn't accounting.
+3. Does the measurement include the measurer? Headers, markers, wrappers, the dashboard itself: overhead the tool adds is overhead the tool owns.
+
+My optimizer was saving tokens on every call it compressed and quietly costing tokens on every call it couldn't. The dashboard only knew how to see the first half.
+
+94% was true.
+It just wasn't the answer to the question I thought I was asking.
+
+---

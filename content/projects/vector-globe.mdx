@@ -1,0 +1,102 @@
+---
+title: Vector Globe
+publishedAt: "2026-07-03"
+summary: Real-time 3D OSINT globe rendering satellites, aircraft, earthquakes, and wildfires at true orbital altitude, not projected onto a flat map, but placed in actual 3D space. Four live data feeds, zero API keys.
+tags: ["Three.js", "React Three Fiber", "TypeScript", "Vite", "Zustand", "React 19"]
+status: Live
+featured: true
+image: /images/projects/vector-globe.png
+cardDisplay:
+  type: image
+  src: /images/projects/vector-globe.png
+results:
+  - value: "4"
+    label: "Live OSINT Layers"
+    description: "Satellites, aircraft, earthquakes, fires"
+  - value: "295"
+    label: "Tracked Satellites"
+    description: "Real SGP4 propagation, CelesTrak TLEs"
+  - value: "0"
+    label: "API Keys"
+    description: "Every feed is public and keyless"
+  - value: "324.67 kB"
+    label: "Gzipped Bundle"
+    description: "Production build on Vercel"
+techStack:
+  - category: "Rendering"
+    items: ["Three.js", "React Three Fiber", "React 19"]
+  - category: "Language / Tooling"
+    items: ["TypeScript", "Vite", "Tailwind CSS v4"]
+  - category: "State"
+    items: ["Zustand"]
+  - category: "Data Feeds"
+    items: ["CelesTrak (TLEs)", "satellite.js (SGP4)", "OpenSky Network", "USGS GeoJSON", "NASA FIRMS (VIIRS)"]
+  - category: "Deployment"
+    items: ["Vercel", "Git push-to-deploy"]
+---
+
+## Overview
+
+Vector Globe is a real-time 3D OSINT globe: satellites, aircraft, earthquakes, and wildfires rendered on a WGS84-accurate Earth, live at [vector-globe.vercel.app](https://vector-globe.vercel.app). Four data feeds, zero API keys, black-and-phosphor "Radyn" aesthetic. It's live and still growing. The current build is Phase 3 of an ongoing plan, not a finished product.
+
+## Why Rebuild in 3D
+
+The starting point was Bilawal Sidhu's WorldView, a 2D Canvas globe built with D3. WorldView draws a sphere, but everything on it is still a flat projection. A satellite at 400km and one at 20,000km end up as two dots on the same surface, altitude has no coordinate.
+
+Vector Globe is a ground-up rebuild in Three.js and React Three Fiber for exactly one reason: so data can plot at true altitude. The Earth is a unit sphere, and every point gets `radius = 1 + alt / EARTH_RADIUS`, computed per object, per frame. ISS sits at 1.064x Earth's radius. GPS satellites sit at 4.17x. GEO satellites ring the globe at roughly 6.6x. That's not a visual effect, it's the same math NASA uses to plot orbits, just running in a browser tab. The third dimension is the entire reason this is its own project instead of a WorldView feature branch.
+
+## Four Layers, Zero Keys
+
+Every layer pulls from a free public feed. There isn't a single API key anywhere in the app, in dev or in production.
+
+- **Satellites**: ~295 TLEs pulled from CelesTrak's group feeds (visual, gps-ops, galileo, glo-ops, geo), each one propagated with real SGP4 math via `satellite.js` every frame, not a synthetic placeholder orbit. LEO, MEO, and GEO are all visible at true relative scale in the same view. Select one and it draws a full-period orbit trace, an ellipse for LEO, a tight ring for GEO.
+- **Aircraft**: OpenSky Network ADS-B state vectors, roughly 6,000 aircraft at a time, rendered as heading-oriented triangles with a live flight-path trace on selection.
+- **Earthquakes**: USGS's 30-day M2.5+ feed, 500 events, and the first layer that had to render *below* the surface.
+- **Fires**: NASA FIRMS VIIRS Suomi-NPP 24h feed, the top 5,000 of anywhere from 70,000 to 124,000 daily detections, ranked by fire radiative power.
+
+### The problem with rendering below the surface
+
+The Earth mesh is opaque. A marker placed at negative altitude, an earthquake hypocenter under the crust, is geometrically occluded from every camera angle by default. The fix is `depthTest: false` on the marker, combined with a per-frame near-hemisphere cull (`dot(normal, camDir) > 1/d`) so markers on the far side of the planet don't bleed through. That same cull gates the click targets, so you can't select a quake through the planet, and it gates the shared selection reticle too.
+
+That last part mattered because it wasn't obvious at first. The reticle component was written for satellites and aircraft, both of which sit above the surface, and it depth-tested against the opaque Earth by default. An adversarial code-review pass on that step caught it: the reticle could never actually render for a sub-surface target. What looked like a working selection indicator in an early screenshot was the ring itself changing color, not the reticle. Fixed by adding a `depthTest` prop to the reticle, off by default for earthquakes, folded into the same hemisphere cull as the ring.
+
+Magnitude scales ring size, depth darkens a single hue, and shallow-focus events get a crosshair. No red or orange anywhere, the palette stays one accent color.
+
+![Earthquake detail panel showing a shallow M4.1 event near Guatemala, reticle visible around the selected ring](/images/projects/vector-globe-quake.png)
+
+### Going keyless on purpose
+
+The fire layer's plan called for an API key in a `VITE_` environment variable. Partway through, the actual problem became clear: `VITE_`-prefixed variables get inlined into the client bundle at build time. Anyone can open devtools and read it. It isn't a secret, it's a fake secret with all the friction of a real one, signup, rotation, an env var to manage in Vercel.
+
+The fix was to drop the area API and pull FIRMS' public global CSV instead, through a same-origin proxy. Same VIIRS data, same product, zero keys, zero env vars in production.
+
+![Fire layer over the Northwest Territories and Saskatchewan, detail panel showing a 933.8 MW VIIRS detection](/images/projects/vector-globe-fires.png)
+
+## How It Gets Built
+
+`docs/ACTION_PLAN.md` is the source of truth for the project: a step-by-step build plan with a dense log entry appended after every step, and a separate decisions log for anything non-obvious. Two habits carry the most weight:
+
+1. **Every step gets browser-verified in real Chrome before it's committed.** Not a unit test standing in for the real thing, the actual rendered globe, clicked through, screenshotted.
+2. **Every step gets an adversarial code-review pass**, and it's caught real bugs, not just style nits. The earthquake reticle bug above is one example.
+
+The decisions log also has a moment worth mentioning because it's a canceled idea, not a shipped one. After four data layers (satellites, aircraft, earthquakes, fires), the plan called for extracting a generic `<EntityLayer>` rendering harness so the fifth layer onward wouldn't need a full clone-and-modify pass. The retrospective canceled it: the four layers diverge exactly where a harness would need to be generic, per-frame SGP4 propagation for satellites, a static snapshot for aircraft, sub-surface depth culling for earthquakes, surface-level rendering for fires. A harness would need a knob per axis and would fight the earthquake layer hardest of all. Cloning per layer cost about one session each, including the browser verify. That was cheaper than the abstraction.
+
+## Production
+
+The app deployed to Vercel on 2026-07-03, push-to-deploy from `main`:
+
+| Metric | Value |
+|--------|-------|
+| Gzipped bundle | 324.67 kB |
+| Lighthouse Accessibility | 100 |
+| Lighthouse Best Practices | 100 |
+| Lighthouse SEO | 90 |
+| Deploy time | ~25s from git push |
+
+## Current State
+
+Live, and the four-layer definition of done is met. It's still growing, not finished. One known limitation: OpenSky blocks connection attempts from Vercel's edge IPs, so the aircraft layer works locally but errors out gracefully in production right now (it defaults off, no crash). Fixing that, either an authenticated OpenSky connection or an alternate ADS-B source, is scoped as the next infrastructure step.
+
+---
+
+*Live at vector-globe.vercel.app, four data layers deep, with altitude as the entire point.*
