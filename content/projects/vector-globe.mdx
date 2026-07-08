@@ -1,6 +1,6 @@
 ---
 title: Vector Globe
-publishedAt: "2026-07-03"
+publishedAt: "2026-07-08"
 summary: Real-time 3D OSINT globe rendering satellites, aircraft, earthquakes, and wildfires at true orbital altitude, not projected onto a flat map, but placed in actual 3D space. Four live data feeds, zero API keys.
 tags: ["Three.js", "React Three Fiber", "TypeScript", "Vite", "Zustand", "React 19"]
 status: Live
@@ -37,7 +37,7 @@ techStack:
 
 ## Overview
 
-Vector Globe is a real-time 3D OSINT globe: satellites, aircraft, earthquakes, and wildfires rendered on a WGS84-accurate Earth, live at [vector-globe.vercel.app](https://vector-globe.vercel.app). Four data feeds, zero API keys, black-and-phosphor "Radyn" aesthetic. It's live and still growing. The current build is Phase 3 of an ongoing plan, not a finished product.
+Vector Globe is a real-time 3D OSINT globe: satellites, aircraft, earthquakes, and wildfires rendered on a WGS84-accurate Earth, live at [vector-globe.vercel.app](https://vector-globe.vercel.app). Four data feeds, zero API keys, black-and-phosphor "Radyn" aesthetic. It's live and still growing. The current build is Phase 3.5 of an ongoing plan, not a finished product: four layers, plus a performance-hardening pass that found and fixed two memory leaks living in the frameworks themselves.
 
 ## Why Rebuild in 3D
 
@@ -80,6 +80,31 @@ The fix was to drop the area API and pull FIRMS' public global CSV instead, thro
 2. **Every step gets an adversarial code-review pass**, and it's caught real bugs, not just style nits. The earthquake reticle bug above is one example.
 
 The decisions log also has a moment worth mentioning because it's a canceled idea, not a shipped one. After four data layers (satellites, aircraft, earthquakes, fires), the plan called for extracting a generic `<EntityLayer>` rendering harness so the fifth layer onward wouldn't need a full clone-and-modify pass. The retrospective canceled it: the four layers diverge exactly where a harness would need to be generic, per-frame SGP4 propagation for satellites, a static snapshot for aircraft, sub-surface depth culling for earthquakes, surface-level rendering for fires. A harness would need a knob per axis and would fight the earthquake layer hardest of all. Cloning per layer cost about one session each, including the browser verify. That was cheaper than the abstraction.
+
+## The Two Leaks
+
+Four layers in, the plan called for a full performance re-baseline before adding a fifth. Not vibes, numbers: heap growth per layer toggle, main-thread self-time per frame, allocation rate, all captured on a fixed rig (Chrome 149, RTX 3080, DPR 1) and written down as the numbers to beat. The audit graded two critical problems, and both came from the same mistake, trusting a framework to clean up after itself.
+
+The first showed up as memory. Toggling a data layer off and back on grew the heap 33.9% and never gave it back. Two separate root causes, both buried in framework internals.
+
+React Three Fiber does not dispose geometry or materials you hand it through `args` or props. Three.js r170 keeps a VAO and every vertex attribute in its `WebGLBindingStates` table, keyed by `geometry.id`, and only releases them when you call `geometry.dispose()` yourself. Every toggle built fresh geometry, R3F mounted it and later unmounted it, and the GPU-side bindings stayed pinned for the life of the tab. The fix splits by kind: static geometry and materials are hoisted to module-scope singletons, allocated once for the whole app, and the genuinely dynamic geometry (the border tiers that rebuild when new data loads) gets an explicit `dispose()` on replace and on unmount.
+
+The second was the labels. Every city name was a drei `<Html>`, and each `<Html>` is a full React root carrying roughly 138 event listeners. Unmounting one from inside the R3F render commit orphans the root instead of tearing it down, and the label set churns constantly as you pan, so this one didn't wait for a toggle, it leaked the entire time the globe was moving. The fix was to delete the per-label roots and render a single overlay `<div>` outside the Canvas, positioned every frame by imperative transforms fed from a small pub/sub store. One DOM node for the whole label layer instead of one React root per city.
+
+Same protocol afterward: 33.9% growth per toggle dropped to 1.76% on the steady-state run, with zero Three.js constructor growth across the cycle, inside the ±2% bar the baseline set. (The first run after a fresh load still shows about +9%, which turned out to be React 19 holding one generation of unmounted fibers, bounded and one-time, so the honest number is the second run.)
+
+Both root causes are now written into the project's non-negotiable rules, the same file that governs the aesthetic: never hand per-mount geometry to R3F's `args` without a singleton or an explicit dispose, and never use a per-entity drei `<Html>`. The bug became a guardrail.
+
+The re-baseline caught more than the leak. Three other measured wins came out of the same pass:
+
+| Fix | Before | After |
+|-----|--------|-------|
+| SGP4 propagation (main-thread self-time) | 0.606 ms/frame | 0.113 ms/frame |
+| SGP4 allocation rate | 7.10 MB/s | 1.65 MB/s |
+| Store commits while interacting | ~250/s | ~45/s |
+| Duplicate tile fetches (street zoom) | 2× every tile | 0 |
+
+Propagating ~295 satellites with real SGP4 every frame is the single most expensive thing the app does. Splitting them into four cohorts, so only the selected satellite recomputes every frame and the rest round-robin, and rewriting the hot coordinate math to fill a reused vector instead of allocating a fresh one, cut its self-time 81%. The store commits came down by throttling camera-position writes to every 90ms while keeping altitude per-frame, so zoom tiers still respond instantly but Zustand isn't re-rendering the tree 250 times a second. The duplicate tile fetches were two tile managers independently requesting the same map tiles; a shared in-flight-promise cache with a decoded LRU collapsed them to one request each. And the whole thing is fenced now: a gzip bundle-size budget runs inside `npm run build` and fails the build if a change pushes the bundle past its ceiling, so a regression never reaches Vercel.
 
 ## Production
 
