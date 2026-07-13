@@ -4,6 +4,7 @@ import { extractHeadings } from "@/lib/mdx/headings"
 import { getRelatedBlogPosts, getSeriesPosts } from "@/lib/mdx/related"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
@@ -64,8 +65,22 @@ export default async function BlogPostPage({ params }: PageProps) {
   return (
     <>
       <Navigation />
-      <main className="pt-32 md:pt-40 pb-20 md:pb-32">
-        <div className="mx-auto max-w-7xl px-6 md:px-12">
+      <main className="pb-20 md:pb-32">
+        {blog.image && (
+          <div className="relative aspect-[21/9] w-full overflow-hidden border-b border-border">
+            <Image
+              src={blog.image}
+              alt={blog.title}
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority
+              quality={90}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+          </div>
+        )}
+        <div className={`mx-auto max-w-7xl px-6 md:px-12 ${blog.image ? "pt-16 md:pt-20" : "pt-32 md:pt-40"}`}>
           {/* Back Link */}
           <Link
             href="/blog"

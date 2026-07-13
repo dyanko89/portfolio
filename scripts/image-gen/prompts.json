@@ -1,0 +1,37 @@
+{
+  "_comment": "Flux-translated version of the site's original MidJourney visual template. MJ params that don't port: --profile aasms6u (personal style profile, no SD equivalent, dropped) and --no <list> (Flux-dev runs guidance-distilled near CFG=1, so true negative conditioning is a near no-op; the exclusions are folded into the positive prompt as affirmative phrasing instead). --ar 16:9 becomes an explicit width/height. Subjects are written as massive abstract landscape-scale forms (monoliths, spires, orbs, layered masses on a dark reflective plane) to match the original images' visual vocabulary -- never literal desk objects (paper, panels, gauges), which read as mundane stock-photo props rather than the original's monumental CGI-render quality.",
+  "base_template": "Ultra-clean 3D render, octane render, cinema 4d style, professional CGI illustration for a software engineering portfolio website, shot through a heavy 35mm film grain and gritty analog noise texture visible across the entire frame. Black background deepening to dark teal at the edges, with a faint starfield of tiny distant points of light. A single dominant glow in a deep saturated red-orange (leaning more red than orange) radiates as the emotional core of the image, with cinematic bloom, soft directional light rays, and volumetric atmospheric fog drifting through the scene. Massive, smooth, glossy geometric solid forms (monoliths, cubes, slabs) rendered with buttery-smooth gradients, resting on or rising from a dark reflective or grid-textured plane, with a few smaller glowing cubes or points of light scattered at varying distances for depth and scale. High contrast dramatic lighting, professional and sophisticated mood, generous negative space, completely free of any text, words, letters, logos, watermarks, or signatures, no human faces, no photorealistic people, no cartoon or anime style, no literal mundane objects such as paper, books, documents, screens, or office supplies. {subject} The overall mood is {mood}, with the red-orange glow dominating the visual weight of the frame and heavy film grain visible throughout.",
+  "resolution": { "width": 1344, "height": 768 },
+  "guidance": 3.5,
+  "steps": 25,
+  "posts": {
+    "intelligence-is-not-the-bottleneck": {
+      "subject": "A single massive glowing orange monolith rises from a dark reflective plane, its light narrowing as it passes through a sequence of towering architectural gateway forms, while a much larger dimmed structure looms unconstrained in the background.",
+      "mood": "constrained, focused, precise"
+    },
+    "swarm-architecture-distributed-cognition": {
+      "subject": "Small glowing orange orbs orbit in a disciplined radial formation around a massive dark central spire, their light tracing clean symmetrical arcs through the surrounding atmosphere.",
+      "mood": "coordinated, disciplined, structured"
+    },
+    "orchestration-memory-cost-of-thinking": {
+      "subject": "A massive layered geometric formation rises in smooth glowing tiers from a dark reflective plane, the deepest foundational layer radiating the brightest orange glow while the tiers above fade into shadow.",
+      "mood": "deliberate, weighted, efficient"
+    },
+    "system-prompt-is-the-strategy": {
+      "subject": "A single massive glowing orange spire radiates structured beams of light outward across a dark reflective plane toward smaller distant silhouettes, its core burning brightest at the center.",
+      "mood": "authoritative, precise, foundational"
+    },
+    "coordination-debt": {
+      "subject": "A single massive glowing orange monolithic slab rises from a dark reflective plane, its surface fractured by fine hairline cracks that leak intense light, while faint ghostly silhouettes are drawn toward its glow out of the surrounding darkness.",
+      "mood": "burdened, strained, revealing"
+    },
+    "savings-compared-to-what": {
+      "subject": "Two massive glowing forms of dramatically different scale rise from a shared dark reflective plane, one towering and one small, their orange light reaching toward each other but never quite meeting.",
+      "mood": "analytical, paradoxical, clarifying"
+    },
+    "the-memory-outlives-the-model": {
+      "subject": "A single massive glowing orange core remains stationary at the center of a dark reflective plane, radiating steady light, while smaller translucent silhouettes drift and dissolve around it like passing clouds.",
+      "mood": "enduring, personal, foundational"
+    }
+  }
+}

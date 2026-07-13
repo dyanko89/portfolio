@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
@@ -63,7 +64,19 @@ export default async function BlogPage() {
                   {/* Image Placeholder */}
                   <div className="lg:col-span-6">
                     <div className="relative aspect-[16/10] bg-surface border border-border overflow-hidden group-hover:border-border-hover transition-colors">
-                      <div className="absolute inset-0 grid-pattern opacity-50" />
+                      {featuredPost.image ? (
+                        <Image
+                          src={featuredPost.image}
+                          alt={featuredPost.title}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          quality={90}
+                          priority
+                        />
+                      ) : (
+                        <div className="absolute inset-0 grid-pattern opacity-50" />
+                      )}
                     </div>
                   </div>
 
@@ -104,7 +117,18 @@ export default async function BlogPage() {
                     <article className="h-full flex flex-col">
                       {/* Image Placeholder */}
                       <div className="relative aspect-[16/10] bg-surface border border-border overflow-hidden group-hover:border-border-hover transition-colors mb-6">
-                        <div className="absolute inset-0 grid-pattern opacity-50" />
+                        {post.image ? (
+                          <Image
+                            src={post.image}
+                            alt={post.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            quality={90}
+                          />
+                        ) : (
+                          <div className="absolute inset-0 grid-pattern opacity-50" />
+                        )}
                       </div>
 
                       {/* Content */}

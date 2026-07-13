@@ -51,6 +51,10 @@ next-env.d.ts
 .playwright-mcp/
 logs/
 
+# python bytecode (scripts/image-gen)
+__pycache__/
+*.pyc
+
 # scratch assets that don't belong in repo root
 /test-cv.pdf
 /gcx-wireframe-*.png
