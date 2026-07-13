@@ -39,7 +39,7 @@ results:
   - value: "Reversible"
     label: "Every Autonomous Change"
     description: "Snapshot → audit log → one-call rollback"
-  - value: "593"
+  - value: "796"
     label: "Tests"
     description: "Two backends, eval-gated (P@K, MRR, NDCG)"
 techStack:
@@ -58,11 +58,22 @@ techStack:
   - category: "Protocol"
     items: ["Model Context Protocol (MCP)", "REST API"]
   - category: "Testing"
-    items: ["Vitest (593 tests, two backends)", "Zero-LLM replay harness", "Retrieval eval (P@K, MRR, NDCG)"]
+    items: ["Vitest (796 tests, two backends)", "Zero-LLM replay harness", "Dirty-corpus drill (live local LLM)", "Retrieval eval (P@K, MRR, NDCG)"]
 relatedProjects: ["mainframe", "email-triage"]
 ---
 
-## Version History
+{/*
+  UPDATE PROTOCOL (this page carries ongoing updates — keep it evergreen):
+  1. Append ONE new blockquote entry to the Changelog below per era/milestone — dated "(YYYY-MM)",
+     one to three sentences, ending with the "A memory that *X*." kicker. Never rewrite old entries.
+  2. Refresh the drift-prone numbers in exactly three places: frontmatter `results` (test count),
+     frontmatter `techStack` Testing line, and the Results section bullets.
+  3. Update the closing italic line to extend (not replace) the version arc.
+  Everything else (architecture, safety model, design principles) is evergreen — edit only on real
+  architectural change.
+*/}
+
+## Changelog
 
 > **v1.0:** SQLite backend, embedding search, basic CRUD. A memory that could store and find.
 >
@@ -73,6 +84,8 @@ relatedProjects: ["mainframe", "email-triage"]
 > **v1.3: The Librarian.** Autonomous nightly consolidation: collapses duplicates, decays stale memories, routes contradictions and supersessions. A memory that *curates itself while it sleeps*.
 >
 > **v2.0: Safe autonomy.** The deterministic engine owns every write; the optional local LLM only classifies and is locked out of the write path. Every change is snapshot-first, audited, and reversible. A memory you can *trust to edit itself*.
+>
+> **v2.1: Live & proven (2026-07).** Consolidation activated on the real corpus: the first whole-corpus pass examined 6,082 memories and proposed 58 changes -- all deterministic, all correct, all accepted. The LLM tier's first 91 proposals were 100% noise at confidence up to 1.00; containment held (zero bad writes), and a deterministic referent guard then eliminated the noise class at the source. Lifecycle got type-tuned (per-type decay half-lives, auto-crystallization, structural floors), and a Stop-hook turn gate now verifies surfaced memories are actually *consulted*, not just retrieved. A memory that *survives contact with production*.
 
 ## The Gap
 
@@ -271,8 +284,9 @@ The system runs 24/7 as a Windows service, accessible across a WireGuard VPN fro
 - **Fully local**: embedding, search, reranking, pattern detection, and reasoning run without internet: 0 external API calls
 - **Autonomous learning**: 6 zero-cost detectors observe, detect, and remember without being told
 - **19 MCP tools** shared across Claude Code and Codex CLI without configuration
-- **593-test regression suite** across both backends, plus a zero-LLM replay harness and adversarial GATE reviews against a copy of real data
+- **796-test regression suite** across both backends, plus a zero-LLM replay harness, a dirty-corpus drill against a live local LLM, and adversarial GATE reviews against a copy of real data
+- **Proven under fire**: the advisory LLM tier's first 91 live proposals were all wrong -- and the store took zero bad writes, because no code path exists from an LLM verdict to an unreviewed mutation
 
 ---
 
-*v1.0 was a database that could remember. v1.1 was a system that could reason about what it remembers. v1.2 decides what's worth remembering in the first place. v2 curates what it remembers while it sleeps, and can prove, and undo, every change it made.*
+*v1.0 was a database that could remember. v1.1 was a system that could reason about what it remembers. v1.2 decides what's worth remembering in the first place. v2 curates what it remembers while it sleeps, and can prove, and undo, every change it made. v2.1 took all of that live -- and when its advisory layer failed 91 times in a row, the memory didn't take a scratch.*
