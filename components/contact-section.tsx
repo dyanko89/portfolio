@@ -128,7 +128,7 @@ export function ContactSection() {
                 <span className="label-uppercase text-success tracking-widest">Available</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Currently accepting new projects for Q1 2026
+                Currently accepting new projects
               </p>
             </div>
           </div>

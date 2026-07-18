@@ -2,7 +2,6 @@ import { Metadata } from "next"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { PageHeader } from "@/components/page-header"
-import { ArrowUpRight, Download } from "lucide-react"
 import { experience, systems, skills } from "@/lib/cv-data"
 
 export const metadata: Metadata = {
@@ -125,30 +124,6 @@ export default function CVPage() {
           </div>
         </section>
 
-        {/* Download Section */}
-        <section className="py-20 md:py-32 border-t border-border">
-          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-              <div>
-                <h2 className="text-h2 text-foreground mb-4">
-                  Full CV
-                </h2>
-                <p className="text-foreground-secondary text-lg">
-                  Download my complete curriculum vitae in PDF format.
-                </p>
-              </div>
-              <a
-                href="/api/cv"
-                download="danny-yanko-cv.pdf"
-                className="group inline-flex items-center justify-between gap-4 px-8 py-5 border border-border text-foreground text-sm font-medium tracking-wide hover:border-border-hover hover:bg-surface/50 transition-all duration-150 min-h-[56px]"
-              >
-                <Download className="w-4 h-4" />
-                <span>DOWNLOAD PDF</span>
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-            </div>
-          </div>
-        </section>
       </main>
       <Footer />
     </>
