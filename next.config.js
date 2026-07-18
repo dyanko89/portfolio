@@ -11,6 +11,11 @@ const nextConfig = {
         destination: '/projects/international-trading-platform',
         permanent: true,
       },
+      {
+        source: '/projects/memory-mcp',
+        destination: '/projects/kopeng-self-curating-memory',
+        permanent: true,
+      },
     ]
   },
   images: {

@@ -8,16 +8,16 @@ featured: true
 image: /images/projects/memory-mcp.png
 cardDisplay:
   type: terminal
-  title: mnemos
+  title: kopeng
   content: |
-    [09:12:01] mnemos online
+    [09:12:01] kopeng online
     [muted]
     [09:12:01] ✓ SQLite + in-memory HNSW (or PostgreSQL + pgvector)
     [09:12:02] ✓ Embedding + reranker (ONNX, on-device)
     [09:12:02] ✓ Observation ingestion enabled
     [09:12:03] ✓ Dreaming scheduler armed (quiet hours)
     [muted]
-    [03:00:04] DREAM pass project:mnemos
+    [03:00:04] DREAM pass project:kopeng
     [muted]  → 512 memories scanned │ deterministic-first
     [accent]  → collapse: 3 exact duplicates → 1
     [accent]  → decay: 2 stale memories archived
@@ -39,7 +39,7 @@ results:
   - value: "Reversible"
     label: "Every Autonomous Change"
     description: "Snapshot → audit log → one-call rollback"
-  - value: "796"
+  - value: "808"
     label: "Tests"
     description: "Two backends, eval-gated (P@K, MRR, NDCG)"
 techStack:
@@ -58,7 +58,7 @@ techStack:
   - category: "Protocol"
     items: ["Model Context Protocol (MCP)", "REST API"]
   - category: "Testing"
-    items: ["Vitest (796 tests, two backends)", "Zero-LLM replay harness", "Dirty-corpus drill (live local LLM)", "Retrieval eval (P@K, MRR, NDCG)"]
+    items: ["Vitest (808 tests, two backends)", "Zero-LLM replay harness", "Dirty-corpus drill (live local LLM)", "Retrieval eval (P@K, MRR, NDCG)"]
 relatedProjects: ["mainframe", "email-triage"]
 ---
 
@@ -146,7 +146,7 @@ When a memory is stored, an entity extraction pipeline identifies people, projec
 graph LR
     VK([vaultkeeper])
     ET([email-triage])
-    MM([memory-mcp])
+    MM([kopeng])
 
     Redis{{Redis}}
     PG{{PostgreSQL}}
@@ -232,7 +232,7 @@ It runs deterministic-first over a rotating window of the corpus (with a whole-c
 
 ## The Safety Problem and How It's Solved
 
-Here's the part most memory systems get wrong. The hard problem in autonomous memory isn't *curating*. It's curating **safely**. The moment you let a language model rewrite or delete stored facts, a single hallucinated or prompt-injected rationale can quietly corrupt everything the system knows. So most designs take one of two unsatisfying paths: they don't curate at all (append-only, and you become the janitor), or they let the model edit memory freely and hope. MNEMOS takes neither.
+Here's the part most memory systems get wrong. The hard problem in autonomous memory isn't *curating*. It's curating **safely**. The moment you let a language model rewrite or delete stored facts, a single hallucinated or prompt-injected rationale can quietly corrupt everything the system knows. So most designs take one of two unsatisfying paths: they don't curate at all (append-only, and you become the janitor), or they let the model edit memory freely and hope. KOPENG takes neither.
 
 ```mermaid
 graph LR
@@ -284,7 +284,7 @@ The system runs 24/7 as a Windows service, accessible across a WireGuard VPN fro
 - **Fully local**: embedding, search, reranking, pattern detection, and reasoning run without internet: 0 external API calls
 - **Autonomous learning**: 6 zero-cost detectors observe, detect, and remember without being told
 - **19 MCP tools** shared across Claude Code and Codex CLI without configuration
-- **796-test regression suite** across both backends, plus a zero-LLM replay harness, a dirty-corpus drill against a live local LLM, and adversarial GATE reviews against a copy of real data
+- **808-test regression suite** across both backends, plus a zero-LLM replay harness, a dirty-corpus drill against a live local LLM, and adversarial GATE reviews against a copy of real data
 - **Proven under fire**: the advisory LLM tier's first 91 live proposals were all wrong -- and the store took zero bad writes, because no code path exists from an LLM verdict to an unreviewed mutation
 
 ---
