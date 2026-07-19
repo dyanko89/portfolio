@@ -38,6 +38,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: {
       canonical: `/projects/${slug}`,
     },
+    openGraph: {
+      type: 'article',
+      url: `/projects/${slug}`,
+      siteName: 'Danny Yanko',
+      title: project.title,
+      description: project.summary,
+      publishedTime: project.publishedAt,
+      authors: ['Danny Yanko'],
+      tags: project.tags,
+    },
   }
 }
 
