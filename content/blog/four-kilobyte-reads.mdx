@@ -14,6 +14,16 @@ EldinDisk is a Tauri desktop app: a Rust scanner walks a volume, and a React can
 
 Rather than guess, I fanned out a review team: one agent on the Rust hot path, one on the frontend render loop, one on the IPC boundary, and one researching how WizTree and Everything get near-instant scans. The findings ranked themselves.
 
+<StatRow
+  caption="Two fixes, two benchmarks -- the MFT reader and the per-file syscalls"
+  stats={[
+    { value: "144.8s", label: "Before", detail: "Direct MFT scan, 4 KB per syscall" },
+    { value: "11.8s", label: "After", detail: "Same MFT scan, buffered + parallel decode" },
+    { value: "2M", label: "Nodes", detail: "Per-file syscalls fix, separate test tree" },
+    { value: "0", label: "Syscalls per file", detail: "Directory-level enumeration" },
+  ]}
+/>
+
 ## The Parallel Scanner That Wasn't
 
 The walk used a rayon pool and looked concurrent. It wasn't. Metadata for one directory's children was fetched in parallel -- then the recursion into subdirectories ran in a plain sequential loop, because every visit needed `&mut` access to one shared arena. Eight workers, one of them busy.
@@ -68,3 +78,12 @@ Raw throughput wasn't the only complaint hiding in "it feels slow." The same bui
 - **Compile-check the confident claim.** The unstable-API detail and the `DirEntry` documentation trap both survived design review and died in `cargo test`.
 - **Layer where the risk is.** The spike's extraction/builder split meant a failed crate cost one module, not the feature.
 - **Look at the wrapper's read size.** The most expensive line in the whole system was an I/O loop nobody wrote and nobody profiled: 4 KB per syscall, three million times.
+
+<KeyTakeaways
+  items={[
+    "A rayon pool over a shared &mut arena is sequential in disguise -- profile the structure, not the API.",
+    "Per-file syscalls are the enemy on Windows -- one directory-level FileIdExtdDirectoryInfo query replaces three calls per file.",
+    "Wrapper crates can throttle a fast path invisibly -- the MFT reader's volume crate capped every read at a 4 KB alignment unit, three million syscalls deep.",
+    "Multi-agent review beats intuition -- four agents ranked the bottlenecks in parallel, and the obvious suspect (the canvas) ranked third, not first.",
+  ]}
+/>

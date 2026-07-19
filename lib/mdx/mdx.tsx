@@ -29,6 +29,11 @@ export async function renderMDX(content: string) {
       source={content}
       components={mdxComponents}
       options={{
+        // next-mdx-remote strips JS expressions (e.g. `stats={[...]}`) by default.
+        // Content is authored locally in this repo (not user-submitted), so it's
+        // safe to allow -- the infographic components (StatRow, KeyTakeaways, etc.)
+        // depend on object/array literal props to work at all.
+        blockJS: false,
         mdxOptions: {
           remarkPlugins: [remarkGfm],
           rehypePlugins: [
