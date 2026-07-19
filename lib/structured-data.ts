@@ -43,7 +43,7 @@ export function blogPostingJsonLd(post: BlogPost) {
     description: post.summary,
     url: `${SITE_URL}/blog/${post.slug}`,
     datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
+    dateModified: post.updatedAt ?? post.publishedAt,
     image: post.image
       ? `${SITE_URL}${post.image}`
       : `${SITE_URL}/blog/${post.slug}/opengraph-image`,

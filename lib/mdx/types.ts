@@ -2,6 +2,7 @@ export interface BlogPost {
   slug: string;
   title: string;
   publishedAt: string;
+  updatedAt?: string;
   summary: string;
   image?: string;
   tags?: string[];
@@ -61,6 +62,7 @@ export interface Project {
 export interface FrontMatter {
   title: string;
   publishedAt: string;
+  updatedAt?: string;
   summary: string;
   image?: string;
   icon?: string;

@@ -42,6 +42,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: blog.title,
       description: blog.summary,
       publishedTime: blog.publishedAt,
+      modifiedTime: blog.updatedAt ?? blog.publishedAt,
       authors: ['Danny Yanko'],
       tags: blog.tags,
     },
@@ -121,6 +122,12 @@ export default async function BlogPostPage({ params }: PageProps) {
                 <Clock className="w-4 h-4" />
                 {estimateReadTime(blog.content)}
               </span>
+              {blog.updatedAt && (
+                <>
+                  <span className="w-1 h-1 rounded-full bg-muted-foreground" />
+                  <span>Updated {formatDate(blog.updatedAt)}</span>
+                </>
+              )}
             </div>
             <h1 className="text-h2 text-foreground mb-6">
               {blog.title}
