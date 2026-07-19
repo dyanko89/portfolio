@@ -6,6 +6,8 @@ import { ProjectsSection } from "@/components/projects-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { getAllProjects } from "@/lib/mdx/content"
+import { JsonLd } from "@/components/json-ld"
+import { personJsonLd, websiteJsonLd } from "@/lib/structured-data"
 
 export const metadata: Metadata = {
   alternates: {
@@ -20,6 +22,7 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen">
+      <JsonLd data={[personJsonLd, websiteJsonLd]} />
       <Navigation />
       <HeroSection />
       <AboutSection />
