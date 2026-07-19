@@ -4,6 +4,8 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { PageHeader } from "@/components/page-header"
 import { ArrowRight, Check } from "lucide-react"
+import { JsonLd } from "@/components/json-ld"
+import { servicesJsonLd, breadcrumbJsonLd } from "@/lib/structured-data"
 
 export const metadata: Metadata = {
   title: "Services",
@@ -100,6 +102,15 @@ const faqs = [
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd
+        data={[
+          ...servicesJsonLd,
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+          ]),
+        ]}
+      />
       <Navigation />
       <main>
         <PageHeader

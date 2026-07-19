@@ -12,6 +12,8 @@ import { getProject, getAllProjects } from "@/lib/mdx/content"
 import { renderMDX } from "@/lib/mdx/mdx"
 import { getRelatedProjects } from "@/lib/mdx/related"
 import { Project } from "@/lib/mdx/types"
+import { JsonLd } from "@/components/json-ld"
+import { projectJsonLd, breadcrumbJsonLd } from "@/lib/structured-data"
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -114,6 +116,16 @@ export default async function ProjectPage({ params }: PageProps) {
 
   return (
     <>
+      <JsonLd
+        data={[
+          projectJsonLd(project),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Projects", path: "/projects" },
+            { name: project.title, path: `/projects/${slug}` },
+          ]),
+        ]}
+      />
       <Navigation />
       <main>
         {/* Hero Header */}

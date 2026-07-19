@@ -13,6 +13,8 @@ import { ShareButtons } from "@/components/blog/share-buttons"
 import { SeriesNavigation } from "@/components/blog/series-navigation"
 import { RelatedArticles } from "@/components/blog/related-articles"
 import { ArrowLeft, Clock } from "lucide-react"
+import { JsonLd } from "@/components/json-ld"
+import { blogPostingJsonLd, breadcrumbJsonLd } from "@/lib/structured-data"
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -74,6 +76,16 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <>
+      <JsonLd
+        data={[
+          blogPostingJsonLd(blog),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blog" },
+            { name: blog.title, path: `/blog/${slug}` },
+          ]),
+        ]}
+      />
       <Navigation />
       <main className="pb-20 md:pb-32">
         {blog.image && (
