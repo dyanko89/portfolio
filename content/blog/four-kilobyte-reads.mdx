@@ -3,6 +3,9 @@ title: "144.8 Seconds to 11.8"
 publishedAt: "2026-07-12"
 summary: "A Rust disk analyzer felt slow, so a multi-agent review swept the whole stack. The walk that looked parallel wasn't, every file cost three kernel round-trips, and the NTFS fast path was throttled by a wrapper crate reading 4 KB per syscall. Same volume, same totals: 144.8 seconds down to 11.8."
 tags: ["Rust", "Windows Internals", "Performance", "Tauri", "Multi-Agent Systems"]
+faq:
+  - q: "Why was the Rust disk scanner slow?"
+    a: "Three compounding causes -- the parallel walk serialized on a shared arena, every file cost three kernel round-trips, and the NTFS fast path read 4 KB per syscall. Fixing all three took the same scan from 144.8 seconds to 11.8."
 ---
 
 ## "It Feels Pretty Slow"

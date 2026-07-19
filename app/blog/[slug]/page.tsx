@@ -15,6 +15,7 @@ import { RelatedArticles } from "@/components/blog/related-articles"
 import { ArrowLeft, Clock } from "lucide-react"
 import { JsonLd } from "@/components/json-ld"
 import { blogPostingJsonLd, breadcrumbJsonLd } from "@/lib/structured-data"
+import { FaqSection } from "@/components/blog/faq-section"
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -180,6 +181,14 @@ export default async function BlogPostPage({ params }: PageProps) {
             </aside>
           </div>
         </div>
+
+        {blog.faq && blog.faq.length > 0 && (
+          <div className="mx-auto max-w-7xl px-6 md:px-12">
+            <div className="max-w-3xl">
+              <FaqSection faq={blog.faq} slug={slug} />
+            </div>
+          </div>
+        )}
 
         {/* Related Articles */}
         {relatedPosts.length > 0 && (

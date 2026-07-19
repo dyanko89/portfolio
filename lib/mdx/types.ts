@@ -1,3 +1,8 @@
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -8,6 +13,7 @@ export interface BlogPost {
   tags?: string[];
   series?: string;
   seriesOrder?: number;
+  faq?: FaqItem[];
   content: string;
   url: string;
 }
@@ -69,6 +75,7 @@ export interface FrontMatter {
   tags?: string[];
   series?: string;
   seriesOrder?: number;
+  faq?: FaqItem[];
   status?: string;
   // New fields
   results?: ProjectResult[];
