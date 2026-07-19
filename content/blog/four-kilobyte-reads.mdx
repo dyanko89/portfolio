@@ -5,7 +5,7 @@ summary: "A Rust disk analyzer felt slow, so a multi-agent review swept the whol
 tags: ["Rust", "Windows Internals", "Performance", "Tauri", "Multi-Agent Systems"]
 faq:
   - q: "Why was the Rust disk scanner slow?"
-    a: "Three compounding causes -- the parallel walk serialized on a shared arena, every file cost three kernel round-trips, and the NTFS fast path read 4 KB per syscall. Fixing all three took the same scan from 144.8 seconds to 11.8."
+    a: "Three compounding causes -- the parallel walk serialized on a shared arena, every file cost three kernel round-trips, and the NTFS fast path read 4 KB per syscall. The per-file syscalls fix alone cut a 2-million-node tree scan to 24.9 seconds cold, 7.1 warm. The MFT reader fix -- replacing 4 KB reads with a buffered, parallel-decoded reader -- took the direct MFT scan from 144.8 seconds to 11.8."
 ---
 
 ## "It Feels Pretty Slow"
