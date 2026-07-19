@@ -1,6 +1,7 @@
 import React from "react"
 import { CodeBlockMinimal, MinimalCode, MinimalInlineCode } from "@/components/code-block-minimal"
 import { MermaidDiagram } from "@/components/mermaid-diagram"
+import { StatRow, BeforeAfter, FlowStack, KeyTakeaways, Timeline } from "@/components/mdx/infographics"
 
 // Helper function to extract text from React element tree (used by rehype-pretty-code)
 function extractTextFromElement(element: unknown): string {
@@ -69,4 +70,9 @@ export const mdxComponents = {
     // Block code (handled by pre wrapper)
     return <MinimalCode className={className}>{children}</MinimalCode>
   },
+  StatRow,
+  BeforeAfter,
+  FlowStack,
+  KeyTakeaways,
+  Timeline,
 }
