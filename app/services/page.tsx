@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/page-header"
 import { ArrowRight, Check } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Services | Danny Yanko",
+  title: "Services",
   description: "From AI integrations to automation pipelines, I design and build the systems that power modern business.",
   alternates: {
     canonical: '/services',

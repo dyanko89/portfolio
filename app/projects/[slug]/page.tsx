@@ -28,12 +28,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!project) {
     return {
-      title: "Project Not Found | Danny Yanko",
+      title: "Project Not Found",
     }
   }
 
   return {
-    title: `${project.title} | Projects | Danny Yanko`,
+    title: project.title,
     description: project.summary,
     alternates: {
       canonical: `/projects/${slug}`,

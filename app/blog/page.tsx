@@ -8,7 +8,7 @@ import { ArrowUpRight, Clock } from "lucide-react"
 import { getAllBlogPosts } from "@/lib/mdx/content"
 
 export const metadata: Metadata = {
-  title: "Blog | Danny Yanko",
+  title: "Blog",
   description: "Thoughts on AI, systems architecture, and the craft of building digital products.",
   alternates: {
     canonical: '/blog',

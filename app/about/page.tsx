@@ -6,7 +6,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "About | Danny Yanko",
+  title: "About",
   description: "Systems architect and AI orchestration specialist. Making complexity invisible so creativity can flourish.",
   alternates: {
     canonical: '/about',

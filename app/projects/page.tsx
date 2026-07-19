@@ -8,7 +8,7 @@ import { ProjectCard } from "@/components/project-card"
 import { getAllProjects } from "@/lib/mdx/content"
 
 export const metadata: Metadata = {
-  title: "Projects | Danny Yanko",
+  title: "Projects",
   description: "A collection of selected work spanning AI automation, web & app development, and digital experiences.",
   alternates: {
     canonical: '/projects',

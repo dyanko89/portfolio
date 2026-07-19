@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/page-header"
 import { experience, systems, skills } from "@/lib/cv-data"
 
 export const metadata: Metadata = {
-  title: "CV | Danny Yanko",
+  title: "CV",
   description: "14+ years building marketing systems and AI-powered automation. Solutions architect who ships production infrastructure.",
   alternates: {
     canonical: '/cv',

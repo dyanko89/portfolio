@@ -22,10 +22,31 @@ const ubuntuMono = Ubuntu_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://djy89.net'),
-  title: 'Danny Yanko | Systems Architect & Automation Consultant',
+  title: {
+    default: 'Danny Yanko | Systems Architect & Automation Consultant',
+    template: '%s | Danny Yanko',
+  },
   description: 'Automation for businesses tired of wasting time on work that shouldn\'t exist.',
+  authors: [{ name: 'Danny Yanko', url: 'https://djy89.net' }],
+  creator: 'Danny Yanko',
   alternates: {
     canonical: '/',
+    types: {
+      'application/rss+xml': '/feed.xml',
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://djy89.net',
+    siteName: 'Danny Yanko',
+    title: 'Danny Yanko | Systems Architect & Automation Consultant',
+    description: 'Automation for businesses tired of wasting time on work that shouldn\'t exist.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Danny Yanko | Systems Architect & Automation Consultant',
+    description: 'Automation for businesses tired of wasting time on work that shouldn\'t exist.',
   },
   icons: {
     icon: [
@@ -40,7 +61,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
   themeColor: '#0a0f12',
 }
 

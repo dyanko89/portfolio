@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Contact | Danny Yanko",
+  title: "Contact",
   description: "Get in touch to discuss your project.",
   alternates: {
     canonical: '/contact',
