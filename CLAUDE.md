@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Personal portfolio website built with Next.js 14 (App Router), TypeScript, and MDX for content management. Features blog posts and project showcases with server-side rendering and static generation.
+Personal portfolio website built with Next.js 16 (App Router), React 19, TypeScript, and MDX for content management. Styling uses Tailwind v4 (`@theme` tokens in `app/globals.css`). Features blog posts and project showcases with server-side rendering and static generation.
 
 ## Development Commands
 
@@ -34,7 +34,7 @@ The site uses a custom MDX-based content system located in `lib/mdx/`:
   - `publishedAt`: ISO date string
   - `summary`: string
   - `image`: string (optional)
-  - `tags`: string array (optional, projects only)
+  - `tags`: string array (optional; used by both blog posts and projects)
   - `status`: string (projects only)
 
 - **Content API** (`lib/mdx/content.ts`):
@@ -117,6 +117,13 @@ TypeScript paths configured in `tsconfig.json`:
 - `@/*` → Project root
 - `contentlayer/generated` → `.contentlayer/generated` (legacy reference)
 
+## SEO & Structured Data
+
+- **Metadata**: Root `app/layout.tsx` sets `title.template: '%s | Danny Yanko'`. Child pages export plain titles (no manual `| Danny Yanko` suffix) and the template appends it automatically.
+- **OG images**: Generated via `lib/og/og-card.tsx` (`ogCard({title, subtitle?, tag?})`) through `opengraph-image.tsx` file-convention routes at root, `app/blog/[slug]/`, and `app/projects/[slug]/`. Never set `openGraph.images` manually on those routes -- the file convention handles it.
+- **JSON-LD**: `components/json-ld.tsx` + `lib/structured-data.ts`. Every graph references the canonical Person node (`@id: https://djy89.net/#person`). Validate with `node scripts/validate-jsonld.mjs` against a running dev server.
+- **Feeds & AI files**: `/feed.xml` (RSS, generated from blog content), `/llms.txt` (generated) are routes. `public/services.md` is manual -- update it when the services page copy changes.
+
 ## Adding Content
 
 ### New Blog Post
@@ -129,10 +136,36 @@ title: "Your Title"
 publishedAt: "2025-01-15"
 summary: "Brief description"
 image: "/images/optional-image.jpg"
+updatedAt: "2026-07-19"        # Optional -- shows "Updated" date, feeds og modifiedTime + schema dateModified
+faq:                            # Optional -- renders visible FAQ section + FAQPage JSON-LD
+  - q: "Question phrased how people search?"
+    a: "Self-contained 40-60 word answer that works out of context."
 ---
 ```
 3. Write content in MDX format
 4. Build will automatically generate static page
+
+### Infographic Components (MDX)
+
+Server components in `components/mdx/infographics.tsx`, registered in `components/mdx-components.tsx` -- use them directly in MDX with no imports:
+
+- `StatRow`: big-number stat tiles (`stats: {value, label, detail?}[]`)
+- `BeforeAfter`: two-panel comparison (`before`/`after`: `{title, items: string[]}`)
+- `FlowStack`: vertical narrowing flow/funnel (`steps: {title, detail?}[]`)
+- `KeyTakeaways`: boxed summary list, doubles as an AEO answer block (`items: string[]`)
+- `Timeline`: vertical chronology (`events: {marker, title, detail?}[]`)
+
+Example (from `content/blog/four-kilobyte-reads.mdx`):
+```mdx
+<StatRow
+  caption="Two fixes, two benchmarks -- the MFT reader and the per-file syscalls"
+  stats={[
+    { value: "144.8s", label: "Before", detail: "Direct MFT scan, 4 KB per syscall" },
+  ]}
+/>
+```
+
+Note: `renderMDX()` in `lib/mdx/mdx.tsx` sets `blockJS: false` -- next-mdx-remote v6 otherwise strips JSX-expression props (like `stats={[...]}`) from MDX, which the infographic components need to work. `blockDangerousJS` stays on. Content is repo-authored only; never render user-supplied MDX through this path.
 
 ### New Project
 
