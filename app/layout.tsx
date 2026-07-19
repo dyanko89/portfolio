@@ -38,7 +38,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://djy89.net',
     siteName: 'Danny Yanko',
     title: 'Danny Yanko | Systems Architect & Automation Consultant',
     description: 'Automation for businesses tired of wasting time on work that shouldn\'t exist.',
