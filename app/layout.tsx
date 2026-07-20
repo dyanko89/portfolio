@@ -39,13 +39,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'Danny Yanko',
-    title: 'Danny Yanko | Systems Architect & Automation Consultant',
-    description: 'Automation for businesses tired of wasting time on work that shouldn\'t exist.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Danny Yanko | Systems Architect & Automation Consultant',
-    description: 'Automation for businesses tired of wasting time on work that shouldn\'t exist.',
   },
   icons: {
     icon: [

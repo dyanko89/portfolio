@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer"
 import { PageHeader } from "@/components/page-header"
 import { ArrowUpRight, Clock } from "lucide-react"
 import { getAllBlogPosts } from "@/lib/mdx/content"
+import { formatDate } from "@/lib/format-date"
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -13,14 +14,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/blog',
   },
-}
-
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
 }
 
 function estimateReadTime(content: string): string {

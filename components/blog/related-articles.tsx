@@ -1,17 +1,10 @@
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
 import type { BlogPost } from "@/lib/mdx/types"
+import { formatDate } from "@/lib/format-date"
 
 interface RelatedArticlesProps {
   posts: BlogPost[]
-}
-
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  })
 }
 
 function estimateReadTime(content: string): string {

@@ -3,6 +3,15 @@ import { BlogPost, Project } from "@/lib/mdx/types";
 export const SITE_URL = "https://djy89.net";
 export const PERSON_ID = `${SITE_URL}/#person`;
 
+// Compact Person stub -- pages other than the homepage don't emit the full
+// Person node, so @id references must carry enough identity to stand alone.
+export const personRef = {
+  "@type": "Person",
+  "@id": PERSON_ID,
+  name: "Danny Yanko",
+  url: SITE_URL,
+};
+
 export const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -32,7 +41,7 @@ export const websiteJsonLd = {
   "@id": `${SITE_URL}/#website`,
   url: SITE_URL,
   name: "Danny Yanko",
-  publisher: { "@id": PERSON_ID },
+  publisher: personRef,
 };
 
 export function blogPostingJsonLd(post: BlogPost) {
@@ -48,8 +57,8 @@ export function blogPostingJsonLd(post: BlogPost) {
       ? `${SITE_URL}${post.image}`
       : `${SITE_URL}/blog/${post.slug}/opengraph-image`,
     keywords: post.tags?.join(", "),
-    author: { "@id": PERSON_ID },
-    publisher: { "@id": PERSON_ID },
+    author: personRef,
+    publisher: personRef,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `${SITE_URL}/blog/${post.slug}`,
@@ -69,8 +78,8 @@ export function projectJsonLd(project: Project) {
       ? `${SITE_URL}${project.image}`
       : `${SITE_URL}/projects/${project.slug}/opengraph-image`,
     keywords: project.tags?.join(", "),
-    author: { "@id": PERSON_ID },
-    creator: { "@id": PERSON_ID },
+    author: personRef,
+    creator: personRef,
   };
 }
 
@@ -93,7 +102,7 @@ export const servicesJsonLd = [
     "@type": "Service",
     name: "AI Automation & Consulting",
     serviceType: "Business process automation consulting",
-    provider: { "@id": PERSON_ID },
+    provider: personRef,
     url: `${SITE_URL}/services`,
   },
   {
@@ -101,7 +110,7 @@ export const servicesJsonLd = [
     "@type": "Service",
     name: "Technical Project Management",
     serviceType: "Technical project management",
-    provider: { "@id": PERSON_ID },
+    provider: personRef,
     url: `${SITE_URL}/services`,
   },
   {
@@ -109,7 +118,7 @@ export const servicesJsonLd = [
     "@type": "Service",
     name: "Full-Stack Development",
     serviceType: "Full-stack web application development",
-    provider: { "@id": PERSON_ID },
+    provider: personRef,
     url: `${SITE_URL}/services`,
   },
 ];

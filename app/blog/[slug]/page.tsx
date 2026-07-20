@@ -16,6 +16,7 @@ import { ArrowLeft, Clock } from "lucide-react"
 import { JsonLd } from "@/components/json-ld"
 import { blogPostingJsonLd, breadcrumbJsonLd } from "@/lib/structured-data"
 import { FaqSection } from "@/components/blog/faq-section"
+import { formatDate } from "@/lib/format-date"
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -48,14 +49,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       tags: blog.tags,
     },
   }
-}
-
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
 }
 
 function estimateReadTime(content: string): string {
