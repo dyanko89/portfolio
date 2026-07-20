@@ -26,7 +26,7 @@ Rather than guess, I fanned out a review team: one agent on the Rust hot path, o
 
 ## The Parallel Scanner That Wasn't
 
-The walk used a rayon pool and looked concurrent. It wasn't. Metadata for one directory's children was fetched in parallel -- then the recursion into subdirectories ran in a plain sequential loop, because every visit needed `&mut` access to one shared arena. Eight workers, one of them busy.
+The walk used a rayon pool and looked concurrent. It wasn't. Metadata for one directory's children was fetched in parallel; then the recursion into subdirectories ran in a plain sequential loop, because every visit needed `&mut` access to one shared arena. Eight workers, one of them busy.
 
 The fix was structural: each subtree builds into its own local arena where ids are just indices, and parents merge children with a single offset-fixup pass. Sibling subtrees genuinely run concurrently; the arena invariant (`nodes[i].id == i`) survives by construction. Cancellation short-circuits through the same `collect::<Result>` that gathers the subtrees.
 
@@ -42,22 +42,22 @@ The per-file cost was worse than the missing parallelism:
 
 The clean fix looked obvious: read the identity fields off metadata Rust already had. Two traps, both caught only by compiling and testing:
 
-- The accessors (`file_index`, `number_of_links`, `volume_serial_number`) are **still unstable** in 2026 -- a design doc claimed they stabilized in Rust 1.87. They didn't.
+- The accessors (`file_index`, `number_of_links`, `volume_serial_number`) are **still unstable** in 2026. A design doc claimed they stabilized in Rust 1.87. They didn't.
 - `DirEntry::metadata()` on Windows is documented to return `None` for exactly those fields. Combining the two "obvious" optimizations silently breaks hard-link dedup, with no error.
 
 The real answer skips per-file calls entirely: one `GetFileInformationByHandleEx(FileIdExtdDirectoryInfo)` conversation per *directory* returns sizes, timestamps, attributes, and 128-bit file ids for every child. Zero syscalls per file. Result on a 2,000,000-node tree: **24.9 s cold cache, 7.1 s warm.**
 
-One test failed after the change -- and it was right to. Enumeration sizes come from the directory index, which NTFS updates lazily for files still open for writing. The fixture wrote a file and scanned before closing the handle. Every fast scanner makes this trade; now it's documented instead of accidental.
+One test failed after the change, and it was right to. Enumeration sizes come from the directory index, which NTFS updates lazily for files still open for writing. The fixture wrote a file and scanned before closing the handle. Every fast scanner makes this trade; now it's documented instead of accidental.
 
 ## The Fast Path That Read 4 KB at a Time
 
 For NTFS volumes with admin rights, the plan was WizTree's trick: skip the directory tree and read the Master File Table directly. A one-day spike existed precisely to de-risk the crate choice, and it earned its keep twice.
 
-**First failure:** the MFT crate refused the volume -- `data runs shorter than declared size`. On a 3.7 TB volume, the `$MFT` file itself is fragmented enough that its extents spill into `$ATTRIBUTE_LIST` extension records, which the crate's loader never chases. Its record *parser* was fine, so the fix was surgical: extract the raw `$MFT` stream with a lower-level crate that follows attribute lists, apply the update-sequence fixups by hand (~40 lines of documented NTFS format), and keep the existing decoder. The extraction layer and the pure tree-builder were deliberately separate modules; one was swapped, the other -- and its entire test suite -- never changed.
+**First failure:** the MFT crate refused the volume with `data runs shorter than declared size`. On a 3.7 TB volume, the `$MFT` file itself is fragmented enough that its extents spill into `$ATTRIBUTE_LIST` extension records, which the crate's loader never chases. Its record *parser* was fine, so the fix was surgical: extract the raw `$MFT` stream with a lower-level crate that follows attribute lists, apply the update-sequence fixups by hand (~40 lines of documented NTFS format), and keep the existing decoder. The extraction layer and the pure tree-builder were deliberately separate modules: one was swapped, the other (and its entire test suite) never changed.
 
-**Second failure, the quiet one:** it worked, in 144.8 seconds. Reading 11.8 GB of MFT at 84 MB/s on an NVMe drive is not an I/O limit; it's a plumbing limit. The ecosystem's raw-volume reader capped every read at one 4 KB alignment unit, each with its own seek -- about three million syscall round-trips. The `BufReader` wrapped around it didn't help, because large destination reads bypass its buffer entirely.
+**Second failure, the quiet one:** it worked, in 144.8 seconds. Reading 11.8 GB of MFT at 84 MB/s on an NVMe drive is not an I/O limit; it's a plumbing limit. The ecosystem's raw-volume reader capped every read at one 4 KB alignment unit, each with its own seek: about three million syscall round-trips. The `BufReader` wrapped around it didn't help, because large destination reads bypass its buffer entirely.
 
-A ~60-line replacement reader -- sector-aligned 8 MB refills, positions tracked logically, seeks served from the hot buffer -- plus fanning record decoding across rayon per chunk:
+A ~60-line replacement reader (sector-aligned 8 MB refills, positions tracked logically, seeks served from the hot buffer), plus fanning record decoding across rayon per chunk:
 
 | Run | Time | Change |
 |-----|------|--------|
@@ -70,7 +70,7 @@ Same 11.5 million records, byte-identical totals on every run. **12.3x, without 
 
 ## Perceived Speed Shipped Alongside
 
-Raw throughput wasn't the only complaint hiding in "it feels slow." The same build shipped: a live sunburst that appears within half a second and refines every 500 ms while the scan runs (a depth-2 skeleton fed by relaxed atomic counters -- no locks on the walk's hot path); rescans that keep the old results on screen until new data lands; navigation served from a client-side view cache instead of re-serializing megabyte payloads; and a canvas that stops re-parsing thousands of `Path2D` arcs -- and reallocating its own backing store -- on every mouse move.
+Raw throughput wasn't the only complaint hiding in "it feels slow." The same build shipped: a live sunburst that appears within half a second and refines every 500 ms while the scan runs (a depth-2 skeleton fed by relaxed atomic counters, no locks on the walk's hot path); rescans that keep the old results on screen until new data lands; navigation served from a client-side view cache instead of re-serializing megabyte payloads; and a canvas that stops re-parsing thousands of `Path2D` arcs (and reallocating its own backing store) on every mouse move.
 
 ## What Transfers
 
