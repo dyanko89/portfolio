@@ -5,7 +5,7 @@ summary: "A Rust disk analyzer felt slow, so a multi-agent review swept the whol
 tags: ["Rust", "Windows Internals", "Performance", "Tauri", "Multi-Agent Systems"]
 faq:
   - q: "Why was the Rust disk scanner slow?"
-    a: "Three compounding causes -- the parallel walk serialized on a shared arena, every file cost three kernel round-trips, and the NTFS fast path read 4 KB per syscall. The per-file syscalls fix alone cut a 2-million-node tree scan to 24.9 seconds cold, 7.1 warm. The MFT reader fix -- replacing 4 KB reads with a buffered, parallel-decoded reader -- took the direct MFT scan from 144.8 seconds to 11.8."
+    a: "Three compounding causes: the parallel walk serialized on a shared arena, every file cost three kernel round-trips, and the NTFS fast path read 4 KB per syscall. The per-file syscalls fix alone cut a 2-million-node tree scan to 24.9 seconds cold, 7.1 warm. The MFT reader fix, a buffered reader with parallel decode, took the direct MFT scan from 144.8 seconds to 11.8."
 ---
 
 ## "It Feels Pretty Slow"
@@ -15,7 +15,7 @@ EldinDisk is a Tauri desktop app: a Rust scanner walks a volume, and a React can
 Rather than guess, I fanned out a review team: one agent on the Rust hot path, one on the frontend render loop, one on the IPC boundary, and one researching how WizTree and Everything get near-instant scans. The findings ranked themselves.
 
 <StatRow
-  caption="Two fixes, two benchmarks -- the MFT reader and the per-file syscalls"
+  caption="Two fixes, two benchmarks: the MFT reader and the per-file syscalls"
   stats={[
     { value: "144.8s", label: "Before", detail: "Direct MFT scan, 4 KB per syscall" },
     { value: "11.8s", label: "After", detail: "Same MFT scan, buffered + parallel decode" },
@@ -81,9 +81,9 @@ Raw throughput wasn't the only complaint hiding in "it feels slow." The same bui
 
 <KeyTakeaways
   items={[
-    "A rayon pool over a shared &mut arena is sequential in disguise -- profile the structure, not the API.",
-    "Per-file syscalls are the enemy on Windows -- one directory-level FileIdExtdDirectoryInfo query replaces three calls per file.",
-    "Wrapper crates can throttle a fast path invisibly -- the MFT reader's volume crate capped every read at a 4 KB alignment unit, three million syscalls deep.",
-    "Multi-agent review beats intuition -- four agents ranked the bottlenecks in parallel, and the obvious suspect (the canvas) ranked third, not first.",
+    "A rayon pool over a shared &mut arena is sequential in disguise. Profile the structure, not the API.",
+    "Per-file syscalls are the enemy on Windows. One directory-level FileIdExtdDirectoryInfo query replaces three calls per file.",
+    "Wrapper crates can throttle a fast path invisibly: the MFT reader's volume crate capped every read at a 4 KB alignment unit, three million syscalls deep.",
+    "Multi-agent review beats intuition. Four agents ranked the bottlenecks in parallel, and the obvious suspect (the canvas) ranked third, not first.",
   ]}
 />

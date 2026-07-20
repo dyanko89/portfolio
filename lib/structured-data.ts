@@ -3,7 +3,7 @@ import { BlogPost, Project } from "@/lib/mdx/types";
 export const SITE_URL = "https://djy89.net";
 export const PERSON_ID = `${SITE_URL}/#person`;
 
-// Compact Person stub -- pages other than the homepage don't emit the full
+// Compact Person stub: pages other than the homepage don't emit the full
 // Person node, so @id references must carry enough identity to stand alone.
 export const personRef = {
   "@type": "Person",

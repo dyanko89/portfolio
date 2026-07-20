@@ -66,7 +66,7 @@ export async function ogCard({ title, subtitle, tag }: OgCardProps) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{ width: 48, height: 6, backgroundColor: '#ff5722' }} />
           <div style={{ fontSize: 24, color: '#6b7a85' }}>
-            Danny Yanko -- Systems Architect &amp; Automation Consultant
+            Danny Yanko | Systems Architect &amp; Automation Consultant
           </div>
         </div>
       </div>

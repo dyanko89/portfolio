@@ -120,9 +120,34 @@ TypeScript paths configured in `tsconfig.json`:
 ## SEO & Structured Data
 
 - **Metadata**: Root `app/layout.tsx` sets `title.template: '%s | Danny Yanko'`. Child pages export plain titles (no manual `| Danny Yanko` suffix) and the template appends it automatically.
-- **OG images**: Generated via `lib/og/og-card.tsx` (`ogCard({title, subtitle?, tag?})`) through `opengraph-image.tsx` file-convention routes at root, `app/blog/[slug]/`, and `app/projects/[slug]/`. Never set `openGraph.images` manually on those routes -- the file convention handles it.
+- **OG images**: Generated via `lib/og/og-card.tsx` (`ogCard({title, subtitle?, tag?})`) through `opengraph-image.tsx` file-convention routes at root, `app/blog/[slug]/`, and `app/projects/[slug]/`. Never set `openGraph.images` manually on those routes; the file convention handles it.
 - **JSON-LD**: `components/json-ld.tsx` + `lib/structured-data.ts`. Every graph references the canonical Person node (`@id: https://djy89.net/#person`). Validate with `node scripts/validate-jsonld.mjs` against a running dev server.
-- **Feeds & AI files**: `/feed.xml` (RSS, generated from blog content), `/llms.txt` (generated) are routes. `public/services.md` is manual -- update it when the services page copy changes.
+- **Feeds & AI files**: `/feed.xml` (RSS, generated from blog content), `/llms.txt` (generated) are routes. `public/services.md` is manual; update it when the services page copy changes.
+
+## Content Standards (SEO/AEO/GEO)
+
+Every piece of content (blog posts, project pages) follows these rules. They are the publishing bar, not optional polish.
+
+### Punctuation (hard rule)
+- No em-dashes. No double hyphens ("--"). Use commas, colons, periods, or parentheses instead.
+- Applies to ALL user-visible copy: MDX bodies, frontmatter (titles, summaries, FAQ answers, captions), OG card text, alt text, feed/llms/services files. Use `|` only as a title separator (matching the site title pattern), never as prose punctuation.
+
+### Blog post checklist
+- `summary`: self-contained, roughly 150-160 characters, with concrete numbers when the post has them (it becomes the meta description and og:description).
+- `tags`: 3-5, specific.
+- `faq`: 2-3 entries. Questions phrased the way people search; each answer self-contained, 40-60 words, accurate to the post body, readable with zero surrounding context.
+- `updatedAt`: add on any substantive edit (feeds the visible "Updated" date, og modifiedTime, schema dateModified, and sitemap lastModified).
+- Structure: open each section with the direct answer, then the detail. Phrase headings as queries where natural. Tables for comparisons, numbered lists for processes, specific numbers with dates.
+- Include at least one infographic component where the content supports it: `StatRow` for metrics, `BeforeAfter` for comparisons, `FlowStack` for pipelines, `Timeline` for chronology, `KeyTakeaways` to close.
+
+### Project page checklist
+- `results`: concrete values with labels (rendered as stat cards; extracted by AI engines).
+- `summary`: states the outcome, not just the topic.
+
+### After any content change
+- `npm run build` must pass.
+- If schema-relevant fields changed, run `node scripts/validate-jsonld.mjs` against a running dev server.
+- If services page copy changed, mirror it in `public/services.md`.
 
 ## Adding Content
 
@@ -136,8 +161,8 @@ title: "Your Title"
 publishedAt: "2025-01-15"
 summary: "Brief description"
 image: "/images/optional-image.jpg"
-updatedAt: "2026-07-19"        # Optional -- shows "Updated" date, feeds og modifiedTime + schema dateModified
-faq:                            # Optional -- renders visible FAQ section + FAQPage JSON-LD
+updatedAt: "2026-07-19"        # Optional: shows "Updated" date, feeds og modifiedTime + schema dateModified
+faq:                            # Optional: renders visible FAQ section + FAQPage JSON-LD
   - q: "Question phrased how people search?"
     a: "Self-contained 40-60 word answer that works out of context."
 ---
@@ -147,7 +172,7 @@ faq:                            # Optional -- renders visible FAQ section + FAQP
 
 ### Infographic Components (MDX)
 
-Server components in `components/mdx/infographics.tsx`, registered in `components/mdx-components.tsx` -- use them directly in MDX with no imports:
+Server components in `components/mdx/infographics.tsx`, registered in `components/mdx-components.tsx`. Use them directly in MDX with no imports:
 
 - `StatRow`: big-number stat tiles (`stats: {value, label, detail?}[]`)
 - `BeforeAfter`: two-panel comparison (`before`/`after`: `{title, items: string[]}`)
@@ -158,14 +183,14 @@ Server components in `components/mdx/infographics.tsx`, registered in `component
 Example (from `content/blog/four-kilobyte-reads.mdx`):
 ```mdx
 <StatRow
-  caption="Two fixes, two benchmarks -- the MFT reader and the per-file syscalls"
+  caption="Two fixes, two benchmarks: the MFT reader and the per-file syscalls"
   stats={[
     { value: "144.8s", label: "Before", detail: "Direct MFT scan, 4 KB per syscall" },
   ]}
 />
 ```
 
-Note: `renderMDX()` in `lib/mdx/mdx.tsx` sets `blockJS: false` -- next-mdx-remote v6 otherwise strips JSX-expression props (like `stats={[...]}`) from MDX, which the infographic components need to work. `blockDangerousJS` stays on. Content is repo-authored only; never render user-supplied MDX through this path.
+Note: `renderMDX()` in `lib/mdx/mdx.tsx` sets `blockJS: false` because next-mdx-remote v6 otherwise strips JSX-expression props (like `stats={[...]}`) from MDX, which the infographic components need to work. `blockDangerousJS` stays on. Content is repo-authored only; never render user-supplied MDX through this path.
 
 ### New Project
 

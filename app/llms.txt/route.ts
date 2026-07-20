@@ -8,9 +8,9 @@ export async function GET() {
   const posts = await getAllBlogPosts();
   const projects = await getAllProjects();
 
-  const body = `# Danny Yanko -- djy89.net
+  const body = `# Danny Yanko (djy89.net)
 
-> Systems architect and automation consultant. Builds automation for businesses tired of wasting time on work that shouldn't exist -- AI agent systems, business process automation, and full-stack development.
+> Systems architect and automation consultant. Builds automation for businesses tired of wasting time on work that shouldn't exist: AI agent systems, business process automation, and full-stack development.
 
 ## Services
 

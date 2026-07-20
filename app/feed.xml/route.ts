@@ -31,10 +31,10 @@ export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Danny Yanko -- Blog</title>
+    <title>Danny Yanko | Blog</title>
     <link>${SITE_URL}/blog</link>
     <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml" />
-    <description>Systems architecture, automation, and AI agent systems -- essays from the field.</description>
+    <description>Essays from the field: systems architecture, automation, and AI agent systems.</description>
     <language>en-us</language>
 ${items}
   </channel>

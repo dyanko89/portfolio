@@ -2,7 +2,7 @@ import { ogCard, OG_SIZE } from '@/lib/og/og-card'
 
 export const size = OG_SIZE
 export const contentType = 'image/png'
-export const alt = 'Danny Yanko -- Systems Architect & Automation Consultant'
+export const alt = 'Danny Yanko | Systems Architect & Automation Consultant'
 
 export default function Image() {
   return ogCard({

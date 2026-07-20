@@ -1,8 +1,8 @@
 import { ReactNode } from "react"
 
 // Shared wrapper: bordered figure that escapes prose styling, with an
-// uppercase tracked caption bar -- ported from the Aspen Figure pattern,
-// restyled to this site's dark palette.
+// uppercase tracked caption bar (ported from the Aspen Figure pattern,
+// restyled to this site's dark palette).
 function Figure({ caption, children }: { caption?: string; children: ReactNode }) {
   return (
     <figure className="not-prose my-10 border border-border bg-background-elevated">
@@ -133,7 +133,7 @@ export function FlowStack({ steps, caption }: { steps: FlowStep[]; caption?: str
   )
 }
 
-// Boxed summary list -- doubles as an AEO answer block:
+// Boxed summary list; doubles as an AEO answer block:
 // <KeyTakeaways items={["...", "..."]} />
 export function KeyTakeaways({ items, caption }: { items: string[]; caption?: string }) {
   return (
